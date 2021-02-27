@@ -11,11 +11,6 @@ const getAllLottery = async (req, res, next) => {
             res.status(400).send("No lottery in record")
         } else {
             lottery.docs.forEach(doc => {
-                //push into array
-                // const lot = new Lottery(
-                //     doc.id,
-                //     doc.data().photoURL,
-                // )
                 lotteryArray.push({
                     id: doc.id,
                     photoURL: doc.data().photoURL,
