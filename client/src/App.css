@@ -1,5 +1,6 @@
-.App {
-  text-align: center;
+* {
+  font-family: 'Sarabun', sans-serif;
+  font-size: larger;
 }
 
 .App-logo {
@@ -35,4 +36,13 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+table td{
+  font-size: 28px !important;
+  padding: 0;
+  color: blueviolet;
+}
+.nav-item {
+  padding: 10px auto !important; 
 }

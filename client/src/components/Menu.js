@@ -1,18 +1,19 @@
 import React from "react";
+import { NavLink } from 'react-router-dom'
 
 export default function Menu() {
   return (
     <div>
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
         {/* Brand Logo */}
-        <a href="index3.html" className="brand-link">
+        <a href="" className="brand-link">
           {/* <img
             src="dist/img/AdminLTELogo.png"
             alt="AdminLTE Logo"
             className="brand-image img-circle elevation-3"
             style={{ opacity: ".8" }}
           /> */}
-          <span className="brand-text font-weight-light">KHOHUAI ADMIN</span>
+          <span className="brand-text font-weight-light">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KHOHUAI ADMIN</span>
         </a>
         {/* Sidebar */}
         <div className="sidebar">
@@ -39,16 +40,15 @@ export default function Menu() {
               role="menu"
               data-accordion="false"
             >
-              {/* Add icons to the links using the .nav-icon class
-         with font-awesome or any other icon font library */}
-              <li className="nav-item has-treeview menu-open">
-                <a href="#" className="nav-link active">
+              <li className="nav-item">
+                <NavLink to="/" className="nav-link p-3"  exact={true} activeClassName="active menu-open has-treeview">
                   <i className="nav-icon fas fa-tachometer-alt" />
                   <p>
+                  &nbsp;
                     Dashboard
                     {/* <i className="right fas fa-angle-left" /> */}
                   </p>
-                </a>
+                </NavLink>
                 {/* <ul className="nav nav-treeview">
                   <li className="nav-item">
                     <a href="./index.html" className="nav-link">
@@ -71,32 +71,32 @@ export default function Menu() {
                 </ul> */}
               </li>
               <li className="nav-item">
-                <a href="/lottery" className="nav-link">
+                <NavLink to="/lottery" className="nav-link p-3" activeClassName="active menu-open has-treeview ">
                   <i className="nav-icon fas fa-ticket-alt" /> 
                   <p>
-                    Lottery
+                  &nbsp; Lottery
                     {/* <span className="right badge badge-danger">New</span> */}
                   </p>
-                </a>
+                </NavLink>
               </li>
               <li className="nav-item has-treeview">
-                <a href="/invoice" className="nav-link">
+              <NavLink to="/invoice" className="nav-link p-3" activeClassName="active menu-open has-treeview ">
                 <i className="nav-icon fas fa-file-invoice" />
                   <p>
-                   Invoice
+                  &nbsp; Invoice
                     {/* <span className="badge badge-info right">6</span> */}
                   </p>
-                </a>
+                </NavLink>
                 
               </li>
               <li className="nav-item has-treeview">
-                <a href="/user" className="nav-link">
+              <NavLink to="/user" className="nav-link p-3" activeClassName="active menu-open has-treeview ">
                   <i className="nav-icon fas fa-user" /> 
                   <p>
-                    User
+                  &nbsp; User
                  
                   </p>
-                </a>
+                </NavLink>
                 
               </li>
              

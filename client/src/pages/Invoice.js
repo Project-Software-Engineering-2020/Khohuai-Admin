@@ -1,13 +1,22 @@
-import React from 'react';
-import { MDBDataTable,MDBBtn } from 'mdbreact';
-
-
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import { MDBDataTable, MDBBtn } from 'mdbreact';
+import { getAllInvoice } from '../redux/action/invoiceAction'
+import Moment from 'react-moment';
+import 'moment/locale/th';
 const DatatablePage = () => {
-  
+
+  const dispatch = useDispatch();
+  const invoice = useSelector(state => state.invoice)
+
+  useEffect(() => {
+    dispatch(getAllInvoice());
+  }, [])
+
   const data = {
-    
+
     columns: [
-     
+
       {
         label: 'เลขที่ใบเสร็จ',
         field: 'num',
@@ -52,24 +61,63 @@ const DatatablePage = () => {
       }
     ],
     rows: [
-      
+
       {
-        description : <MDBBtn color="blue" size="sm">ดูเพิ่มเติม</MDBBtn>
+        description: <MDBBtn color="blue" size="sm">ดูเพิ่มเติม</MDBBtn>
       }
     ]
   };
 
   return (
-    <div  className="content-wrapper" >
+    // <div>
 
-      <MDBDataTable
-      striped
-      bordered
-      small
-      data={data}
-    /> 
+    //   <MDBDataTable
+    //   striped
+    //   bordered
+    //   small
+    //   data={data}
+    // /> 
+    // </div>
+    <div className="card">
+      <div className="card-header border-transparent ">
+        <h2 className="card-title pt-2">คำสั่งซื้อทั้งหมด</h2>
+      </div>
+      <div className="card-body p-0">
+        <div className="table-responsive">
+          <table className="table m-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Qty</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {invoice.data.map((item, index) => {
+
+                return (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td><a href="">{item.invoiceid}</a></td>
+                    <td><Moment format="DD-MM-YYYY HH:mm:ss">
+                      {item.date}
+                    </Moment></td>
+                    <td>{item.quantity}</td>
+                    <td>{item.totalprice}</td>
+                  </tr>
+                )
+
+
+              })}
+
+            </tbody>
+          </table>
+        </div>
+        {/* /.table-responsive */}
+      </div>
     </div>
-   
   );
 }
 

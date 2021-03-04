@@ -10,7 +10,7 @@ export default function Header() {
             <i className="fas fa-bars" />
           </a>
         </li>
-        <li className="nav-item d-none d-sm-inline-block">
+        {/* <li className="nav-item d-none d-sm-inline-block">
           <a href="index3.html" className="nav-link">
             Home
           </a>
@@ -19,7 +19,7 @@ export default function Header() {
           <a href="" className="nav-link">
             Contact
           </a>
-        </li>
+        </li> */}
       </ul>
       {/* SEARCH FORM */}
       {/* <form className="form-inline ml-3">

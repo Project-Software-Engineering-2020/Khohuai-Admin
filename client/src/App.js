@@ -1,14 +1,18 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import '@fortawesome/fontawesome-free/css/all.min.css'; 
-import 'bootstrap-css-only/css/bootstrap.min.css';
-import 'mdbreact/dist/css/mdb.css';
-import LotteryReports from "./pages/LotteryReports";
-import Invoice from "./pages/Invoice";
-import AdUser from "./pages/AdUser";
+import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
+import '../node_modules/bootstrap-css-only/css/bootstrap.min.css';
+import '../node_modules/mdbreact/dist/css/mdb.css';
+
+//component
 import Header from "./components/Header";
 import Menu from "./components/Menu";
-
+//page
+import Dashboard from './pages/Dashboard';
+import Lottery from "./pages/Lottery";
+import Invoice from "./pages/Invoice";
+import User from "./pages/User";
+import AddLottery from "./pages/AddLottery"
 
 export default function App() {
   return (
@@ -16,11 +20,16 @@ export default function App() {
       <Router>
         <Header />
         <Menu />
-        <Switch >
-          <Route  path="/lottery" exact component={LotteryReports} />
-          <Route path="/invoice" exact component={Invoice} />
-          <Route path="/user" exact component={AdUser} />
-        </Switch>
+        <div className="content-wrapper p-3 bg-white">
+          <Switch>
+            <Route path="/lottery/create" component={AddLottery} />
+            <Route path="/" exact={true} component={Dashboard} />
+            <Route path="/lottery" component={Lottery} />
+            <Route path="/invoice" component={Invoice} />
+            <Route path="/user" component={User} />
+          </Switch>
+        </div>
+
       </Router>
     </div>
   );

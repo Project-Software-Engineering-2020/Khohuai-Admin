@@ -1,17 +1,13 @@
 const firebase = require('firebase');
 const firebaseAdmin = require("firebase-admin");
 
-const serviceAccount = require("../hi-chon-firebase-adminsdk-9pav9-4cf41da28a.json");
+const serviceAccount = require("./khohuai-v2-firebase-adminsdk-olov5-147c536751.json");
 
 const firebaseApp = firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount),
-  databaseURL: "https://hi-chon.firebaseio.com"
+  databaseURL: "https://khohuai-v2-default-rtdb.firebaseio.com",
+  storageBucket: "gs://khohuai-v2.appspot.com"
 });
-
-// firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
-
-
-// const firebaseApp = firebase.initializeApp(config.firebaseConfig);
 
 //firestore
 const firestore = firebaseApp.firestore();
@@ -27,7 +23,8 @@ const facebookProvider = new firebase.auth.FacebookAuthProvider();
 facebookProvider.addScope('user_birthday');
 
 // //firebase storage
-// const storage = firebase.storage();
+const storage = firebaseApp.storage();
+const bucket = storage.bucket();
 
 module.exports = {
     firebaseApp,
@@ -35,4 +32,6 @@ module.exports = {
     auth,
     googleProvider,
     facebookProvider,
+    storage,
+    bucket
 }
