@@ -1,7 +1,7 @@
 const firebase = require('firebase');
 const firebaseAdmin = require("firebase-admin");
 
-const serviceAccount = require("./khohuai-v2-firebase-adminsdk-olov5-147c536751.json");
+const serviceAccount = require("./khohuai-v2-firebase-adminsdk-olov5-6c52cf26ac.json");
 
 const firebaseApp = firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(serviceAccount),
