@@ -21,15 +21,13 @@ export default function Menu() {
           <div className="user-panel mt-3 pb-3 mb-3 d-flex">
             <div className="image">
               <img
-                src="dist/img/useradmin.jpg"
+                src="https://scontent.fbkk5-1.fna.fbcdn.net/v/t1.0-9/77062_443307505736304_46602656_n.jpg?_nc_cat=109&ccb=1-3&_nc_sid=de6eea&_nc_eui2=AeGg724_D-utr1qeKu-0IoNUTsl-maYwWZ5OyX6ZpjBZnmtyisjPVg_qc5-1daSxngCV7IYJCiif7G1CpL_teFAi&_nc_ohc=-waAhoK3kxIAX8UCYEK&_nc_ht=scontent.fbkk5-1.fna&oh=9a0bdbd2696e2aa3cd25aaa1bde8a189&oe=6074044A"
                 className="img-circle elevation-2"
                 alt="User Image"
               />
             </div>
-            <div className="info">
-              <a href="#" className="d-block">
+            <div className="info d-block text-white">
                 บอส บอสซ่า
-              </a>
             </div>
           </div>
           {/* Sidebar Menu */}

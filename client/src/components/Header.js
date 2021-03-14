@@ -40,18 +40,12 @@ export default function Header() {
 
 
       
-      {/* Right navbar links */}
-      <ul className="navbar-nav ml-auto">
-        {/* Messages Dropdown Menu */}
-     {/*    <li className="nav-item dropdown">
+      {/* <ul className="navbar-nav ml-auto">
+        <li className="nav-item dropdown">
           <a className="nav-link" data-toggle="dropdown" href="#">
             <i className="far fa-comments" />
             <span className="badge badge-danger navbar-badge">3</span>
           </a>
-
-
-
-
           <div className="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <a href="#" className="dropdown-item">
               Message Start
@@ -128,15 +122,9 @@ export default function Header() {
             <a href="#" className="dropdown-item dropdown-footer">
               See All Messages
             </a>
-
-            
           </div> 
-        </li>*/}
-
-
-        
-        {/* Notifications Dropdown Menu */}
-        {/* <li className="nav-item dropdown">
+        </li>
+        <li className="nav-item dropdown">
           <a className="nav-link" data-toggle="dropdown" href="#">
             <i className="far fa-bell" />
             <span className="badge badge-warning navbar-badge">15</span>
@@ -165,8 +153,8 @@ export default function Header() {
               See All Notifications
             </a>
           </div>
-        </li> */}
-        {/* <li className="nav-item">
+        </li>
+        <li className="nav-item">
           <a
             className="nav-link"
             data-widget="control-sidebar"
@@ -176,8 +164,8 @@ export default function Header() {
           >
             <i className="fas fa-th-large" />
           </a>
-        </li> */}
-      </ul>
+        </li>
+      </ul> */}
     </nav>
   );
 }
