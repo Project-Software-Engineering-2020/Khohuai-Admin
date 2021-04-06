@@ -1,9 +1,14 @@
-import React ,{useState}from "react";
+import React, { useState } from "react";
+import Axios from "axios";
+import { useDispatch } from "react-redux"
 import "../stylesheets/login.css";
 import { setloginWithUsername } from "../redux/action/authAction";
 import Axios from "axios";
 function Login() {
-  const [username, setusername] = useState("");
+
+  const dispatch = useDispatch()
+
+  const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
 
   const [usernameErr, setUsernameErr] = useState("");
@@ -46,14 +51,14 @@ function Login() {
     <div className="log-in">
       <div className="main-form">
         <div class="form-group">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="email">Username</label>
           <input
             type="username"
             className="form-control"
             placeholder="Enter Username"
             name=""
             value=""
-            onChange={(e) => setusername(e.target.value)}
+            onChange={(e) => setemail(e.target.value)}
           />
         </div>
 

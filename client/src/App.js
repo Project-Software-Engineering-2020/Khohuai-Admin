@@ -20,6 +20,8 @@ import Detail from "./pages/Detail";
 
 
 export default function App() {
+
+  const user = true
   return (
     <div>
       <Router>
