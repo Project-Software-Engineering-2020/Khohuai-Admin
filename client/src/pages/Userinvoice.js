@@ -7,7 +7,7 @@ import 'moment/locale/th';
 const Userinvoice = () => {
 
   const dispatch = useDispatch();
-  const invoice = useSelector(state => state.user)
+  const invoice = useSelector(state => state.invoice)
 
   useEffect(() => {
     dispatch(getAllInvoice());
@@ -80,7 +80,7 @@ const Userinvoice = () => {
     // </div>
     <div className="card">
       <div className="card-header border-transparent ">
-        <h2 className="card-title pt-2">คำสั่งซื้อของ</h2>
+        <h2 className="card-title pt-2">คำสั่งซื้อทั้งหมด</h2>
       </div>
       <div className="card-body p-0">
         <div className="table-responsive">
@@ -88,9 +88,9 @@ const Userinvoice = () => {
             <thead>
               <tr>
                 <th>#</th>
-                <th>หมายเลขคำสั่งซื้อ</th>
-                <th>วัน</th>
-                <th>เวลา</th>
+                <th>เลขที่ใบเสร็จ</th>
+                <th>วัน/เวลา</th>
+                <th>ชื่อผู้ซื้อ</th>
                 <th>จำนวน</th>
                 <th>ยอดเงิน</th>
                 <th>สถานะรางวัล</th>

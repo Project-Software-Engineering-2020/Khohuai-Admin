@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Axios from "axios";
 import { useDispatch } from "react-redux"
 import "../stylesheets/login.css";
 import { setloginWithUsername } from "../redux/action/authAction";
@@ -23,7 +22,7 @@ function Login() {
 
     try {
       Axios.post("http://localhost:3001/auth/login", {
-        username,
+        email,
         password,
       }).then((res) => {
         if (res.status === 201) {

@@ -32,11 +32,11 @@ export default function App() {
             <Route path="/lottery/create" component={AddLottery} />
             <Route path="/" exact={true} component={Dashboard} />
             <Route path="/lottery" component={Lottery} />
-            <Route path="/invoice" component={Invoice} />
+            <Route path="/invoice" exact={true} component={Invoice} />
             <Route path="/user" component={User} />
             <Route path="/adminLogin" component={Login} />
             <Route path="/userinvoice" component={Userinvoice} />
-            <Route path="/detail" component={Detail} />
+            <Route path="/invoice/:id" component={Detail} />
           </Switch>
         </div>
       </Router>

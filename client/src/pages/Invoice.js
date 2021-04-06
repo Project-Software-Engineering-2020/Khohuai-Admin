@@ -101,13 +101,13 @@ const DatatablePage = () => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td><a href="">{item.invoiceid}</a></td>
+                    <td><a href={"/invoice/"+item.invoiceid}>{item.invoiceid}</a></td>
                     <td><Moment format="DD-MM-YYYY HH:mm:ss">
                       {item.date}
                     </Moment></td>
                     <td>{item.quantity}</td>
                     <td>{item.totalprice}</td>
-                    <td><a href="/Userinvoice" class="btn btn-sm btn-info float-left">ดูเพิ่มเติม</a></td>
+                    <td><a href={"/invoice/"+item.invoiceid} class="btn btn-sm btn-info float-left">ดูเพิ่มเติม</a></td>
                   </tr>
                 )
 
