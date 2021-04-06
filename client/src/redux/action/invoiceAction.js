@@ -21,7 +21,7 @@ export function getInvoiceDetail(invoice_id) {
         return Axios.get("http://localhost:3002/invoice/"+invoice_id)
             .then(invoice => {
                 console.log(invoice.data);
-                dispatch({type:"Fetched_invoice_detail",data:invoice.data})
+                dispatch({type:"Fetched_invoice_detail",data:invoice.data[0]})
             });
     }
 }

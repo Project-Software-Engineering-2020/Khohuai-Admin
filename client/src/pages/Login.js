@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import Axios from "axios";
 import { useDispatch } from "react-redux"
 import "../stylesheets/login.css";
 import { setloginWithUsername } from "../redux/action/authAction";
-
+import Axios from "axios";
 function Login() {
 
   const dispatch = useDispatch()
@@ -39,7 +38,7 @@ function Login() {
             setUserErr("คุณใส่รหัสผ่านผิดเกิน 3 ครั้ง กรุณารอสักครู่");
           }
         } else if (res.status === 200) {
-          dispatch(setloginWithUsername(res));
+          // dispatch(setloginWithUsername(res));
         }
       });
     } catch (error) {

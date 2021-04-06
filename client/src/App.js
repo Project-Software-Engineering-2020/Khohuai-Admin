@@ -14,6 +14,10 @@ import Invoice from "./pages/Invoice";
 import User from "./pages/User";
 import AddLottery from "./pages/AddLottery";
 import Login from "./pages/Login";
+import Userinvoice from "./pages/Userinvoice";
+import Detail from "./pages/Detail";
+
+
 
 export default function App() {
 
@@ -28,9 +32,11 @@ export default function App() {
             <Route path="/lottery/create" component={AddLottery} />
             <Route path="/" exact={true} component={Dashboard} />
             <Route path="/lottery" component={Lottery} />
-            <Route path="/invoice" component={Invoice} />
+            <Route path="/invoice" exact={true} component={Invoice} />
             <Route path="/user" component={User} />
             <Route path="/adminLogin" component={Login} />
+            <Route path="/userinvoice" component={Userinvoice} />
+            <Route path="/invoice/:id" component={Detail} />
           </Switch>
         </div>
       </Router>

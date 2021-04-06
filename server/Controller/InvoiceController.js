@@ -77,7 +77,7 @@ const getInvoice = async (req, res) => {
     try {
         const invoice = await firestore.collection('invoices').doc(id);
 
-        invoice.get().then((doc) => {
+        await invoice.get().then((doc) => {
 
             ngud_number = doc.data().nguad;
             _date = doc.data().date.toDate();
