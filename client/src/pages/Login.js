@@ -1,7 +1,7 @@
-import React from "react";
+import React ,{useState}from "react";
 import "../stylesheets/login.css";
 import { setloginWithUsername } from "../redux/action/authAction";
-
+import Axios from "axios";
 function Login() {
   const [username, setusername] = useState("");
   const [password, setpassword] = useState("");
@@ -18,12 +18,12 @@ function Login() {
 
     try {
       Axios.post("http://localhost:3001/auth/login", {
-        email,
+        username,
         password,
       }).then((res) => {
         if (res.status === 201) {
           if (res.data === "auth/invalid-username") {
-            setusernameErr("usernameไม่ถูกต้อง");
+            setUsernameErr("usernameไม่ถูกต้อง");
             setUserErr("usernameไม่ถูกต้อง");
           } else if (res.data === "auth/wrong-password") {
             setPasswordErr("รหัสผ่านไม่ถูกต้อง");
@@ -34,7 +34,7 @@ function Login() {
             setUserErr("คุณใส่รหัสผ่านผิดเกิน 3 ครั้ง กรุณารอสักครู่");
           }
         } else if (res.status === 200) {
-          dispatch(setloginWithUsername(res));
+          // dispatch(setloginWithUsername(res));
         }
       });
     } catch (error) {

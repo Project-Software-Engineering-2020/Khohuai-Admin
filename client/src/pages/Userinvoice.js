@@ -4,10 +4,10 @@ import { MDBDataTable, MDBBtn } from 'mdbreact';
 import { getAllInvoice } from '../redux/action/invoiceAction'
 import Moment from 'react-moment';
 import 'moment/locale/th';
-const DatatablePage = () => {
+const Userinvoice = () => {
 
   const dispatch = useDispatch();
-  const invoice = useSelector(state => state.invoice)
+  const invoice = useSelector(state => state.user)
 
   useEffect(() => {
     dispatch(getAllInvoice());
@@ -80,7 +80,7 @@ const DatatablePage = () => {
     // </div>
     <div className="card">
       <div className="card-header border-transparent ">
-        <h2 className="card-title pt-2">คำสั่งซื้อทั้งหมด</h2>
+        <h2 className="card-title pt-2">คำสั่งซื้อของ</h2>
       </div>
       <div className="card-body p-0">
         <div className="table-responsive">
@@ -89,9 +89,11 @@ const DatatablePage = () => {
               <tr>
                 <th>#</th>
                 <th>หมายเลขคำสั่งซื้อ</th>
-                <th>วัน/เวลา</th>
+                <th>วัน</th>
+                <th>เวลา</th>
                 <th>จำนวน</th>
                 <th>ยอดเงิน</th>
+                <th>สถานะรางวัล</th>
                 <th>รายละเอียด</th>
               </tr>
             </thead>
@@ -105,8 +107,10 @@ const DatatablePage = () => {
                     <td><Moment format="DD-MM-YYYY HH:mm:ss">
                       {item.date}
                     </Moment></td>
+                    <td>น้องบอสคนเก่ง</td>
                     <td>{item.quantity}</td>
                     <td>{item.totalprice}</td>
+                    <td>รอคนมารัก</td>
                     <td><a href="/Userinvoice" class="btn btn-sm btn-info float-left">ดูเพิ่มเติม</a></td>
                   </tr>
                 )
@@ -123,4 +127,4 @@ const DatatablePage = () => {
   );
 }
 
-export default DatatablePage;
+export default Userinvoice;
