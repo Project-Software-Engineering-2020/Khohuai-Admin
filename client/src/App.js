@@ -16,6 +16,8 @@ import AddLottery from "./pages/AddLottery";
 import Login from "./pages/Login";
 
 export default function App() {
+
+  const user = true
   return (
     <div>
       <Router>

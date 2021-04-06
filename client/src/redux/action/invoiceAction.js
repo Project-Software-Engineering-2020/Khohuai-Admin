@@ -15,3 +15,18 @@ export function getAllInvoice() {
             });
     }
 }
+
+export function getInvoiceDetail(invoice_id) {
+
+    //แสดง loading
+    store.dispatch({type:"isFetching_invoice_detail"});
+
+    //ดึวข้อมูล และส่งข้มูลไปแสดงผล
+    return function (dispatch) {
+        return Axios.get("http://localhost:3002/invoice/"+invoice_id)
+            .then(invoice => {
+                console.log(invoice.data);
+                dispatch({type:"Fetched_invoice_detail",data:invoice.data})
+            });
+    }
+}

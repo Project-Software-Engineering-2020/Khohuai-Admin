@@ -6,12 +6,14 @@ import thunk from "redux-thunk";
 
 //Reducer
 import invoiceReducer from "./reducer/invoiceReducer";
+import invoiceDetailReducer from "./reducer/invoiceDetailReducer"
 import userRudecer from "./reducer/invoiceReducer";
 import lotteryReducer from "./reducer/lotteryReducer";
 
 // ******Combine Reducers******
 const rootReducer = combineReducers({
   invoice:invoiceReducer,
+  invoice_detail:invoiceDetailReducer,
   user:userRudecer,
   lottery:lotteryReducer
 });
