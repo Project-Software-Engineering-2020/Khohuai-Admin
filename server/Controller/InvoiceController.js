@@ -117,9 +117,16 @@ const getInvoice = async (req, res) => {
 const getInvoiceOfUser = async (req, res) => {
 
     const userid = req.params.userid;
-
+    let invoice_customer;
     let invoiceArray = []
+    let data_result = [] 
     try {
+
+        const userdata = await firestore.collection('users').doc(userid)
+        await userdata.get().then((doc) => {
+            invoice_customer = doc.data();
+        })
+
         const invoice = await firestore.collection('invoices')
             .where("userid", "==", userid)
             .orderBy("date", "desc")
@@ -133,12 +140,20 @@ const getInvoiceOfUser = async (req, res) => {
                 invoiceid: doc.data().invoiceid,
                 quantity: doc.data().quantity,
                 lottery: doc.data().lottery,
-                userid: doc.data().userid
+                userid: doc.data().userid,
+                
             });
         });
 
-        res.status(200).send(invoiceArray);
-        console.log(invoiceArray)
+        console.log(invoice_customer)
+        data_result.push({
+            firstname: invoice_customer.firstname,
+            lastname: invoice_customer.lastname,
+            all_invoice: invoiceArray,
+        })
+
+        res.status(200).send(data_result);
+        console.log(data_result)
 
     } catch (error) {
 

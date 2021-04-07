@@ -45,13 +45,13 @@ export default function Detail(props) {
               {/* Morris chart - Sales */}
               <p>
                 สั่งซื้อวันที่{" "}
-                <Moment format="DD-MM-YYYY" locale="th">
+                <Moment format="DD MMMM YYYY" locale="th">
                   {invoice.data.date}
                 </Moment>
               </p>
               <p>
                 งวดประจำวันที่{" "}
-                <Moment format="DD-MM-YYYY" locale="th">
+                <Moment format="DD MMMM YYYY" locale="th">
                   {invoice.data.ngud_date}
                 </Moment>
               </p>
