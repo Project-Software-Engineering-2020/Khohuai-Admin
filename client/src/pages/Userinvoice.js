@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { MDBDataTable, MDBBtn } from 'mdbreact';
-import { getAllInvoice } from '../redux/action/invoiceAction'
+import { getInvoiceOfUser } from '../redux/action/invoiceAction'
 import Moment from 'react-moment';
 import 'moment/locale/th';
-const Userinvoice = () => {
+const Userinvoice = (props) => {
 
+  const user_id = props.match.params.id;
   const dispatch = useDispatch();
-  const invoice = useSelector(state => state.invoice)
+  const invoice = useSelector(state => state.invoice_user);
 
-  useEffect(() => {
-    dispatch(getAllInvoice());
+  useEffect(async () => {
+    await dispatch(getAllInvoice(user_id));
   }, [])
 
   const data = {

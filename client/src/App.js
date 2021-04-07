@@ -35,7 +35,7 @@ export default function App() {
             <Route path="/invoice" exact={true} component={Invoice} />
             <Route path="/user" component={User} />
             <Route path="/adminLogin" component={Login} />
-            <Route path="/userinvoice" component={Userinvoice} />
+            <Route path="/userinvoice/:id" component={Userinvoice} />
             <Route path="/invoice/:id" component={Detail} />
           </Switch>
         </div>
