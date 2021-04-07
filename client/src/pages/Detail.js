@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getInvoiceDetail } from "../redux/action/invoiceAction";
 import Moment from "react-moment";
 import "moment/locale/th";
+import "./detail.css";
 
 export default function Detail(props) {
   const invoice_id = props.match.params.id;
   const dispatch = useDispatch();
-  const invoice = useSelector(state => state.invoice_detail);
-  const [detail, setdetail] = useState([])
+  const invoice = useSelector((state) => state.invoice_detail);
+  const [detail, setdetail] = useState([]);
   useEffect(async () => {
     await dispatch(getInvoiceDetail(invoice_id));
     // await setdetail(invoice.data);
@@ -16,10 +17,10 @@ export default function Detail(props) {
 
   return (
     <div>
-      {invoice.isFetching ?
+      {invoice.isFetching ? (
         //loading
         <div>loading...</div>
-        :
+      ) : (
         <div className="card">
           <div className="card-header">
             <h3 className="card-title">
@@ -34,7 +35,7 @@ export default function Detail(props) {
                     data-toggle="tab"
                   >
                     รอการประการผล
-                </a>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -45,13 +46,13 @@ export default function Detail(props) {
               {/* Morris chart - Sales */}
               <p>
                 สั่งซื้อวันที่{" "}
-                <Moment format="DD-MM-YYYY" locale="th">
+                <Moment format="DD MMMM YYYY" locale="th">
                   {invoice.data.date}
                 </Moment>
               </p>
               <p>
                 งวดประจำวันที่{" "}
-                <Moment format="DD-MM-YYYY" locale="th">
+                <Moment format="DD MMMM YYYY" locale="th">
                   {invoice.data.ngud_date}
                 </Moment>
               </p>
@@ -66,26 +67,61 @@ export default function Detail(props) {
                 </thead>
                 <tbody>
                   {console.log(detail.lottery)}
-                  {invoice.data.lottery ?
-                    invoice.data.lottery.map((item, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{item.id}</td>
-                          <td>{item.qty}</td>
-                          <td>{item.qty *80}</td>
-                        </tr>
-                      )
-                    })
-                    : null
-                  }
+                  {invoice.data.lottery
+                    ? invoice.data.lottery.map((item, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{item.id}</td>
+                            <td>{item.qty}</td>
+                            <td>{item.qty * 80}</td>
+                          </tr>
+                        );
+                      })
+                    : null}
                 </tbody>
               </table>
+              <div className="section-summary-invoice">
+                <div>**เลือกที่เลขสลากเพื่อดูสลากใบจริง**</div>
+                <div>
+                  <div className="summary-invoice">
+                    <div className="info-summary">
+                      <div>จำนวนทั้งหมด</div>
+                      <div>3</div>
+                      <div>ใบ</div>
+                    </div>
+
+                    <div className="info-summary">
+                      <div>ยอดรวม</div>
+                      <div>240</div>
+                      <div>บาท</div>
+                    </div>
+
+                    <div className="info-summary">
+                      <div>ส่วนลด</div>
+                      <div>0</div>
+                      <div>บาท</div>
+                    </div>
+
+                    <div className="info-summary total">
+                      <div>ยอดรวมทั้งสิ้น</div>
+                      <div className="total2"> 240</div>
+                      <div>บาทถ้วน</div>
+                    </div>
+
+                    <div className="info-summary">
+                      <div>ชำระเงินโดยผ่าน </div>
+                      <span><img src="../dist/img/mastercard.png"/></span>
+                      
+                    </div>
+
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           {/* /.card-body */}
         </div>
-      }
-
+      )}
     </div>
   );
 }

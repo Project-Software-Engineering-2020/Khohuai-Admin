@@ -15,10 +15,10 @@ const LastOders = ({ data }) => {
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Order ID</th>
-                                    <th>Date</th>
-                                    <th>Qty</th>
-                                    <th>Price</th>
+                                    <th>หมายเลขคำสั่งซื้อ</th>
+                                    <th>วัน/เวลา</th>
+                                    <th>จำนวน(ใบ)</th>
+                                    <th>ราคารวม(บาท)</th>
                                 </tr>
                             </thead>
                             <tbody>
