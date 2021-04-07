@@ -6,6 +6,7 @@ const bodyParder = require('body-parser');
 const invoice = require('./Routes/Invoice');
 const user = require('./Routes/User');
 const lottery = require('./Routes/Lottery');
+const ngud = require('./Routes/Ngud')
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(bodyParder.json());
 app.use('/invoice',invoice);
 app.use('/user',user);
 app.use('/lottery',lottery);
+app.use('/ngud',ngud);
 
 
 const port = process.env.PORT || 3002;
