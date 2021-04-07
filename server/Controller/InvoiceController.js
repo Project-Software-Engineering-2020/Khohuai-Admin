@@ -63,8 +63,8 @@ const getInvoice = async (req, res) => {
 
     let invoiceArray = []
 
-    let ngud_number ;
-    let _date ;
+    let ngud_number;
+    let _date;
     let _nguad;
     let _totalprice;
     let _invoiceid;
@@ -89,20 +89,25 @@ const getInvoice = async (req, res) => {
             _userid = doc.data().userid;
         });
         await firestore.collection('ngud').doc("15").get()
-            .then((d) => { ngud_dateee = d.data().end.toDate() });
+            .then((d) => {
+                ngud_dateee = d.data().end.toDate()
 
-        invoiceArray.push({
-            invoiceid: _invoiceid,
-            date: _date,
-            nguad: _nguad,
-            ngud_date: ngud_dateee,
-            totalprice: _totalprice,
-            quantity: _quantity,
-            lottery: _lottery,
-            userid: _userid,
-            status_check: _status_check
-        });
-        res.status(200).send(invoiceArray);
+                invoiceArray.push({
+                    invoiceid: _invoiceid,
+                    date: _date,
+                    nguad: _nguad,
+                    ngud_date: d.data().end.toDate(),
+                    totalprice: _totalprice,
+                    quantity: _quantity,
+                    lottery: _lottery,
+                    userid: _userid,
+                    status_check: _status_check
+                });
+
+            });
+
+
+        await res.status(200).send(invoiceArray);
         console.log(invoiceArray)
     } catch (error) {
         console.log(error);
