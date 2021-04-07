@@ -11,7 +11,7 @@ const Userinvoice = (props) => {
   const invoice = useSelector(state => state.invoice_user);
 
   useEffect(async () => {
-    await dispatch(getAllInvoice(user_id));
+    await dispatch(getInvoiceOfUser(user_id));
   }, [])
 
   const data = {
