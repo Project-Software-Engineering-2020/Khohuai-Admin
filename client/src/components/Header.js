@@ -40,7 +40,7 @@ export default function Header() {
 
 
       
-      {/* <ul className="navbar-nav ml-auto">
+      <ul className="navbar-nav ml-auto">
         <li className="nav-item dropdown">
           <a className="nav-link" data-toggle="dropdown" href="#">
             <i className="far fa-comments" />
@@ -165,7 +165,7 @@ export default function Header() {
             <i className="fas fa-th-large" />
           </a>
         </li>
-      </ul> */}
+      </ul>
     </nav>
   );
 }
