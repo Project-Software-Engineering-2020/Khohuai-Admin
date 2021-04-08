@@ -7,6 +7,7 @@ const invoice = require('./Routes/Invoice');
 const user = require('./Routes/User');
 const lottery = require('./Routes/Lottery');
 const ngud = require('./Routes/Ngud')
+const chart = require('./Routes/chart');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use('/invoice',invoice);
 app.use('/user',user);
 app.use('/lottery',lottery);
 app.use('/ngud',ngud);
+app.use('/chart',chart);;
 
 
 const port = process.env.PORT || 3002;

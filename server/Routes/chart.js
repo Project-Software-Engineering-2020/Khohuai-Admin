@@ -1,9 +1,9 @@
 const express = require('express');
-const { getNgud } = require('../Controller/Ngud')
+const { getSellperNgud } = require('../Controller/Chart')
 
 const router = express.Router();
 
-router.get('/',getNgud);
+router.get('/',getSellperNgud);
 
 
 module.exports = router;

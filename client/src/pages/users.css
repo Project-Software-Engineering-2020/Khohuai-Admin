@@ -1,0 +1,4 @@
+.tool-search-table {
+    display: flex;
+    justify-content: space-between;
+}

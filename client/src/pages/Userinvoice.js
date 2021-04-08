@@ -99,26 +99,37 @@ const Userinvoice = (props) => {
               </tr>
             </thead>
             <tbody>
-              {invoice.data.map((item, index) => {
+              {invoice.data.all_invoice ?
 
-                return (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td><a href="">{item.invoiceid}</a></td>
-                    <td><Moment format="DD-MM-YYYY HH:mm:ss">
-                      {item.date}
-                    </Moment></td>
-                    <td>น้องบอสคนเก่ง</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.totalprice}</td>
-                    <td>รอคนมารัก</td>
-                    <td><a href="/Userinvoice" class="btn btn-sm btn-info float-left">ดูเพิ่มเติม</a></td>
+                invoice.data.all_invoice.length > 0 ?
+                  invoice.data.all_invoice.map((item, index) => {
+
+                    return (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td><a href={"/invoice/" + item.invoiceid}>{item.invoiceid}</a></td>
+                        <td><Moment format="DD-MM-YYYY HH:mm:ss">
+                          {item.date}
+                        </Moment></td>
+                        <td>น้องบอสคนเก่ง</td>
+                        <td>{item.quantity}</td>
+                        <td>{item.totalprice}</td>
+                        <td>รอคนมารัก</td>
+                        <td><a href={"/invoice/" + item.invoiceid} class="btn btn-sm btn-info float-left">ดูเพิ่มเติม</a></td>
+                      </tr>
+                    )
+
+
+                  })
+
+                  :
+
+                  <tr>
+                    <p>ไม่มีข้อมูลการซื้อ</p>
                   </tr>
-                )
-
-
-              })}
-
+                :
+                <tr>กำลังโหลดข้อมูล</tr>
+              }
             </tbody>
           </table>
         </div>

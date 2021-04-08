@@ -86,13 +86,13 @@ export default function Detail(props) {
                   <div className="summary-invoice">
                     <div className="info-summary">
                       <div>จำนวนทั้งหมด</div>
-                      <div>3</div>
+                      <div>{invoice.data.quantity}</div>
                       <div>ใบ</div>
                     </div>
 
                     <div className="info-summary">
                       <div>ยอดรวม</div>
-                      <div>240</div>
+                      <div>{invoice.data.totalprice}</div>
                       <div>บาท</div>
                     </div>
 
@@ -104,7 +104,7 @@ export default function Detail(props) {
 
                     <div className="info-summary total">
                       <div>ยอดรวมทั้งสิ้น</div>
-                      <div className="total2"> 240</div>
+                      <div className="total2">{invoice.data.totalprice}</div>
                       <div>บาทถ้วน</div>
                     </div>
 

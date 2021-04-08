@@ -16,8 +16,7 @@ import AddLottery from "./pages/AddLottery";
 import Login from "./pages/Login";
 import Userinvoice from "./pages/Userinvoice";
 import Detail from "./pages/Detail";
-
-
+import Users from "./pages/Users";
 
 export default function App() {
 
@@ -33,9 +32,10 @@ export default function App() {
             <Route path="/" exact={true} component={Dashboard} />
             <Route path="/lottery" component={Lottery} />
             <Route path="/invoice" exact={true} component={Invoice} />
-            <Route path="/user" component={User} />
+            {/* <Route path="/user" exact={true} component={User} /> */}
+            <Route path="/user" exact={true} component={Users} />
             <Route path="/adminLogin" component={Login} />
-            <Route path="/userinvoice/:id" component={Userinvoice} />
+            <Route path="/user/:id" component={Userinvoice} />
             <Route path="/invoice/:id" component={Detail} />
           </Switch>
         </div>

@@ -3,6 +3,7 @@ import LastOders from "../components/LastOders";
 import "./dashboard.css";
 import { getAllInvoice } from "../redux/action/invoiceAction";
 import { useDispatch, useSelector } from "react-redux";
+import Chart from "../components/Chart";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -80,7 +81,7 @@ const Dashboard = () => {
       </div>
 
       
-      
+      <Chart/>
       
       <LastOders data={invoice.data} />
     </div>

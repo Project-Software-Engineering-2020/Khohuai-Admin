@@ -7,8 +7,9 @@ const getAllUser = async (req, res, next) => {
         if (user.empty) {
             res.status(400).send("No user in record")
         } else {
-            user.docs.forEach(doc => {
+            user.docs.forEach((doc,index) => {
                 userArray.push({
+                    i: index+1,
                     id: doc.id,
                     displayName: doc.data().displayName,
                     email: doc.data().email,

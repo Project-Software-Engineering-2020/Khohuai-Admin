@@ -10,7 +10,7 @@ const User = () => {
   const user = useSelector((state) => state.user);
   useEffect(async () => {
     await dispatch(getAllUser());
-    console.log(user);
+
   }, []);
 
   // const data = {
@@ -73,46 +73,49 @@ const User = () => {
         <div className="card">
           {console.log(user)}
           <div className="card-header border-transparent ">
-            <h2 className="card-title pt-2">คำสั่งซื้อทั้งหมด</h2>
+            <h2 className="card-title pt-2">ผู้ใช้งานทั้งหมด</h2>
           </div>
           <div className="card-body p-0">
             <div className="table-responsive">
               <table className="table m-0">
                 <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>ชื่อผู้ใช้</th>
-                    <th>อีเมล</th>
-                    <th>ชื่อจริง</th>
+                    <th>#</th>
+                     <th>ชื่อจริง</th>
                     <th>นามสกุล</th>
-                    <th>ประวัติการซื้อล่าสุด</th>
+                    <th>อีเมล</th>
+                    <th>เบอร์โทรศัพท์</th>
+                    <th>ประวัติการซื้อ</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {/* {user
-                  ? user.map((item, index) => {
+                  {user.data
+                  ? user.data.map((item, index) => {
                       return (
                         <tr key={index}>
                           <td>{index + 1}</td>
-                          <td>
+                          <td>{item.firstname}</td>
+                          <td>{item.lastname}</td>
+                          <td>{item.email}</td>
+                          <td>{item.phone}</td>
+                          {/* <td>
                             <a href={"/invoice/" + item.invoiceid}>
                               {item.invoiceid}
                             </a>
-                          </td>
-                          <td>
-                            <Moment format="DD-MM-YYYY HH:mm:ss">
+                          </td> */}
+                          {/* <td>
+                            <Moment format="DD MMMM YYYY HH:mm:ss">
                               {item.date}
                             </Moment>
-                          </td>
-                          <td>{item.firstname}</td>
-                          <td>{item.lastname}</td>
+                          </td> */}
+                       
                           <td>
-                            <a href={"/invoice/" + item.invoiceid}>ดูเพิ่มเติม</a>
+                            <a href={"/user/" + item.id}>ดูเพิ่มเติม</a>
                           </td>
                         </tr>
                       );
                     })
-                  : null} */}
+                  : null}
                 </tbody>
               </table>
             </div>
