@@ -17,10 +17,10 @@ import Login from "./pages/Login";
 import Userinvoice from "./pages/Userinvoice";
 import Detail from "./pages/Detail";
 import Users from "./pages/Users";
+import Ngud from "./pages/Ngud";
 
 export default function App() {
-
-  const user = true
+  const user = true;
   return (
     <div>
       <Router>
@@ -28,9 +28,10 @@ export default function App() {
         <Menu />
         <div className="content-wrapper p-3 bg-white">
           <Switch>
+            <Route path="/lottery/ngud" component={Ngud} />
             <Route path="/lottery/create" component={AddLottery} />
             <Route path="/" exact={true} component={Dashboard} />
-            <Route path="/lottery" component={Lottery} />
+            <Route path="/lottery" exact={true} component={Lottery} />
             <Route path="/invoice" exact={true} component={Invoice} />
             {/* <Route path="/user" exact={true} component={User} /> */}
             <Route path="/user" exact={true} component={Users} />
