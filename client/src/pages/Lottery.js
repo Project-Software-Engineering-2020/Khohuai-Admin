@@ -68,6 +68,11 @@ const AllLottery = () => {
             เพิ่มสลาก
           </button>
         </Link>
+        <Link to="/lottery/ngud">
+          <button className="btn btn-primary">
+            จัดการงวด
+          </button>
+        </Link>
         <MDBDataTable
           striped
           bordered

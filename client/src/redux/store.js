@@ -11,6 +11,7 @@ import invoiceUser from "./reducer/invoiceOfUser";
 import userRudecer from "./reducer/userReducer";
 import lotteryReducer from "./reducer/lotteryReducer";
 import chartReducer from "./reducer/chartReducer";
+import ngudReducer from "./reducer/ngudReducer";
 
 // ******Combine Reducers******
 const rootReducer = combineReducers({
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   invoice_user:invoiceUser,
   user:userRudecer,
   lottery:lotteryReducer,
-  chart:chartReducer
+  chart:chartReducer,
+  ngud:ngudReducer
 });
 
 const PersistConfig = {
