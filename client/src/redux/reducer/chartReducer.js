@@ -1,5 +1,6 @@
 const initialState = {
     isFetching: false,
+    labels: [],
     data: []
 }
 
@@ -11,16 +12,27 @@ function invoice(state = initialState, action) {
             state = {
                 ...state,
                 isFetching: true,
+                labels: [],
                 data: []
             }
             return state;
 
         case 'Fetched_chart':
+            const _data = action.data;
+            let arr_labels = [];
+            let arr_data = []
+
+            _data.map((item) => {
+                arr_labels.push(item.day);
+                arr_data.push(item.qty);
+            })
             state = {
                 ...state,
                 isFetching: false,
-                data: action.data
+                labels: arr_labels,
+                data: arr_data
             }
+
             return state;
 
         default:

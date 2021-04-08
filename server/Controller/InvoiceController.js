@@ -146,7 +146,7 @@ const getInvoiceOfUser = async (req, res) => {
         });
 
         console.log(invoice_customer)
-        data_result.push({
+        await data_result.push({
             firstname: invoice_customer.firstname,
             lastname: invoice_customer.lastname,
             all_invoice: invoiceArray,

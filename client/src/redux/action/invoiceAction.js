@@ -33,7 +33,7 @@ export function getInvoiceOfUser(user_id) {
         return Axios.get("http://localhost:3002/invoice/user/"+user_id)
             .then(invoice => {
                 console.log(invoice.data);
-                dispatch({type:"Fetched_invoice_of_user",data:invoice})
+                dispatch({type:"Fetched_invoice_of_user",data:invoice.data[0]})
             });
     }
 }

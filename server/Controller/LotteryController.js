@@ -1,4 +1,4 @@
-const { firestore,bucket,storage } = require('../firebaseDB');
+const { firestore, bucket, storage } = require('../firebaseDB');
 const multer = require("multer");
 
 const upload = multer({
@@ -35,28 +35,28 @@ const getAllLottery = async (req, res, next) => {
     }
 }
 
-const UploadLottery = (req,res) => {
-    console.log(req.body,req.file);
+const UploadLottery = (req, res) => {
+    console.log(req.body, req.file);
 
-    if(!req.file) {
+    if (!req.file) {
         res.status(400).send("Error: No files found")
     } else {
         const blob = bucket.file(req.file.originalname)
-        
+
         const blobWriter = blob.createWriteStream({
             metadata: {
                 contentType: req.file.mimetype
             }
         })
-        
+
         blobWriter.on('error', (err) => {
             console.log(err)
         })
-        
+
         blobWriter.on('finish', () => {
             res.status(200).send("File uploaded.")
         })
-        
+
         blobWriter.end(req.file.buffer)
     }
 
@@ -77,36 +77,65 @@ const UploadLottery = (req,res) => {
 
 const uploadImageToStorage = (file) => {
     return new Promise((resolve, reject) => {
-      if (!file) {
-        reject('No image file');
-      }
-      let newFileName = `${file.originalname}_${Date.now()}`;
-  
-      let fileUpload = bucket.file(newFileName);
-  
-      const blobStream = fileUpload.createWriteStream({
-        metadata: {
-          contentType: file.mimetype
+        if (!file) {
+            reject('No image file');
         }
-      });
-  
-      blobStream.on('error', (error) => {
-        reject('Something is wrong! Unable to upload at the moment.');
-      });
-  
-      blobStream.on('finish', () => {
-        // The public URL can be used to directly access the file via HTTP.
-        const url = format(`https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`);
-        resolve(url);
-        console.log("Upload to cloud success");
-      });
-  
-      blobStream.end(file.buffer);
+        let newFileName = `${file.originalname}_${Date.now()}`;
+
+        let fileUpload = bucket.file(newFileName);
+
+        const blobStream = fileUpload.createWriteStream({
+            metadata: {
+                contentType: file.mimetype
+            }
+        });
+
+        blobStream.on('error', (error) => {
+            reject('Something is wrong! Unable to upload at the moment.');
+        });
+
+        blobStream.on('finish', () => {
+            // The public URL can be used to directly access the file via HTTP.
+            const url = format(`https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`);
+            resolve(url);
+            console.log("Upload to cloud success");
+        });
+
+        blobStream.end(file.buffer);
     });
-  }
+}
+
+const insertLottery = async (req, res) => {
+    const data = req.body.data;
+    let new_lottery;
+
+    try {
+        await firestore.collection("LotteriesAvailable").doc(data.number).get()
+            .then((doc) => {
+                new_lottery = doc.data().id;
+            });
+
+        if (!new_lottery) {
+            await firestore.collection("LotteriesAvailable").doc(data.number).set(new_lottery);
+        }
+        else {
+            data.image.map((item) => {
+                firestore.collection("LotteriesAvailable").doc(data.number)
+                    .update({
+                        "image":
+                            FieldValue.arrayUnion(item)
+                    })
+            })
+            res.send("success");
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 module.exports = {
     getAllLottery,
     UploadLottery,
+    insertLottery,
     upload
 }

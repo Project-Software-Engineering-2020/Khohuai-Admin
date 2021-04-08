@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { getAllLottery,UploadLottery,upload } = require('../Controller/LotteryController')
+const { getAllLottery,UploadLottery,upload,insertLottery } = require('../Controller/LotteryController')
 
 const router = express.Router();
 
@@ -12,6 +12,7 @@ const router = express.Router();
 // });
 
 router.get('/',getAllLottery);
-router.post('/',upload.single('image'),UploadLottery);
+// router.post('/',upload.single('image'),UploadLottery);
+router.post('/',insertLottery);
 
 module.exports = router;

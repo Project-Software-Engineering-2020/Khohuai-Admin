@@ -7,7 +7,7 @@ function user(state = initialState, action) {
 
     switch (action.type) {
 
-        case 'isFetching_user':
+        case 'isFetching_users':
             state = {
                 ...state,
                 isFetching: true,
@@ -15,7 +15,7 @@ function user(state = initialState, action) {
             }
             return state;
 
-        case 'Fetched_user':
+        case 'Fetched_users':
             state = {
                 ...state,
                 isFetching: false,

@@ -8,8 +8,9 @@ import thunk from "redux-thunk";
 import invoiceReducer from "./reducer/invoiceReducer";
 import invoiceDetailReducer from "./reducer/invoiceDetailReducer";
 import invoiceUser from "./reducer/invoiceOfUser";
-import userRudecer from "./reducer/invoiceReducer";
+import userRudecer from "./reducer/userReducer";
 import lotteryReducer from "./reducer/lotteryReducer";
+import chartReducer from "./reducer/chartReducer";
 
 // ******Combine Reducers******
 const rootReducer = combineReducers({
@@ -18,7 +19,7 @@ const rootReducer = combineReducers({
   invoice_user:invoiceUser,
   user:userRudecer,
   lottery:lotteryReducer,
-  
+  chart:chartReducer
 });
 
 const PersistConfig = {
