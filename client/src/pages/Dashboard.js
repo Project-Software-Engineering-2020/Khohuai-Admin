@@ -2,15 +2,18 @@ import React, { useEffect } from "react";
 import LastOders from "../components/LastOders";
 import "./dashboard.css";
 import { getAllInvoice } from "../redux/action/invoiceAction";
+import { getAllUser } from "../redux/action/userAction"
 import { useDispatch, useSelector } from "react-redux";
 import Chart from "../components/Chart";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   let invoice = useSelector((state) => state.invoice);
+  let user = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getAllInvoice());
+    dispatch(getAllUser());
   }, []);
 
   return (
@@ -47,11 +50,11 @@ const Dashboard = () => {
               </a>
             </div>
           </div>
-          {
+  
             <div className="col-lg-3 col-6">
-              <div className="small-box bg-pink">
+              <div className="small-box bg-warning">
                 <div className="inner">
-                  <h3>44</h3>
+                  <h3>{user.data.length}</h3>
                   <p>สมาชิกในระบบ</p>
                 </div>
                 <div className="icon">
@@ -62,7 +65,7 @@ const Dashboard = () => {
                 </a>
               </div>
             </div>
-            /* 
+{/*     
                     <div className="col-lg-3 col-6">
                     
                         <div className="small-box bg-danger">
@@ -75,8 +78,8 @@ const Dashboard = () => {
                             </div>
                             <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
                         </div>
-                    </div> */
-          }
+                    </div>  */}
+       
         </div>
       </div>
 

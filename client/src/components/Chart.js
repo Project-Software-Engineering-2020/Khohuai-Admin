@@ -20,7 +20,7 @@ const Chart = () => {
     const data = {
         labels: chart.labels,
         datasets: [{
-            label: 'ยอดขาย',
+            label: 'ยอดขายล็อตเตอรี่ (ใบ)',
             data: chart.data,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -54,6 +54,12 @@ const Chart = () => {
                     งวดประจำวันที่&nbsp;&nbsp;
                     <select onChange={e => OnchangeChart(e.target.value)}>
                         <option value={15} selected>
+                              16 มีนาคม 2564
+                        </option>
+                        <option value={2}>
+                              16 เมษายน 2564
+                        </option>
+                        <option value={1}>
                               16 มีนาคม 2564
                         </option>
                     </select>
