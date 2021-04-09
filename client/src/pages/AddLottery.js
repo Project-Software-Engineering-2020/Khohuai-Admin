@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Axios from "axios";
+import "../stylesheets/AddLottery.css";
 
 function AddLottery() {
   const [image, setimage] = useState([]);
@@ -16,17 +17,35 @@ function AddLottery() {
 
       setimage((prevImg) => prevImg.concat(fileArray));
       Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
+      console.log(image);
     }
   };
 
   const renderImage = () => {
-    return image.map((photo) => {
+    return image.map((photo, index) => {
       return (
-        <div className="preimg">
-          <img style={{width:"100%", height:"50%"}} src={photo} key={photo} />
+        <div>
+          <div className="img" key={photo}>
+            <img
+              style={{ width: "100%", height: "100%", padding: "10px" }}
+              src={photo}
+            />
+            <button
+              type="button"
+              className="delbtn"
+              onClick={(e) => delImg(index)}
+            >
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
         </div>
       );
     });
+  };
+
+  const delImg = (photo) => {
+    const delImg = image.filter((img, index) => index !== photo);
+    setimage(delImg);
   };
 
   const UploadLottery = async () => {
@@ -65,29 +84,27 @@ function AddLottery() {
                         required
                       />
                     </div>
-                    <div className="form-group">
-                      <label htmlFor="exampleInputFile">รูปสลาก</label>
-                      <div className="input-group">
-                        <div className="custom-file">
+
+                    <div className="addfile">
+                      <div className="d-flex justify-content-center">
+                        <button className="addbtn" type="button">
+                          <label htmlFor="add">เพิ่มรูปภาพ</label>
                           <input
                             type="file"
                             multiple
                             className="custom-file-input"
                             onChange={(e) => handleImage(e)}
+                            id="add"
                             required
                           />
-                          <label
-                            className="custom-file-label"
-                            htmlFor="exampleInputFile"
-                          >
-                            เลือกไฟล์์
-                          </label>
-                        </div>
+                        </button>
                       </div>
                     </div>
-                    <div className="col-12">
-                      <h3 className="text-center">รูปตัวอย่าง</h3>
-                      {renderImage()}
+
+                    <div className="text-center mt-2">ทั้งหมด {image.length} ใบ</div>
+
+                    <div className="row">
+                      <div className="preimg">{renderImage()}</div>
                     </div>
                   </div>
                 </div>
