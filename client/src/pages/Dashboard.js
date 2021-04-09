@@ -3,6 +3,7 @@ import LastOders from "../components/LastOders";
 import "./dashboard.css";
 import { getAllInvoice } from "../redux/action/invoiceAction";
 import { getAllUser } from "../redux/action/userAction"
+import { setHeader } from "../redux/action/headerAction";
 import { useDispatch, useSelector } from "react-redux";
 import Chart from "../components/Chart";
 
@@ -11,14 +12,16 @@ const Dashboard = () => {
   let invoice = useSelector((state) => state.invoice);
   let user = useSelector((state) => state.user);
 
-  useEffect(() => {
+  useEffect( async () => {
+    const _header = "Dashboard";
+    await dispatch(setHeader(_header));
     dispatch(getAllInvoice());
     dispatch(getAllUser());
   }, []);
 
   return (
     <div>
-      <h2>Dashboard</h2>
+      {/* <h2>Dashboard</h2> */}
       <div>
         <div className="row">
           <div className="col-lg-3 col-6">

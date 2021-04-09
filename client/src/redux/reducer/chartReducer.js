@@ -4,7 +4,7 @@ const initialState = {
     data: []
 }
 
-function invoice(state = initialState, action) {
+function chart(state = initialState, action) {
 
     switch (action.type) {
 
@@ -41,4 +41,4 @@ function invoice(state = initialState, action) {
     }
 }
 
-export default invoice;
+export default chart;

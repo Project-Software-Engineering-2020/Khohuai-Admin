@@ -46,3 +46,9 @@ table td{
 .nav-item {
   padding: 10px auto !important; 
 }
+
+.header-name {
+  font-weight: bold !important;
+  font-size: large;
+  font-weight: bold;
+}
