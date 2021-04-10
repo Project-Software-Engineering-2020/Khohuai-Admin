@@ -1,8 +1,10 @@
 const express = require('express');
-const { getNgud } = require('../Controller/Ngud')
+const { getNgud, check_prize } = require('../Controller/Ngud')
 
 const router = express.Router();
 
+
+router.get('/check_prize',check_prize);
 router.get('/',getNgud);
 
 

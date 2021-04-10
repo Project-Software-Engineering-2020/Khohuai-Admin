@@ -29,13 +29,13 @@ export default function Detail(props) {
             <div className="card-tools">
               <ul className="nav nav-pills ml-auto">
                 <li className="nav-item">
-                  <a
+                  {/* <a
                     className="nav-link active"
                     href="#revenue-chart"
                     data-toggle="tab"
                   >
                     รอการประการผล
-                  </a>
+                  </a> */}
                 </li>
               </ul>
             </div>
@@ -71,9 +71,17 @@ export default function Detail(props) {
                     ? invoice.data.lottery.map((item, index) => {
                         return (
                           <tr key={index}>
-                            <td>{item.id}</td>
+                            <td>{item.number}</td>
                             <td>{item.qty}</td>
                             <td>{item.qty * 80}</td>
+                            <td>
+                              {item.status ? 
+                              <span className="badge badge-success">ตรวจรางวัลแล้ว</span>
+                              : 
+                              <span className="badge badge-warning">รอการประการผล</span>
+                              }
+                              
+                              </td>
                           </tr>
                         );
                       })

@@ -13,7 +13,7 @@ const getAllInvoice = async (req, res, next) => {
                     date: doc.data().date.toDate(),
                     nguad: doc.data().nguad,
                     totalprice: doc.data().totalprice,
-                    invoiceid: doc.data().invoiceid,
+                    invoiceid: doc.id,
                     quantity: doc.data().quantity,
                     lottery: doc.data().lottery,
                     userid: doc.data().userid
@@ -41,7 +41,7 @@ const getSummary = async (req, res) => {
                 date: doc.data().date.toDate(),
                 nguad: doc.data().nguad,
                 totalprice: doc.data().totalprice,
-                invoiceid: doc.data().invoiceid,
+                invoiceid: doc.id,
                 quantity: doc.data().quantity,
                 lottery: doc.data().lottery,
                 userid: doc.data().userid
@@ -83,7 +83,7 @@ const getInvoice = async (req, res) => {
             _date = doc.data().date.toDate();
             _nguad = doc.data().nguad;
             _totalprice = doc.data().totalprice;
-            _invoiceid = doc.data().invoiceid;
+            _invoiceid = doc.id;
             _quantity = doc.data().quantity;
             _lottery = doc.data().lottery;
             _userid = doc.data().userid;

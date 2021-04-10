@@ -13,7 +13,7 @@ const getAllLottery = async (req, res, next) => {
 
     console.log("get Data")
     try {
-        const lottery = await firestore.collection('LotteriesAvailable').get()
+        const lottery = await firestore.collection('lottery').get()
         if (lottery.empty) {
             res.status(400).send("No lottery in record")
         } else {
@@ -21,10 +21,7 @@ const getAllLottery = async (req, res, next) => {
                 lotteryArray.push({
                     id: doc.id,
                     photoURL: doc.data().photoURL,
-                    stock: doc.data().stock,
-                    nguad: doc.data().nguad,
-                    s_ref: doc.data().s_ref,
-                    st: doc.data().st
+                    stock: doc.data().photoURL.length,
                 });
             });
             res.status(200).send(lotteryArray);
@@ -106,24 +103,45 @@ const uploadImageToStorage = (file) => {
 }
 
 const insertLottery = async (req, res) => {
-    const data = req.body.data;
+    
+    // console.log(req.body.d);
+    const number = req.body.number;
+    const image = req.body.image_boss;
+
+    console.log(number);
+    console.log(image);
+
     let new_lottery;
+    let _photoURL = [];
 
     try {
-        await firestore.collection("LotteriesAvailable").doc(data.number).get()
-            .then((doc) => {
-                new_lottery = doc.data().id;
+        const this_lottery = await firestore.collection("lottery").doc(number)
+
+        this_lottery.get().then((doc) => {
+                new_lottery = doc.id;
+                _photoURL = doc.data().photoURL;
             });
 
         if (!new_lottery) {
-            await firestore.collection("LotteriesAvailable").doc(data.number).set(new_lottery);
+            console.log(new_lottery);
+            //insert ครั้งแรก
+            await firestore.collection("lottery").doc(number)
+            .set({
+                photoURL: image
+            });
+            console.log("ครั้งแรก")
         }
         else {
+            console.log("เพิ่มสต็อก");
+            image.map((item) => {
+                photoURL.push(item);
+            })
+            
+            //เพิ่ม stock สลาก
             data.image.map((item) => {
-                firestore.collection("LotteriesAvailable").doc(data.number)
+                firestore.collection("lottery").doc(number)
                     .update({
-                        "image":
-                            FieldValue.arrayUnion(item)
+                        "photoURL": photoURL
                     })
             })
             res.send("success");

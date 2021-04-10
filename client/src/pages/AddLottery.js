@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import "../stylesheets/AddLottery.css";
+import { storage, firestore } from '../firebase/firebase';
+
 
 function AddLottery() {
   const [image, setimage] = useState([]);
+  const [image_upload, setimage_upload] = useState([]);
   const [number, setnumber] = useState("");
-  const [ngud, setngud] = useState("");
-  const [st, setst] = useState("");
-  const [ref, setref] = useState("");
 
+  let image_boss = [];
   const handleImage = (e) => {
     if (e.target.files) {
       const fileArray = Array.from(e.target.files).map((file) =>
@@ -18,6 +19,12 @@ function AddLottery() {
       setimage((prevImg) => prevImg.concat(fileArray));
       Array.from(e.target.files).map((file) => URL.revokeObjectURL(file));
       console.log(image);
+
+      console.log(e.target.files);
+
+      Array.from(e.target.files).map((file) =>
+        setimage_upload(pre => [...pre, file])
+      )
     }
   };
 
@@ -45,20 +52,76 @@ function AddLottery() {
 
   const delImg = (photo) => {
     const delImg = image.filter((img, index) => index !== photo);
+    const image_n = image.filter((img, index) => index !== photo);
+    setimage_upload(image_n)
     setimage(delImg);
   };
 
-  const UploadLottery = async () => {
-    const data = new FormData();
-    data.append("image", image);
-    data.append("number", number);
-    data.append("ngud", ngud);
-    data.append("st", st);
-    data.append("ref", ref);
+  const UploadLottery = async (e) => {
+    e.preventDefault()
 
-    await Axios.post("http://localhost:3002/lottery", data).then((res) => {
-      console.log("upload success");
-    });
+    const data = new FormData();
+   
+
+    // data.append("image", image_url);
+    // data.append("number", number);
+
+    const insert = () => {
+      console.log(image_boss);
+      Axios.post("http://localhost:3002/lottery", { number, image_boss }).then((res) => {
+        console.log("upload success");
+      });
+    }
+
+    // console.log(image);
+
+    await image_upload.forEach(async (item) => {
+      const imageName = "bosss"
+      const uploadTask = storage.ref("lotterys/" + imageName).put(item);
+      let buff = ""
+      await uploadTask.on(
+        "state_change",
+        (snapshot) => { },
+        (error) => {
+          console.log(error);
+        },
+        async () => {
+          console.log(imageName);
+          await storage
+            .ref("lotterys")
+            .child(imageName)
+            .getDownloadURL()
+            .then(async (url) => {
+              // buff = url;
+              // console.log(buff)
+
+              // const addImage = (buff) => {
+
+
+              await image_boss.push(url);
+              // }
+              await insert();
+
+              console.log("555")
+            });
+        }
+
+      )
+
+    })
+
+    // console.log(image_boss);
+
+    // data.append("image", image_url);
+    // data.append("number", number);
+
+    // const d = {
+    //   image: image_url,
+    //   number: number
+    // }
+
+    // console.log(image_boss[0]);
+
   };
 
   return (
@@ -113,9 +176,9 @@ function AddLottery() {
               <div className="card-footer">
                 <div className="d-flex justify-content-center">
                   <button
-                    type="submit"
+                    type="button"
                     className="btn btn-primary"
-                    onClick={UploadLottery}
+                    onClick={(e) => UploadLottery(e)}
                   >
                     อัพโหลดสลาก
                   </button>

@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { MDBDataTable, MDBCard, MDBBtn } from 'mdbreact';
 import { Modal, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux";
-import { getAllLottery } from '../redux/action/lotteryAction'
+import { getAllLottery } from '../redux/action/lotteryAction';
+import { getNgud } from '../redux/action/ngudAction'
 import { Link } from 'react-router-dom';
-
+import Moment from 'react-moment';
+import 'moment/locale/th';
 const AllLottery = () => {
 
   const dispatch = useDispatch();
   const lottery = useSelector(state => state.lottery)
-
+  const ngud = useSelector(state => state.ngud)
   const data = {
 
     columns: [
@@ -50,14 +52,18 @@ const AllLottery = () => {
 
 
   useEffect(async () => {
-    await dispatch(getAllLottery())
+    await dispatch(getAllLottery());
+    await dispatch(getNgud())
   }, [])
 
   return (
     <div>
 
       <div className="">
-        <h3 className="mt-2 mb-4">สลากกินแบ่งรัฐบาล งวดประจำวันที่ 16 มีนาคม 2564</h3>
+        <h3 className="mt-2 mb-4">สลากกินแบ่งรัฐบาล งวดประจำวันที่
+        <Moment format=" DD MMMM YYYY">
+            {ngud.data.end}
+          </Moment></h3>
         {/* <MDBCard className="p-4"> */}
 
         {/* <Button variant="primary" onClick={handleShow}>

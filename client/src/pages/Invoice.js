@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { MDBDataTable, MDBBtn } from 'mdbreact';
-import { getAllInvoice } from '../redux/action/invoiceAction'
+import { getAllInvoice } from '../redux/action/invoiceAction';
+import { setHeader } from "../redux/action/headerAction"
 import Moment from 'react-moment';
 import 'moment/locale/th';
 const DatatablePage = () => {
@@ -11,6 +12,7 @@ const DatatablePage = () => {
 
   useEffect(() => {
     dispatch(getAllInvoice());
+    dispatch(setHeader("Invoices"))
   }, [])
 
   // const data = {
