@@ -10,9 +10,9 @@ const DatatablePage = () => {
   const dispatch = useDispatch();
   const invoice = useSelector(state => state.invoice)
 
-  useEffect(() => {
-    dispatch(getAllInvoice());
-    dispatch(setHeader("Invoices"))
+  useEffect(async () => {
+    await dispatch(getAllInvoice());
+    await dispatch(setHeader("Invoices"))
   }, [])
 
   // const data = {

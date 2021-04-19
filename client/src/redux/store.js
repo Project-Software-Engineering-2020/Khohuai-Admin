@@ -13,9 +13,12 @@ import lotteryReducer from "./reducer/lotteryReducer";
 import chartReducer from "./reducer/chartReducer";
 import ngudReducer from "./reducer/ngudReducer";
 import headerReducer from "./reducer/headerReducer";
+import authReducer from "./reducer/authReducer";
+
 
 // ******Combine Reducers******
 const rootReducer = combineReducers({
+  auth:authReducer,
   invoice:invoiceReducer,
   invoice_detail:invoiceDetailReducer,
   invoice_user:invoiceUser,

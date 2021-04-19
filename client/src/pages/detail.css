@@ -1,6 +1,6 @@
 .section-summary-invoice {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 500px;
   margin: 20px 0;
 }
 .section-summary-invoice div:nth-child(1) {

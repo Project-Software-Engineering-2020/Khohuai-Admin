@@ -60,36 +60,48 @@ export default function Detail(props) {
               <table className="table m-0">
                 <thead>
                   <tr>
+                    <th>#</th>
                     <th>เลขสลาก</th>
                     <th>จำนวนใบ (ใบ)</th>
                     <th>ราคารวม (บาท)</th>
+                    <th>สถานะ</th>
+                    <th>ผลการออกสลาก</th>
                   </tr>
                 </thead>
                 <tbody>
                   {console.log(detail.lottery)}
                   {invoice.data.lottery
                     ? invoice.data.lottery.map((item, index) => {
-                        return (
-                          <tr key={index}>
-                            <td>{item.number}</td>
-                            <td>{item.qty}</td>
-                            <td>{item.qty * 80}</td>
-                            <td>
-                              {item.status ? 
+                      return (
+                        <tr key={index}>
+                          <td>{index+1}</td>
+                          <td>{item.number}</td>
+                          <td>{item.qty}</td>
+                          <td>{item.qty * 80}</td>
+                          <td>
+                            {item.status ?
                               <span className="badge badge-success">ตรวจรางวัลแล้ว</span>
-                              : 
+                              :
                               <span className="badge badge-warning">รอการประการผล</span>
-                              }
-                              
-                              </td>
-                          </tr>
-                        );
-                      })
+                            }
+
+                          </td>
+
+                          <td>{item.prize.map((p) => {
+                            return (
+                              <p>{p}</p>
+                            )
+                          })}
+                          </td>
+                        </tr>
+                      );
+                    })
                     : null}
                 </tbody>
               </table>
               <div className="section-summary-invoice">
-                <div>**เลือกที่เลขสลากเพื่อดูสลากใบจริง**</div>
+                {/* <div>**เลือกที่เลขสลากเพื่อดูสลากใบจริง**</div> */}
+                <div></div>
                 <div>
                   <div className="summary-invoice">
                     <div className="info-summary">
@@ -118,8 +130,8 @@ export default function Detail(props) {
 
                     <div className="info-summary">
                       <div>ชำระเงินโดยผ่าน </div>
-                      <span><img src="../dist/img/mastercard.png"/></span>
-                      
+                      <span><img src="../dist/img/mastercard.png" /></span>
+
                     </div>
 
                   </div>

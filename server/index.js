@@ -8,6 +8,8 @@ const user = require('./Routes/User');
 const lottery = require('./Routes/Lottery');
 const ngud = require('./Routes/Ngud')
 const chart = require('./Routes/chart');
+const authentication = require('./Routes/Authenticate');
+
 
 const app = express();
 
@@ -21,6 +23,7 @@ app.use('/user',user);
 app.use('/lottery',lottery);
 app.use('/ngud',ngud);
 app.use('/chart',chart);;
+app.use('/auth',authentication);
 
 
 const port = process.env.PORT || 3002;
