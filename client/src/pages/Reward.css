@@ -1,124 +1,137 @@
 .header-purchase-page {
-    display: grid;
-    grid-template-columns: repeat(2,1fr); 
+  display: grid;
+  grid-template-columns: repeat(2,1fr); 
 }
 .header-purchase-page {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 .purchase-item {
-    text-align: center;
-    font-size: medium;
-    font-weight: normal;
-    color: gray;
-    padding: 10px;
-    border: 1px solid rgb(199, 199, 199);
-    text-decoration: none;
-    cursor: pointer;
+  text-align: center;
+  font-size: medium;
+  font-weight: normal;
+  color: gray;
+  padding: 10px;
+  border: 1px solid rgb(199, 199, 199);
+  text-decoration: none;
+  cursor: pointer;
 }
 a.purchase-item:hover {
-    color: rebeccapurple;
-    text-decoration: none;
+  color: rebeccapurple;
+  text-decoration: none;
 }
 .purchase-item-active {
-    font-weight: bolder;
-    border-bottom: 7px solid rebeccapurple;
-    color: rebeccapurple;
+  font-weight: bolder;
+  border-bottom: 7px solid rebeccapurple;
+  color: rebeccapurple;
 }
 
 .section-summary-invoice {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    margin: 20px 0;
-  }
-  .section-summary-invoice div:nth-child(1) {
-    color: rgb(150, 145, 145);
-  }
-  .section-summary-invoice div:nth-child(2) {
-    margin: 10px auto;
-  }
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  margin: 20px 0;
+}
+.section-summary-invoice div:nth-child(1) {
+  color: rgb(150, 145, 145);
+}
+.section-summary-invoice div:nth-child(2) {
+  margin: 10px auto;
+}
 
-  .box{
-      border-radius: 10px;
-      color: white;
-      padding: 7px ;
-      font-size: 12px;
-  }
-  .success {
-     background-color: rgb(19, 184, 19);
-  }
-  .waiting {
-    background-color: rgb(149, 40, 238);
-  }
-  .info-summary {
-    display: grid;
-    grid-template-columns: 1fr 80px 80px;
-    align-items: center;
-    font-size: 17px;
-  }
-  .info-summary div:nth-child(2) {
-    margin: auto 10px auto auto;
-  }
-  .total {
-    margin-top: 40px;
-    font-size: 15px;
-    font-weight: bold;
-  }
-  .txt {
-    color: rgb(150, 145, 145);
-  }
-  .card-header{
-      display: flex;
-      justify-content: space-between;
-  }
-  .footer-reward{
-      display: flex;
-      justify-content: space-between;
-      
-  }
-
-  .footer-final{
+.box{
+    border-radius: 10px;
+    color: white;
+    padding: 7px ;
+    font-size: 12px;
+}
+.success {
+   background-color: rgb(19, 184, 19);
+}
+.waiting {
+  background-color: rgb(149, 40, 238);
+}
+.info-summary {
+  display: grid;
+  grid-template-columns: 170px 100px 35px;
+  align-items: center;
+  font-size: 17px;
+}
+.info-summary div:nth-child(2) {
+  margin: auto 10px auto auto;
+}
+.total {
+  margin-top: 40px;
+  font-size: 15px;
+  font-weight: bold;
+}
+.txt {
+  color: rgb(150, 145, 145);
+}
+.card-header{
+    display: flex;
+    justify-content: space-between;
+}
+.footer-reward{
     display: flex;
     justify-content: space-between;
     
 }
-  .footer-reward Button{
-      margin-right: 45px;
 
-  }
-  .modal-slip{
-      width: 400px;
-      height: 600px;
-      margin: 5px auto;
-  }
- .slip{
-     width: 100%;
- }
+.footer-final{
+  display: flex;
+  justify-content: space-between;
   
-    
-  .line{
-    display: inline-block;
-  }
-  .linecolor{
-    
-    color: red;
-  }
-  .bold{
-      font-weight: bold;
-  }
+}
+.footer-reward Button{
+    margin-right: 45px;
 
-  .rewardMoredetail {
-    color: rgb(109, 96, 96);
-    text-decoration: underline;
-  }
+}
+.modal-slip{
+    width: 400px;
+    height: 600px;
+    margin: 5px auto;
+}
+.slip{
+   width: 100%;
+}
 
-  .backBtn {
-    color: rgb(109, 96, 96);
-    text-decoration: underline;
-  }
   
-  @media screen and (max-width: 760px) {
-    .section-summary-invoice {
-      grid-template-columns: 100%;
-    }
-  }
+.line{
+  display: inline-block;
+}
+.linecolor{
   
+  color: red;
+}
+.bold{
+    font-weight: bold;
+}
+
+.rewardIdDetail{
+  color: rgb(125, 125, 126);
+}
+
+.rewardMoredetail {
+  color: rgb(109, 96, 96);
+  text-decoration: underline;
+}
+
+.backBtn {
+  color: rgb(109, 96, 96);
+  text-decoration: underline;
+}
+
+.winNumber{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.baht {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media screen and (max-width: 760px) {
+  .section-summary-invoice {
+    grid-template-columns: 100%;
+  }
+}

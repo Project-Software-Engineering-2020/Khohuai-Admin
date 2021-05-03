@@ -4,6 +4,7 @@ import { Button, Modal } from "react-bootstrap";
 import { getDetailUserReward } from "../redux/action/rewardAction";
 import { useDispatch, useSelector } from "react-redux"
 import Moment from 'react-moment';
+import NumberFormat from 'react-number-format';
 import 'moment/locale/th';
 import "./Reward.css";
 import Axios from 'axios'
@@ -12,6 +13,7 @@ const RewardDetail = (props) => {
   const id = props.match.params.rewardid
   const dispatch = useDispatch();
   const reward = useSelector(state => state.reward)
+  const ngud = useSelector((state) => state.ngud);
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -99,7 +101,7 @@ const RewardDetail = (props) => {
           <div className="card-body">
             <div className="tab-content p-0">
               <div className="row mb-3 ml-0">
-                <a href={"/reward"} class="backBtn"><i class="fa fa-chevron-left" aria-hidden="true"></i>  ย้อนกลับ</a>
+                <a href={"/lottery/ngud" } class="backBtn"><i class="fa fa-chevron-left" aria-hidden="true"></i>  ย้อนกลับ</a>
               </div>
               {/* Morris chart - Sales */}
               <h3> หมายเลขรับรางวัล : {id} </h3>
@@ -147,7 +149,7 @@ const RewardDetail = (props) => {
                             })}
                           </td>
                           <td>{item.qty}</td>
-                          <td>{item.qty * item.reward}</td>
+                          <td><NumberFormat value={item.qty * item.reward} displayType={'text'} thousandSeparator={true}>{item.qty * item.reward}</NumberFormat></td>
                         </tr>
                       );
                     })
@@ -160,20 +162,20 @@ const RewardDetail = (props) => {
                   <div className="summary-invoice">
                     <div className="info-summary">
                       <div>เงินรางวัลรวม</div>
-                      <div>{reward.data.win_total}</div>
-                      <div>บาท</div>
+                      <NumberFormat value={reward.data.win_total} displayType={'text'} thousandSeparator={true} className="winNumber"><div>{reward.data.win_total}</div></NumberFormat>
+                      <div className="baht">บาท</div>
                     </div>
 
                     <div className="info-summary">
                       <div>หักค่าบริการ 1.5%</div>
-                      <div>{reward.data.win_chart}</div>
-                      <div>บาท</div>
+                      <NumberFormat value={reward.data.win_chart} displayType={'text'} thousandSeparator={true} className="winNumber"><div>{reward.data.win_chart}</div></NumberFormat>
+                      <div className="baht">บาท</div>
                     </div>
 
                     <div className="info-summary">
                       <div>เงินรางวัลที่ได้รับทั้งสิ้น</div>
-                      <div>{reward.data.win_amount}</div>
-                      <div>บาท</div>
+                      <NumberFormat value={reward.data.win_amount} displayType={'text'} thousandSeparator={true} className="winNumber"><div>{reward.data.win_amount}</div></NumberFormat>
+                      <div className="baht">บาท</div>
                     </div>
                   </div>
                 </div>

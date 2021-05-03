@@ -95,7 +95,7 @@ function Ngud() {
                       <td>
                         {!item.check_prize ? 
                         
-                          <span>
+                          <span style={{textDecoration:'underline'}}>
                             <a href={"ngud/"+item.ngud}>รายละเอียด</a>
                             
                           </span>
