@@ -13,3 +13,16 @@ export function getNgud() {
             });
     }
 }
+
+export function addNgud(data) {
+
+    return function (dispatch) {
+        return Axios.post("http://localhost:3002/ngud",data)
+            .then(ngud => {
+                console.log(ngud.data);
+                dispatch({type:"FETCHED_NGUD",data:ngud.data})
+            });
+    }
+}
+
+

@@ -56,7 +56,7 @@ export default function Header() {
 
       
       <ul className="navbar-nav ml-auto">
-        <li className="nav-item dropdown">
+        {/* <li className="nav-item dropdown">
           <a className="nav-link" data-toggle="dropdown" href="#">
             <i className="far fa-comments" />
             <span className="badge badge-danger navbar-badge">3</span>
@@ -138,8 +138,8 @@ export default function Header() {
               See All Messages
             </a>
           </div> 
-        </li>
-        <li className="nav-item dropdown">
+        </li> */}
+        {/* <li className="nav-item dropdown">
           <a className="nav-link" data-toggle="dropdown" href="#">
             <i className="far fa-bell" />
             <span className="badge badge-warning navbar-badge">15</span>
@@ -168,8 +168,8 @@ export default function Header() {
               See All Notifications
             </a>
           </div>
-        </li>
-        <li className="nav-item">
+        </li> */}
+        {/* <li className="nav-item">
           <a
             className="nav-link"
             data-widget="control-sidebar"
@@ -179,8 +179,8 @@ export default function Header() {
           >
             <i className="fas fa-th-large" />
           </a>
-        </li>
-        <li className="nav-item has-treeview">
+        </li> */}
+        {/* <li className="nav-item has-treeview">
               <NavLink to="/adminlogin" className="nav-link p-3" activeClassName="active menu-open has-treeview ">
                   <i className="nav-icon fas fa-user" /> 
                   <p>
@@ -193,8 +193,8 @@ export default function Header() {
               <li>
               <button onClick={signouthandle}>Logout</button>
                 
-              </li>
-      </ul>
+              </li> */}
+        </ul>
     </nav>
   );
 }
