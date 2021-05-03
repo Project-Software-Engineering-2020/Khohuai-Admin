@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getInvoiceDetail } from "../redux/action/invoiceAction";
 import Moment from "react-moment";
+// import NumberFormat from 'react-number-format';
 import "moment/locale/th";
 import "./detail.css";
 
