@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@syncfusion/ej2-react-calendars": "^19.1.56",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.7.2",
@@ -12,6 +13,7 @@
     "mdbreact": "^5.0.1",
     "moment": "^2.29.1",
     "react": "^17.0.1",
+    "react-advanced-datetimerange-picker": "^1.0.13",
     "react-bootstrap": "^1.5.0",
     "react-bootstrap-table-next": "^4.0.3",
     "react-bootstrap-table2-paginator": "^2.1.2",

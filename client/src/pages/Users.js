@@ -4,6 +4,7 @@ import { getAllUser } from "../redux/action/userAction"
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory, { PaginationProvider, PaginationListStandalone } from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
+import { setHeader } from '../redux/action/headerAction'
 import "./users.css"
 const Users = () => {
 
@@ -11,6 +12,7 @@ const Users = () => {
     const user = useSelector(state => state.user)
     useEffect(async () => {
         await dispatch(getAllUser());
+        await dispatch(setHeader("Users"));
     }, [])
 
     const sizePerPageOptionRenderer = ({

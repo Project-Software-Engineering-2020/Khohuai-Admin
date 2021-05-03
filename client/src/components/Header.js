@@ -1,8 +1,16 @@
 import React from "react";
-import { useSelector } from "react-redux"
+import { useDispatch , useSelector } from "react-redux";
+import { setlogout } from "../redux/action/authAction";
+import { NavLink } from 'react-router-dom'
+
+
 
 export default function Header() {
+  const dispatch = useDispatch();
 
+  const signouthandle = () => {
+    dispatch(setlogout())
+  }
   const header = useSelector(state => state.header)
 
   return (
@@ -48,7 +56,7 @@ export default function Header() {
 
       
       <ul className="navbar-nav ml-auto">
-        <li className="nav-item dropdown">
+        {/* <li className="nav-item dropdown">
           <a className="nav-link" data-toggle="dropdown" href="#">
             <i className="far fa-comments" />
             <span className="badge badge-danger navbar-badge">3</span>
@@ -130,8 +138,8 @@ export default function Header() {
               See All Messages
             </a>
           </div> 
-        </li>
-        <li className="nav-item dropdown">
+        </li> */}
+        {/* <li className="nav-item dropdown">
           <a className="nav-link" data-toggle="dropdown" href="#">
             <i className="far fa-bell" />
             <span className="badge badge-warning navbar-badge">15</span>
@@ -160,8 +168,8 @@ export default function Header() {
               See All Notifications
             </a>
           </div>
-        </li>
-        <li className="nav-item">
+        </li> */}
+        {/* <li className="nav-item">
           <a
             className="nav-link"
             data-widget="control-sidebar"
@@ -171,8 +179,22 @@ export default function Header() {
           >
             <i className="fas fa-th-large" />
           </a>
-        </li>
-      </ul>
+        </li> */}
+        {/* <li className="nav-item has-treeview">
+              <NavLink to="/adminlogin" className="nav-link p-3" activeClassName="active menu-open has-treeview ">
+                  <i className="nav-icon fas fa-user" /> 
+                  <p>
+                  &nbsp; Login
+                 
+                  </p>
+                </NavLink>
+                
+              </li>
+              <li>
+              <button onClick={signouthandle}>Logout</button>
+                
+              </li> */}
+        </ul>
     </nav>
   );
 }

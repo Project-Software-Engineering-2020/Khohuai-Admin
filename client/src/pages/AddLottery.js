@@ -2,12 +2,18 @@ import React, { useState } from "react";
 import Axios from "axios";
 import "../stylesheets/AddLottery.css";
 import { storage, firestore } from '../firebase/firebase';
-
+import { Modal,Button } from "react-bootstrap"
 
 function AddLottery() {
   const [image, setimage] = useState([]);
   const [image_upload, setimage_upload] = useState([]);
   const [number, setnumber] = useState("");
+
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   let image_boss = [];
   const handleImage = (e) => {
@@ -69,6 +75,9 @@ function AddLottery() {
     const insert = () => {
       console.log(image_boss);
       Axios.post("http://localhost:3002/lottery", { number, image_boss }).then((res) => {
+        if(res.data === "success") {
+          setShow(true);
+        }
         console.log("upload success");
       });
     }
@@ -102,7 +111,8 @@ function AddLottery() {
               // }
               await insert();
 
-              console.log("555")
+              console.log("121212")
+
             });
         }
 
@@ -188,6 +198,24 @@ function AddLottery() {
           </div>
         </div>
       </div>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>อัพโหลดสลาก</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          เพิ่มสลากเข้าสู่ระบบสำเร็จ
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="success" onClick={handleClose}>
+            ตกลง
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

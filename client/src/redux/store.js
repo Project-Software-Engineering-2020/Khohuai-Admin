@@ -13,9 +13,13 @@ import lotteryReducer from "./reducer/lotteryReducer";
 import chartReducer from "./reducer/chartReducer";
 import ngudReducer from "./reducer/ngudReducer";
 import headerReducer from "./reducer/headerReducer";
+import authReducer from "./reducer/authReducer";
+import reward from "./reducer/rewardReducer";
+
 
 // ******Combine Reducers******
 const rootReducer = combineReducers({
+  auth:authReducer,
   invoice:invoiceReducer,
   invoice_detail:invoiceDetailReducer,
   invoice_user:invoiceUser,
@@ -23,7 +27,8 @@ const rootReducer = combineReducers({
   lottery:lotteryReducer,
   chart:chartReducer,
   ngud:ngudReducer,
-  header:headerReducer
+  header:headerReducer,
+  reward:reward
 });
 
 const PersistConfig = {

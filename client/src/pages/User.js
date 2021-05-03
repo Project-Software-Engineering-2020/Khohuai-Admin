@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { MDBDataTable, MDBBtn } from "mdbreact";
 import { getAllUser } from "../redux/action/userAction";
+import { setHeader } from "../redux/action/headerAction"
 import Moment from "react-moment";
 import "moment/locale/th";
 
@@ -10,7 +11,7 @@ const User = () => {
   const user = useSelector((state) => state.user);
   useEffect(async () => {
     await dispatch(getAllUser());
-
+    await dispatch(setHeader("Users"))
   }, []);
 
   // const data = {

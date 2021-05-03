@@ -3,11 +3,13 @@ import { MDBDataTable, MDBCard, MDBBtn } from 'mdbreact';
 import { Modal, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from "react-redux";
 import { getAllLottery } from '../redux/action/lotteryAction';
-import { getNgud } from '../redux/action/ngudAction'
+import { getNgud } from '../redux/action/ngudAction';
+import { setHeader } from '../redux/action/headerAction';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import 'moment/locale/th';
 const AllLottery = () => {
+
 
   const dispatch = useDispatch();
   const lottery = useSelector(state => state.lottery)
@@ -28,18 +30,18 @@ const AllLottery = () => {
         sort: 'asc',
         width: 270
       },
-      {
-        label: 'งวดที่',
-        field: 'nguad',
-        sort: 'asc',
-        width: 270
-      },
-      {
-        label: 'ชุดที่',
-        field: 'st',
-        sort: 'asc',
-        width: 270
-      },
+      // {
+      //   label: 'งวดที่',
+      //   field: 'nguad',
+      //   sort: 'asc',
+      //   width: 270
+      // },
+      // {
+      //   label: 'ชุดที่',
+      //   field: 'st',
+      //   sort: 'asc',
+      //   width: 270
+      // },
     ],
     rows: lottery.data
 
@@ -54,16 +56,19 @@ const AllLottery = () => {
   useEffect(async () => {
     await dispatch(getAllLottery());
     await dispatch(getNgud())
+    await dispatch(setHeader("Lottery"))
   }, [])
 
   return (
     <div>
 
       <div className="">
-        <h3 className="mt-2 mb-4">สลากกินแบ่งรัฐบาล งวดประจำวันที่
-        <Moment format=" DD MMMM YYYY">
+        <h3 className="mt-2 mb-4">งวดประจำวันที่ 
+        {/* <Moment format=" DD MMMM YYYY">
             {ngud.data.end}
-          </Moment></h3>
+          </Moment> */}
+          16 เมษายน 2564
+          </h3>
         {/* <MDBCard className="p-4"> */}
 
         {/* <Button variant="primary" onClick={handleShow}>
@@ -76,14 +81,15 @@ const AllLottery = () => {
         </Link>
         <Link to="/lottery/ngud">
           <button className="btn btn-primary">
-            จัดการงวด
+            จัดการงวดสลาก
           </button>
         </Link>
         <MDBDataTable
           striped
           bordered
           data={data}
-          className="table-data-lottery"
+          size="small"
+          className="table-data-lottery p-2"
         />
         {/* </MDBCard> */}
 
