@@ -32,7 +32,7 @@ const Reward = (props) => {
                         return (
                             <tr>
                                 <td>{index + 1}</td>
-                                <td>
+                                <td style={{textDecoration:'underline'}}>
                                     <a href={"reward/" + item.id}>{item.id}</a>
                                 </td>
                                 <td><Moment format="DD MMMM YYYY" locale="th">
