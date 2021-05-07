@@ -121,4 +121,7 @@ a.purchase-item:hover {
       grid-template-columns: 100%;
     }
   }
-  
+  .full {
+    width: 100%;
+    height: 100%;
+  }

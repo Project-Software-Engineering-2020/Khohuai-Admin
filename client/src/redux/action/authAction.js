@@ -29,7 +29,6 @@ export function setloginWithUsername(user) {
       photoURL: user.data.photoURL,
       role: user.data.role,
       status: true,
-      token: ""
       // photoURL: null,
       // role: null,
       // username: null,

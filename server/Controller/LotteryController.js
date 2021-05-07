@@ -38,23 +38,22 @@ const getAllLottery = async (req, res, next) => {
     console.log("get Data")
     try {
         const ngud = await getCurrentNgud();
-        console.log("ngud", ngud);
 
         // if (ngud.open === true) {
 
-            const lottery = await firestore.collection('lottery').get()
-            if (lottery.empty) {
-                res.status(400).send("No lottery in record")
-            } else {
-                lottery.docs.forEach(doc => {
-                    lotteryArray.push({
-                        id: doc.id,
-                        photoURL: doc.data().photoURL,
-                        stock: doc.data().photoURL.length,
-                    });
+        const lottery = await firestore.collection('lottery').get()
+        if (lottery.empty) {
+            res.status(400).send("No lottery in record")
+        } else {
+            lottery.docs.forEach(doc => {
+                lotteryArray.push({
+                    id: doc.id,
+                    photoURL: doc.data().photoURL,
+                    stock: doc.data().photoURL.length,
                 });
-                res.status(200).send(lotteryArray);
-            }
+            });
+            res.status(200).send(lotteryArray);
+        }
         // }
         // else {
         //     console.log("คุณยังไม่ได้อยู่ในช่วงเวลาเปิดการขายสลาก")
@@ -139,25 +138,41 @@ const insertLottery = async (req, res) => {
 
     const number = req.body.number;
     const image = req.body.image_boss;
+    let ngud = req.body._ngud
+    ngud = ngud.toString()
+
 
     console.log(number);
-    console.log(image);
+    console.log("ngud",ngud);
+    
 
+    let total_lottery = 0;
+    let total_onhand = 0;
+    let haveInDoc = true;
     let new_lottery;
     let _photoURL = [];
 
     try {
-        const ngud = await getCurrentNgud();
+    
+        await firestore.collection("lottery").doc(number)
+            .get().then((doc) => {
 
-        const this_lottery = await firestore.collection("lottery").doc(number)
+                if (doc.exists) {
+                    console.log("มีข้อมูล")
+                    haveInDoc = true;
+                    new_lottery = doc.id;
+                    _photoURL = doc.data().photoURL;
 
-        this_lottery.get().then((doc) => {
-            new_lottery = doc.id;
-            _photoURL = doc.data().photoURL;
-        });
+                }
+                else {
+                    console.log("ไม่มีข้อมูล")
+                    haveInDoc = false;
+                }
 
-        if (!new_lottery) {
-            console.log(new_lottery);
+
+            });
+
+        if (!haveInDoc) {
             //insert ครั้งแรก
             await firestore.collection("lottery").doc(number)
                 .set({
@@ -165,26 +180,58 @@ const insertLottery = async (req, res) => {
                     ngud: ngud
                 });
             console.log("ครั้งแรก")
+            
+            total_lottery = total_lottery + image.length;
+            total_onhand = total_onhand + image.length;
+
+            console.log("total_lottery  =", total_lottery, "total_onhand  =", total_onhand)
+
+
+            await firestore.collection("ngud").doc(ngud).update(
+                {
+                    total_lottery: total_lottery,
+                    total_onhand: total_onhand
+                }
+            )
+
+
+            res.status(200).send("success");
+
         }
         else {
             console.log("เพิ่มสต็อก");
-            image.map((item) => {
-                photoURL.push(item);
+
+            let updatedLottery = [..._photoURL, ...image];
+
+            await firestore.collection("lottery").doc(number).update({
+                photoURL: updatedLottery
             })
 
-            //เพิ่ม stock สลาก
-            data.image.map((item) => {
-                firestore.collection("lottery").doc(number)
-                    .update({
-                        "photoURL": photoURL
-                    })
+            await firestore.collection("ngud").doc(ngud).get().then((doc) => {
+                total_lottery = doc.data().total_lottery;
+                total_onhand = doc.data().total_onhand;
             })
+
+            total_lottery = total_lottery + image.length;
+            total_onhand = total_onhand + image.length;
+
+            console.log("ngud : ",ngud," total_lottery  =", total_lottery, "total_onhand  =", total_onhand)
+
+            await firestore.collection("ngud").doc(ngud).update(
+                {
+                    total_lottery: total_lottery,
+                    total_onhand: total_onhand
+                }
+            )
+
+
             res.status(200).send("success");
         }
     } catch (error) {
         console.log(error);
     }
 }
+
 
 module.exports = {
     getAllLottery,

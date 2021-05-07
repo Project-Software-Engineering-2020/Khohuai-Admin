@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getChart } from '../redux/action/chartAction';
 import { getNgud } from '../redux/action/ngudAction';
 import Moment from "react-moment";
+import { } from 'react-bootstrap'
 import "moment/locale/th";
 import './chart.css';
 
@@ -13,9 +14,11 @@ const Chart = () => {
     const chart = useSelector(state => state.chart);
     const ngud = useSelector(state => state.ngud)
 
-    useEffect(() => {
-        dispatch(getChart("ngud", 15));
-        dispatch(getNgud());
+    useEffect(async () => {
+        await dispatch(getNgud());
+        // const n_ngud = ngud.data[0].ngud;
+        await dispatch(getChart("ngud", "01"));
+
     }, [])
 
     const OnchangeChart = (number_ngud) => {
@@ -46,33 +49,22 @@ const Chart = () => {
             borderWidth: 1
         }],
 
-
     }
 
     return (
         <div className="card p-3">
             <div className="header-chart">
                 <div>
-                    <h3 className="card-title">กราฟแสดงยอดขายในแต่ละงวด</h3>
+                    <h3 className="card-title">ยอดขายล็อตเตอรี่รายวัน</h3>
                 </div>
                 <div>
                     งวดประจำวันที่&nbsp;&nbsp;
                     <select onChange={e => OnchangeChart(e.target.value)}>
-                        {ngud.data.map((item, index) => {
-                            // let result = item.end.toLocaleDateString('th-TH', {
-                            //     year: 'numeric',
-                            //     month: 'long',
-                            //     day: 'numeric',
-                            //     weekday: 'long',
-                            //   })
+                        {ngud.data.map((item) => {
                             return (
                                 <option value={item.ngud}>
-                                    {/* <div>
-                                        <Moment format="DD-MMMM-YYYY">
-                                            {ng}
-                                        </Moment>
-                                    </div> */}
-                            </option>
+                                    {item.name}
+                                </option>
                             )
                         })}
                     </select>
@@ -80,7 +72,7 @@ const Chart = () => {
             </div>
             <Line
                 data={data}
-                height={100}
+                height={170}
             />
         </div>
     )

@@ -1,6 +1,6 @@
 import { store } from '../store';
 import Axios from 'axios';
- 
+import { api } from '../../environment'
 export function getAllUser() {
 
     //แสดง loading
@@ -9,7 +9,7 @@ export function getAllUser() {
     //ดึวข้อมูล และส่งข้มูลไปแสดงผล
     let data_user;
     return function (dispatch) {
-        return Axios.get("http://localhost:3002/user")
+        return Axios.get(api + "/user")
             .then(user => {
                 console.log(user.data);
                 data_user = user.data;

@@ -23,23 +23,14 @@ const signin = async (req, res) => {
                         photoURL = doc.data().photoURL,
                         email = doc.data().email,
                         role = doc.data().role,
+                        status = doc.data().status,
                         provider = doc.data().provider,
                         // id = uid,
                         // token = jwt.sign({id},"jwtSecret")
                     )
-                    admin
-                        .auth()
-                        .createCustomToken(user.uid)
-                        .then((token) => {
-                            console.log("Token is ++++++++++++++++++++++++++++++++", token)
-                            res.status(200).send(token);
-                        })
-                        .catch((error) => {
-                            console.log('Error creating custom token:', error);
-                        });
-
-                    // res.status(200).send(user);
-                })
+                    console.log("Song Laewna +++++++++++++++++")
+                    res.status(200).send(user);
+                    })
             }).catch((error) => {
                 console.log("Chon---------------------------------")
                 res.status(201).send(error.code);

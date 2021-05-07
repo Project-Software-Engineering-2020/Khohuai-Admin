@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getNgud,addNgud } from "../redux/action/ngudAction";
+import { getNgud, addNgud } from "../redux/action/ngudAction";
 import { Modal, Button, Form } from "react-bootstrap";
 import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars'
 import Moment from "react-moment";
@@ -12,6 +12,7 @@ import "../../node_modules/@syncfusion/ej2-lists/styles/material.css";
 import "../../node_modules/@syncfusion/ej2-inputs/styles/material.css";
 import "../../node_modules/@syncfusion/ej2-popups/styles/material.css";
 import "../../node_modules/@syncfusion/ej2-react-calendars/styles/material.css";
+import { setHeader } from '../redux/action/headerAction'
 
 function Ngud() {
   const dispatch = useDispatch();
@@ -29,10 +30,10 @@ function Ngud() {
 
   const dateValue = Date.now()
   const minDate = new Date("04/30/2021 00:00 AM");
-  const maxDate = new Date("05/16/2021 00:00 PM");
+  const maxDate = new Date("05/16/2021 12:00 AM");
 
-  const chechLottery = () => {
-    Axios.get("http://localhost:3002/ngud/check_prize").then((res) => {
+  const chechLottery = async () => {
+    await Axios.get("http://localhost:3002/ngud/check_prize").then((res) => {
       if (res.data === "success") {
         alert("ตรวจรางวัลสำเร็จ");
       }
@@ -41,6 +42,7 @@ function Ngud() {
 
   useEffect(() => {
     dispatch(getNgud());
+    dispatch(setHeader("จัดการงวดออกสลาก"));
   }, []);
 
 
@@ -53,7 +55,8 @@ function Ngud() {
       ngud_id: ngudtext,
       check_prize: false,
       total_lottery: 0,
-      total_onhand: 0
+      total_onhand: 0,
+      open: true
     }
 
     dispatch(addNgud(data));
@@ -61,10 +64,12 @@ function Ngud() {
 
   return (
     <div>
-      <button type="button" onClick={openModel}>เพิ่มงวดสลาก</button>
+      <div>
+        <button className="btn btn-info" type="button" onClick={openModel}>เพิ่มงวดสลาก</button>
+      </div>
       <div className="card">
         <div className="card-header border-transparent ">
-          <h2 className="card-title pt-2">งวดทั้งหมด</h2>
+          <h2 className="card-title pt-2">งวดออกสลากทั้งหมด</h2>
         </div>
         <div className="card-body p-0">
           <div className="table-responsive">
@@ -72,9 +77,12 @@ function Ngud() {
               <thead>
                 <tr>
                   <th>งวดที่</th>
-                  <th>วันที่เริ่มจำหน่าย</th>
-                  <th>วันที่สิ้นสุดการจำหน่าย</th>
+                  <th>งวดสลากประจำวันที่</th>
+                  <th>วัน/เวลา เริ่มจำหน่าย</th>
+                  <th>วัน/เวลา สิ้นสุดการจำหน่าย</th>
+                  <th className="text-center">สลากในระบบ (ใบ)</th>
                   <th>ตรวจผลรางวัล</th>
+                  <th>ผู้ถูกรางวัล</th>
                 </tr>
               </thead>
               <tbody>
@@ -82,6 +90,9 @@ function Ngud() {
                   return (
                     <tr key={index}>
                       <td>{item.ngud}</td>
+                      <td> <Moment format="DD MMMM YYYY">
+                        {item.end}
+                      </Moment></td>
                       <td>
                         <Moment format="DD MMMM YYYY HH:mm">
                           {item.start}
@@ -92,26 +103,23 @@ function Ngud() {
                           {item.end}
                         </Moment>
                       </td>
+                      <td className="text-center">
+                        <div>{item.total_onhand + " / " + item.total_lottery}</div>
+                        <div><a href={"lottery/" + item.ngud}>จัดการสลาก</a></div>
+                      </td>
                       <td>
-                        {!item.check_prize ? 
-                        
-                          <span>
-                            <a href={"ngud/"+item.ngud}>รายละเอียด</a>
-                            
-                          </span>
-                        :
-                        
-                        <span class="btn btn-sm btn-info float-left" onClick={e => chechLottery()}>ตรวจรางวัล</span>
+                        {item.check_prize ?
+                          <span>สำเร็จ</span>
+                          :
+                          <span className="btn btn-sm btn-info float-left" onClick={e => chechLottery()}>ตรวจรางวัล</span>
                         }
                       </td>
-                      {/* <td>
-                        {index === 0 ?
-                         
-                          :
-                          null
-                        }
+                      <td>
+                        <span>
+                          <a href={"ngud/" + item.ngud}>รายละเอียด</a>
+                        </span>
+                      </td>
 
-                      </td> */}
                     </tr>
                   );
                 })}
@@ -133,10 +141,10 @@ function Ngud() {
         <Modal.Body>
           <Form >
 
-          <Form.Group >
-        
-              <input className="e-input" type="text" placeholder="งวดที่" onChange={e => setngud(e.target.value)}/>
-            
+            <Form.Group >
+
+              <input className="e-input" type="text" placeholder="งวดที่" onChange={e => setngud(e.target.value)} />
+
             </Form.Group >
 
             <Form.Group >

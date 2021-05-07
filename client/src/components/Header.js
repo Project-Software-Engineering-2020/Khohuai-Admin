@@ -23,7 +23,7 @@ export default function Header() {
           </a>
         </li>
         <li>
-          <h2 className="header-name">{header}</h2>
+          <h3 className="header-name">{header}</h3>
         </li>
         {/* <li className="nav-item d-none d-sm-inline-block">
           <a href="index3.html" className="nav-link">

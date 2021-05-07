@@ -1,15 +1,22 @@
 const { firestore } = require('../firebaseDB');
 const Axios = require('axios');
+const moment = require('moment')
+moment.locale('th');
 
 const getNgud = async (req, res, next) => {
     let data = [];
     try {
         const ngud = await firestore.collection('ngud').orderBy("end", "desc").get()
         await ngud.docs.forEach(doc => {
+
             data.push({
                 ngud: doc.id,
-                end: doc.data().end,
-                start: doc.data().start,
+                name: moment(new Date(doc.data().end)).format('LL'),
+                end: new Date(doc.data().end),
+                start: new Date(doc.data().start),
+                total_lottery: doc.data().total_lottery,
+                total_onhand: doc.data().total_onhand,
+                open: doc.data().open
             })
         });
         res.send(data);
@@ -32,6 +39,166 @@ const createNgud = (req,res) => {
     }
 }
 
+const createInvoice = async (data, doto, idUser, totalItem) => {
+
+    const charge = data;
+    const Mycart = doto;
+    const uid = idUser;
+    const date = new Date();
+    let lottery_instock = [];
+    let item_buy = doto;
+    let ngud = [];
+
+    try {
+        const ngudDB = await firestore.collection('ngud').orderBy("end", "desc").get()
+        await ngudDB.docs.forEach(doc => {
+          ngud.push({
+            ngud: doc.id,
+            end: doc.data().end,
+            start: doc.data().start,
+            total_onhand: doc.data().total_onhand
+          })
+        });
+    
+    
+        if (charge.status === "successful") {
+    
+          let userData = [];
+    
+          await firestore.collection("users").doc(uid).get().then((doc) => {
+            userData.push({
+              book_name: doc.data().book_name,
+              book_number: doc.data().book_number,
+              book_provider: doc.data().book_provider,
+              firstname: doc.data().firstname,
+              lastname: doc.data().lastname
+            })
+          })
+    
+          // const item_bought = await romoveInStock(Mycart);
+          let lottery_instock = [];
+          // let item_buy = [];
+          let cut_stock = [];
+    
+          //ดึงข้อมูล stock
+          const instock = await firestore.collection("lottery").get()
+          instock.docs.forEach(item => {
+            lottery_instock.push(
+              {
+                number: item.id,
+                lottery_img: item.data().photoURL,
+              }
+            );
+          });
+    
+    
+          let enough = true;
+    
+          let buy = [];
+    
+          console.log(lottery_instock)
+          let lottery_each_number = [];
+          for (i = 0; i < item_buy.length; i++) {
+    
+            for (j = 0; j < lottery_instock.length; j++) {
+    
+    
+              if (item_buy[i].id === lottery_instock[j].number) {
+    
+                lottery_each_number = lottery_instock[j].lottery_img;
+    
+                if (lottery_instock[j].lottery_img.length >= item_buy[i].qty) {
+    
+                  let target_lottery = [];
+    
+                  let img = [];
+                  let buff = [];
+    
+                  for (k = 1; k <= item_buy[i].qty; k++) {
+    
+                    target_lottery = lottery_instock[j].lottery_img[k]
+    
+                    img.push(target_lottery);
+    
+                  
+                    lottery_each_number.pop(target_lottery);
+    
+                     console.log(lottery_each_number.length);
+                     console.log(lottery_instock[j].number)
+    
+                    if(lottery_each_number.length == 0){
+                      await firestore.collection("lottery").doc(lottery_instock[j].number).delete()
+                    }
+                    else {
+                      await firestore.collection("lottery").doc(lottery_instock[j].number)
+                      .update({
+                        photoURL: lottery_each_number
+                      })
+                    }
+    
+                    
+                  }
+    
+                  buy.push(
+                    {
+                      number: item_buy[i].id,
+                      lottery: img,
+                      qty: item_buy[i].qty,
+                      status: false,
+                      prize: [""]
+                    }
+                  );
+    
+                }
+                else {
+    
+                }
+              }
+              continue;
+            }
+            continue;
+          }
+          console.log(buy);
+    
+          console.log("ngud   ",ngud)
+    
+          let datainsert = {
+            charge_id: charge.id,
+            userid: uid,
+            lottery: buy,
+            date: date,
+            totalprice: charge.amount / 100,
+            quantity: totalItem,
+            ngud: ngud[0].ngud,
+            ngud_date: ngud[0].end,
+            book_name: userData[0].book_name,
+            book_number: userData[0].book_number,
+            book_provider: userData[0].book_provider,
+            firstname: userData[0].firstname,
+            lastname: userData[0].lastname
+          }
+    
+          console.log("dataInsrt  ",datainsert);
+    
+          const invoice = await firestore.collection("invoices").doc().set(datainsert).then((res) => {
+            console.log("invoice เพิ่มแล้ว")
+    
+            //ลบ item ในตะกร้า
+            Mycart.map((item) => {
+              firestore.collection("users").doc(uid)
+                .collection("cart").doc(item.id).delete()
+                .then((success) => { console.log("clear ตะกร้าแล้ว") })
+                .catch((err) => console.log("ลบไม่ได้", err));
+            })
+          })
+          await firestore.collection("ngud").doc(ngud[0].id).update({ total_onhand: ngud.total_onhand - totalItem })
+          // await romoveInStock()
+        }
+      } catch (err) {
+        console.log(err)
+      }
+}
+
 const check_prize = async (req, res) => {
 
     console.log("ตรวจรางวัล")
@@ -43,6 +210,51 @@ const check_prize = async (req, res) => {
     let win = [];
     let reward = 0;
     let lottery_invoice = [];
+
+
+    let AllLottery = [];
+
+    await firestore.collection("lottery").get((docs) => {
+        docs.forEach((doc) => {
+            AllLottery.push({
+                id: doc.id,
+                ngud: doc.data().ngud,
+                photoURL: doc.data().photoURL
+            })
+        })
+    })
+
+    let idUser = "admin" ;
+    let data = "admin";
+    console.log(AllLottery);
+
+    let Tcart = [];
+    let totolPrice = 0;
+    let total_item = 0;
+
+    await AllLottery.map(async (lot) => {
+
+        // await lot.photoURL
+        
+        await Tcart.push({
+            lottery: lot.photoURL,
+            number: lot.id,
+            prize: [""],
+            qty: lot.photoURL.length,
+            status: false
+        })
+        totolPrice += (lot.photoURL.length * 80);
+        total_item += lot.photoURL.length;
+    })
+
+    console.log(Tcart);
+
+    
+    await createInvoice( data, Tcart, idUser, total_item);
+
+   
+
+
 
     await Axios.get("https://lotto.api.rayriffy.com/latest").then((res) => {
         Prizes = res.data.response.prizes;
@@ -197,8 +409,11 @@ const createReward = async () => {
                     lottery: doc.data().lottery,
                     uid: doc.data().userid,
                     ngud_date: doc.data().check_date,
-                    ngud: 01,
-                    win: doc.data().win
+                    ngud: doc.data().nguad,
+                    win: doc.data().win,
+                    book_name :doc.data().book_name,
+                    book_number :doc.data().book_number,
+                    book_provider :doc.data().book_provider,
                 })
 
                 await user_win.push(doc.data().userid);
@@ -219,6 +434,9 @@ const createReward = async () => {
         user_win.map(async (userid) => {
 
             console.log("uid   ", userid)
+            let book_name = ""
+            let book_number = ""
+            let book_provider = ""
 
             dataWin = [];
 
@@ -229,6 +447,10 @@ const createReward = async () => {
                     await invoice.lottery.map(async (item_win) => {
 
                         if (item_win.win === true) {
+
+                            book_name  = invoice.book_name;
+                            book_number  = invoice.book_number;
+                            book_provider  = invoice.book_provider;
 
                             let inArr = false;
 
@@ -309,13 +531,13 @@ const createReward = async () => {
                 success: false,
                 create_date: new Date,
                 update_date: new Date,
-                uid: userid
+                uid: userid,
+                book_name :book_name,
+                book_number :book_number,
+                book_provider :book_provider,
             }
-
             await firestore.collection("rewards").doc().set(bill_recieve_reward);
-
         })
-
     }
     catch (err) {
         console.log(err)

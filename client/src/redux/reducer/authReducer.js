@@ -27,7 +27,6 @@ function userAuth(state = initialState , action) {
               photoURL: action.data.photoURL,
               role: action.data.role,
               status: true,
-              token: ""
           };
           console.log(action.data)
           return state;

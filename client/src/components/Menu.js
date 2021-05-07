@@ -1,7 +1,22 @@
-import React from "react";
-import { NavLink } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { NavLink } from 'react-router-dom';
+import { useDispatch , useSelector } from "react-redux";
+import { setlogout } from "../redux/action/authAction";
 
 export default function Menu() {
+  const dispatch = useDispatch()
+  const stetus = useSelector(state => state.auth)
+  const redirect = stetus.status
+
+
+  function onLogout() {
+    dispatch(setlogout())
+  }
+  console.log("Rediract =========================================",stetus.status)
+
+  // alert(redirect)
+  useEffect(() => {
+  },[redirect])
   return (
     <div>
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -97,7 +112,35 @@ export default function Menu() {
                 </NavLink>
                 
               </li>
-             
+              {redirect ? (
+                <button
+                  type="button"
+                  className="btn-login"
+                  onClick={onLogout}
+                  >
+                Logout
+                </button>
+              // <li className="nav-item has-treeview">
+              // <NavLink onClick={onLogout} className="nav-link p-3" activeClassName="active menu-open has-treeview ">
+              //     <i className="nav-icon fas fa-user" /> 
+              //     <p>
+              //     &nbsp; Logout
+                 
+              //     </p>
+              //   </NavLink>
+              // </li>
+              ) : (
+              <li className="nav-item has-treeview">
+              <NavLink to="/adminLogin" className="nav-link p-3" activeClassName="active menu-open has-treeview ">
+                  <i className="nav-icon fas fa-user" /> 
+                  <p>
+                  &nbsp; Login
+                 
+                  </p>
+                </NavLink>
+                
+              </li>
+              )}
             </ul>
           </nav>
           {/* /.sidebar-menu */}

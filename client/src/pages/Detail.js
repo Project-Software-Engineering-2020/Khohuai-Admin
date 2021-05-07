@@ -124,15 +124,15 @@ export default function Detail(props) {
 
                     <div className="info-summary total">
                       <div>ยอดรวมทั้งสิ้น</div>
-                      <div className="total2">{invoice.data.totalprice}</div>
+                      <h4 className="total2">{invoice.data.totalprice}</h4>
                       <div>บาทถ้วน</div>
                     </div>
 
-                    <div className="info-summary">
+                    {/* <div className="info-summary">
                       <div>ชำระเงินโดยผ่าน </div>
                       <span><img src="../dist/img/mastercard.png" /></span>
 
-                    </div>
+                    </div> */}
 
                   </div>
                 </div>

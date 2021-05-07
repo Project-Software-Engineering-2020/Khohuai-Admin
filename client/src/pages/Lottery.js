@@ -8,8 +8,9 @@ import { setHeader } from '../redux/action/headerAction';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import 'moment/locale/th';
-const AllLottery = () => {
+const AllLottery = (props) => {
 
+  const ngudid = props.match.params.ngud;
 
   const dispatch = useDispatch();
   const lottery = useSelector(state => state.lottery)
@@ -63,27 +64,30 @@ const AllLottery = () => {
     <div>
 
       <div className="">
-        <h3 className="mt-2 mb-4">งวดประจำวันที่ 
-        {/* <Moment format=" DD MMMM YYYY">
-            {ngud.data.end}
-          </Moment> */}
-          16 เมษายน 2564
-          </h3>
+        {
+          ngud.name ?
+            <h3 className="mt-2 mb-4">งวดประจำวันที่
+        <Moment format=" DD MMMM YYYY">
+                {ngud.name}
+              </Moment>
+            </h3>
+            :
+
+            null
+        }
+
         {/* <MDBCard className="p-4"> */}
 
         {/* <Button variant="primary" onClick={handleShow}>
             Launch demo modal
            </Button> */}
-        <Link to="/lottery/create">
+
+        <Link to={"/lottery/"+ngudid+"/create"}>
           <button className="btn btn-primary">
             เพิ่มสลาก
           </button>
         </Link>
-        <Link to="/lottery/ngud">
-          <button className="btn btn-primary">
-            จัดการงวดสลาก
-          </button>
-        </Link>
+
         <MDBDataTable
           striped
           bordered

@@ -2,12 +2,12 @@ const { firestore } = require('../firebaseDB');
 
 const getSellperNgud = async (req, res, next) => {
 
-    const type = req.query.type;
-    const number = req.query.number;
+    const type = "ngud";
+    const number = req.query.number.toString();
 
     let _ngud = [];
-    let day_start = 0;
-    let day_end = 0;
+    let day_start;
+    let day_end;
     let invoiceArray = [];
     let sell_per_ngud = [];
     let inDay;
@@ -17,18 +17,16 @@ const getSellperNgud = async (req, res, next) => {
 
         if (type === "ngud") {
 
-            const ngud = await firestore.collection('ngud').orderBy("end", "desc").get()
-            await ngud.docs.forEach((doc, index) => {
-
-                if (doc.id === number) {
-                    day_start = doc.data().start.toDate().getDate();
-                    day_end = doc.data().end.toDate().getDate();
-                }
-
-            });
+            await firestore.collection('ngud')
+                .doc(number)
+                .get()
+                .then((doc) => {
+                    day_start = new Date(doc.data().start)
+                    day_end = new Date(doc.data().end)
+                });
 
             //สร้าง Array วันที่ในงวดนั้นๆ
-            for (i = day_start; i <= day_end; i++) {
+            for (let i = day_start.getDate(); i <= day_end.getDate(); i++) {
                 sell_per_ngud.push(
                     {
                         day: i,
@@ -38,10 +36,11 @@ const getSellperNgud = async (req, res, next) => {
                 )
             }
 
-            const invoice = await firestore.collection('invoices').orderBy("date", "desc").get()
+            const invoice = await firestore.collection('invoices').get()
             if (invoice.empty) {
                 console.log("ไม่มีข้อมูล")
             } else {
+
                 await invoice.docs.forEach(doc => {
 
                     let _day = doc.data().date.toDate().getDate();
@@ -58,9 +57,6 @@ const getSellperNgud = async (req, res, next) => {
                 });
 
                 res.status(200).send(sell_per_ngud);
-            }
-            if(type === "month") {
-
             }
         }
     } catch (error) {

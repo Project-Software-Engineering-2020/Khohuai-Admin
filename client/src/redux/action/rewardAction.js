@@ -1,6 +1,6 @@
 import { store } from '../store';
 import Axios from 'axios';
-
+ import { api } from '../../environment'
 export function getAllUserReward(ngudid) {
 
     store.dispatch({type: "FETCHING_REWARD"})
@@ -16,11 +16,11 @@ export function getAllUserReward(ngudid) {
 }
 
 export function getDetailUserReward(id) {
-
+   
     store.dispatch({type: "FETCHING_REWARD"})
 
     return function (dispatch) {
-        return Axios.get("http://localhost:3002/reward/detail/" + id)
+        return Axios.get(api + "/reward/detail/" + id)
             .then(doc => {
                 console.log(doc.data);
                 dispatch({type:"FETCHED_REWARD",data:doc.data})

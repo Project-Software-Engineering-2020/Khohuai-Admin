@@ -84,13 +84,18 @@
 
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux"
+import { useDispatch } from "react-redux";
+import { Redirect } from "react-router-dom";
 import "../stylesheets/login.css";
 import { setloginWithUsername } from "../redux/action/authAction";
 import Axios from "axios";
+import { useSelector } from 'react-redux';
+
 function Login() {
   let history = useHistory();
   const dispatch = useDispatch()
+  const stetus = useSelector(state => state.auth)
+  const [redirect, setredirect] = useState(stetus.status)
 
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
@@ -123,10 +128,10 @@ function Login() {
             setUserErr("คุณใส่รหัสผ่านผิดเกิน 3 ครั้ง กรุณารอสักครู่");
           }
         } else if (res.status === 200) {
-
-          localStorage.setItem('token',res.data)
           dispatch(setloginWithUsername(res))
+          // localStorage.setItem('token', res.data)
           history.push("/")
+          console.log("++++++++++++++++++++++++++++++++++++" , res)
           console.log(res)
         }
         console.log("+++++++++++++++++++++++++++++++++++++ Res")
@@ -138,37 +143,41 @@ function Login() {
 
   return (
     <div className="mt-5">
-      <div className="main-form">
-        <div class="form-group">
-          <label htmlFor="email">Username</label>
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Enter Username"
-            name="email"
-            onChange={(e) => setemail(e.target.value)}
-          />
-        </div>
+      {redirect ? (<Redirect to="/"></Redirect>) : (
+        <div className="mt-5">
+          <div className="main-form">
+            <div class="form-group">
+              <label htmlFor="email">Username</label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter Username"
+                name="email"
+                onChange={(e) => setemail(e.target.value)}
+              />
+            </div>
 
-        <div class="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Enter Password"
-            name="password"
-            onChange={(e) => setpassword(e.target.value)}
-          />
+            <div class="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Enter Password"
+                name="password"
+                onChange={(e) => setpassword(e.target.value)}
+              />
+            </div>
+            <button
+              type="button"
+              className="btn-login"
+              onClick={onUsernamelogin}>
+              Log in
+                </button>
+          </div>
         </div>
-        <button
-          type="button"
-          className="btn-login"
-          onClick={onUsernamelogin}>
-          Log in
-        </button>
-      </div>
+      )}
     </div>
-  );
+  )
 }
 
 export default Login;

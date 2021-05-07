@@ -49,10 +49,20 @@ const admin = firebaseAdmin.initializeApp({
   storageBucket: "gs://khohuai-v2.appspot.com"
 });
 
-const firebaseApp = firebase.initializeApp(config.firebaseConfig);
+var firebaseConfig = {
+  apiKey: "AIzaSyBN3QqOyoNoDiX5prLxCSKN7Q5k1i3cjGg",
+  authDomain: "khohuai-admin.firebaseapp.com",
+  projectId: "khohuai-admin",
+  storageBucket: "khohuai-admin.appspot.com",
+  messagingSenderId: "108256796724",
+  appId: "1:108256796724:web:41996f0a36c1a496bf2a61",
+  measurementId: "G-FX5WHX5ZPH"
+};
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 //firestore
-const firestore = admin.firestore();
+const firestore = firebaseApp.firestore();
 
 //email&password login
 const auth = firebaseApp.auth();

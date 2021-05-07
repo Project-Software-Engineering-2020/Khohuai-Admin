@@ -18,7 +18,6 @@ const LastOders = ({ data }) => {
                                     <th>หมายเลขคำสั่งซื้อ</th>
                                     <th>วัน/เวลา</th>
                                     <th>จำนวน(ใบ)</th>
-                                    <th>ราคารวม(บาท)</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -33,7 +32,6 @@ const LastOders = ({ data }) => {
                                                 </Moment></td>
                                                 {/* <td><span className="badge badge-success">success</span></td> */}
                                                 <td>{item.quantity}</td>
-                                                <td>{item.totalprice}</td>
                                                 {/* <td>
                                                 <div className="sparkbar" data-color="#00a65a" data-height={20}>90,80,90,-70,61,-83,63</div>
                                             </td> */}
@@ -49,9 +47,9 @@ const LastOders = ({ data }) => {
                     {/* /.table-responsive */}
                 </div>
                 {/* /.card-body */}
-                <div className="card-footer clearfix">
+                <div className="card-footer">
                     {/* <a href="javascript:void(0)" className="btn btn-sm btn-info float-left">Place New Order</a> */}
-                    <a href="/invoice" className="btn btn-secondary float-right">ดูคำสั่งซื้อทั้งหมด</a>
+                    <a href="/invoice" className="float-right">ดูคำสั่งซื้อทั้งหมด</a>
                 </div>
                 {/* /.card-footer */}
             </div>

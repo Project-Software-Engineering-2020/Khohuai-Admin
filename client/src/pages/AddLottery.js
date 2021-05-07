@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import "../stylesheets/AddLottery.css";
 import { storage, firestore } from '../firebase/firebase';
+import { getNgud } from '../redux/action/ngudAction'
 import { Modal,Button } from "react-bootstrap"
+import { api } from '../environment'
+import { useDispatch,useSelector } from 'react-redux'
 
 function AddLottery() {
+
+  const ngud = useSelector(state => state.ngud);
+  const dispatch = useDispatch();
+
   const [image, setimage] = useState([]);
   const [image_upload, setimage_upload] = useState([]);
   const [number, setnumber] = useState("");
@@ -72,9 +79,12 @@ function AddLottery() {
     // data.append("image", image_url);
     // data.append("number", number);
 
-    const insert = () => {
+    const insert = async () => {
       console.log(image_boss);
-      Axios.post("http://localhost:3002/lottery", { number, image_boss }).then((res) => {
+
+      const _ngud = "01";
+ 
+      await Axios.post(api + "/lottery", { number, image_boss, _ngud }).then((res) => {
         if(res.data === "success") {
           setShow(true);
         }
@@ -85,9 +95,11 @@ function AddLottery() {
     // console.log(image);
 
     await image_upload.forEach(async (item) => {
-      const imageName = "bosss"
+
+      const imageName = item.name;
+
       const uploadTask = storage.ref("lotterys/" + imageName).put(item);
-      let buff = ""
+    
       await uploadTask.on(
         "state_change",
         (snapshot) => { },
@@ -134,6 +146,11 @@ function AddLottery() {
 
   };
 
+
+  useEffect(() => {
+    dispatch(getNgud())
+  }, [])
+
   return (
     <div>
       <div className="d-flex justify-content-center">
@@ -143,7 +160,7 @@ function AddLottery() {
               <h3 className="card-title pt-2">เพิ่มสลาก</h3>
             </div>
 
-            <form>
+            <form onSubmit={UploadLottery}>
               <div className="card-body">
                 <div className="d-flex justify-content-center">
                   <div className="col-7">

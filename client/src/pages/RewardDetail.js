@@ -7,6 +7,7 @@ import Moment from 'react-moment';
 import 'moment/locale/th';
 import "./Reward.css";
 import Axios from 'axios'
+import { api } from '../environment'
 const RewardDetail = (props) => {
 
   const id = props.match.params.rewardid
@@ -49,7 +50,7 @@ const RewardDetail = (props) => {
 
       const im = image_complete[0];
 
-      await Axios.put("http://localhost:3002/reward/uploadslip", { id, im }).then((res) => {
+      await Axios.put(api + "/reward/uploadslip", { id, im }).then((res) => {
         if (res.data === "success") {
           dispatch(getDetailUserReward(id));
           handleClose();
@@ -121,7 +122,7 @@ const RewardDetail = (props) => {
 
                   <p className="line"  >
                     สถานะ : รอการอัพโหลดหลักฐานการโอนเงินรางวัล
-                    <button type="button" onClick={handleShow}>อัพโหลด</button>
+                    <a type="button" onClick={handleShow}>&nbsp;&nbsp; อัพโหลด  </a>
                   </p>
 
               }
@@ -201,7 +202,7 @@ const RewardDetail = (props) => {
             lotterydate ?
               lotterydate.map((lottery) => {
                 return <img
-                  className="slip"
+                  className="full"
                   src={lottery}
                 />
               })
@@ -237,7 +238,7 @@ const RewardDetail = (props) => {
         </Modal.Header>
         <Modal.Body>
           <div>
-              <img src={reward.data.slip} width={300} alt="สลิปโอนเงิน"/>
+              <img src={reward.data.slip} className="full" alt="สลิปโอนเงิน"/>
           </div>
         </Modal.Body>
       </Modal>

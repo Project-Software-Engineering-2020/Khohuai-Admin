@@ -26,11 +26,8 @@ const Reward = (props) => {
                         <th>เงินรางวัล</th>
                         <th>สถานะ</th>
                     </tr>
-
                 </thead>
                 <tbody>
-                    {console.log(reward.data)}
-
                     {reward.data.map((item, index) => {
                         return (
                             <tr>

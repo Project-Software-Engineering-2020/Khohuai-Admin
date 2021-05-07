@@ -18,7 +18,6 @@ const getAllUser = async (req, res, next) => {
                     phone: doc.data().phone
                 });
             });
-            console.log(userArray);
             res.status(200).send(userArray);
         }
     } catch (error) {

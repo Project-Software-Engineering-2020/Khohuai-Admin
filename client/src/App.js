@@ -48,17 +48,20 @@ export default function App() {
           <Switch>
             <Route path="/adminLogin" component={Login} />
            
-            <Route path="/lottery/create" component={AddLottery} />
+    
             <Route path="/" exact={true} component={Dashboard} />
-            <Route path="/lottery" exact={true} component={Lottery} />
+            
             <Route path="/invoice" exact={true} component={Invoice} />
             {/* <Route path="/user" exact={true} component={User} /> */}
             <Route path="/user" exact={true} component={Users} />
             <Route path="/user/:id" component={Userinvoice} />
             <Route path="/invoice/:id" component={Detail} />
-            <Route path="/lottery/ngud" exact={true} component={Ngud} />
-            <Route path="/lottery/ngud/:id" exact={true} component={Reward} />
-            <Route path="/lottery/ngud/reward/:rewardid" component={RewardDetail}/>
+            <Route path="/lottery" exact={true} component={Ngud} />
+            <Route path="/lottery/:ngud" exact={true} component={Lottery} />
+            <Route path="/lottery/:ngud/create" component={AddLottery} />
+
+            {/* <Route path="/lottery/ngud/:id" exact={true} component={Reward} />
+            <Route path="/lottery/ngud/reward/:rewardid" component={RewardDetail}/> */}
           </Switch>
         </div>
       </Router>
