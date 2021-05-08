@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import { Line,Bar } from 'react-chartjs-2';
 import { useSelector, useDispatch } from 'react-redux';
 import { getChart } from '../redux/action/chartAction';
 import { getNgud } from '../redux/action/ngudAction';
@@ -25,56 +25,69 @@ const Chart = () => {
         dispatch(getChart("ngud", number_ngud));
     }
 
+    let ArrColor = [];
+    const randomColor = (len) => {
+        console.log(len)
+        
+        let color = ""
+        let r, g, b;
+        for (let i = 0; i < len; i++) {
+            r = Math.floor(Math.random() * 200);
+            g = Math.floor(Math.random() * 200);
+            b = Math.floor(Math.random() * 200);
+            color = 'rgba(' + r + ', ' + g + ', ' + b + ',1)'
+            ArrColor.push(color)
+        }
+        return ArrColor;
+    }
+
+
     const data = {
         labels: chart.labels,
         datasets: [{
             label: 'ยอดขายล็อตเตอรี่ (ใบ)',
             data: chart.data,
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
+            fill: false,
+            backgroundColor: randomColor(chart.data.length),
+            borderColor: ArrColor,
+            borderWidth: 3
         }],
 
     }
 
     return (
-        <div className="card p-3">
-            <div className="header-chart">
-                <div>
-                    <h3 className="card-title">ยอดขายล็อตเตอรี่รายวัน</h3>
-                </div>
-                <div>
-                    งวดประจำวันที่&nbsp;&nbsp;
+        <div>
+            {/* {
+                chart.isFetching ?
+                    null
+                    : */}
+                    <div className="card p-3">
+                        <div className="header-chart">
+                            <div>
+                                <h3 className="card-title">ยอดขายล็อตเตอรี่รายวัน</h3>
+                            </div>
+                            <div>
+                                งวดประจำวันที่&nbsp;&nbsp;
                     <select onChange={e => OnchangeChart(e.target.value)}>
-                        {ngud.data.map((item) => {
-                            return (
-                                <option value={item.ngud}>
-                                    {item.name}
-                                </option>
-                            )
-                        })}
-                    </select>
-                </div>
-            </div>
-            <Line
-                data={data}
-                height={170}
-            />
+                                    {ngud.data.map((item) => {
+                                        return (
+                                            <option value={item.ngud}>
+                                                {item.name}
+                                            </option>
+                                        )
+                                    })}
+                                </select>
+                            </div>
+                        </div>
+                        <Line
+                            data={data}
+                            height={150}
+                        />
+                    </div>
+            {/* } */}
+
         </div>
+
     )
 }
 

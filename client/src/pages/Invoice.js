@@ -15,78 +15,17 @@ const DatatablePage = () => {
     await dispatch(setHeader("Invoices"))
   }, [])
 
-  // const data = {
 
-  //   columns: [
-
-  //     {
-  //       label: 'เลขที่ใบเสร็จ',
-  //       field: 'num',
-  //       sort: 'asc',
-  //       width: 250
-  //     },
-  //     {
-  //       label: 'วัน/เวลา',
-  //       field: 'date',
-  //       sort: 'asc',
-  //       width: 270
-  //     },
-  //     {
-  //       label: 'ชื่อผู้ซื้อ',
-  //       field: 'user',
-  //       sort: 'asc',
-  //       width: 200
-  //     },
-  //     {
-  //       label: 'จำนวน',
-  //       field: 'quantity',
-  //       sort: 'asc',
-  //       width: 100
-  //     },
-  //     {
-  //       label: 'ยอดเงิน',
-  //       field: 'balance',
-  //       sort: 'asc',
-  //       width: 150
-  //     },
-  //     {
-  //       label: 'สถานะรางวัล',
-  //       field: 'status',
-  //       sort: 'asc',
-  //       width: 100
-  //     },
-  //     {
-  //       label: 'รายละเอียด',
-  //       field: 'description',
-  //       sort: 'asc',
-  //       width: 100
-  //     }
-  //   ],
-  //   rows: [
-
-  //     {
-  //       description: <MDBBtn color="blue" size="sm">ดูเพิ่มเติม</MDBBtn>
-  //     }
-  //   ]
-  // };
 
   return (
-    // <div>
 
-    //   <MDBDataTable
-    //   striped
-    //   bordered
-    //   small
-    //   data={data}
-    // /> 
-    // </div>
     <div className="card">
       <div className="card-header border-transparent ">
         <h2 className="card-title pt-2">คำสั่งซื้อทั้งหมด</h2>
       </div>
       <div className="card-body p-0">
         <div className="table-responsive">
-          <table className="table m-0">
+          <table className="table m-0 table-hover">
             <thead>
               <tr>
                 <th>#</th>

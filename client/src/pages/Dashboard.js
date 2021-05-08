@@ -13,7 +13,6 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   let invoice = useSelector((state) => state.invoice);
   let user = useSelector((state) => state.user);
-  let ngud = useSelector(state => state.ngud);
   const lottery = useSelector(state => state.lottery)
 
   useEffect(async () => {
@@ -27,7 +26,6 @@ const Dashboard = () => {
 
   return (
     <div>
-      {/* <h2>Dashboard</h2> */}
       <div>
         <div className="row">
           <div className="col-lg-4 col-6">
@@ -82,13 +80,13 @@ const Dashboard = () => {
           <Chart />
         </div>
         <div className="col-lg-5 col-12">
-          <LastOders data={invoice.data} />
+          <Chart />
         </div>
       </div>
-
-
-
-
+      <div className="mt-2">
+        <LastOders data={invoice.data} />
+      </div>
+      
     </div>
   );
 };

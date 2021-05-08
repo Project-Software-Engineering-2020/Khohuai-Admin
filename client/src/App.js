@@ -30,15 +30,15 @@ export default function App() {
   const auth = useSelector(state => state.auth)
   const user = true;
   return (
-    <div>
+    <div className="wrapper">
       <Router>
         {/* {auth.status === false ?
           null
           :
           <div> */}
-            <Header />
-            <Menu />
-          {/* </div>
+        <Header />
+        <Menu />
+        {/* </div>
 
 
 
@@ -47,10 +47,10 @@ export default function App() {
         <div className="content-wrapper p-3 bg-white">
           <Switch>
             <Route path="/adminLogin" component={Login} />
-           
-    
+
+
             <Route path="/" exact={true} component={Dashboard} />
-            
+
             <Route path="/invoice" exact={true} component={Invoice} />
             {/* <Route path="/user" exact={true} component={User} /> */}
             <Route path="/user" exact={true} component={Users} />
@@ -59,9 +59,8 @@ export default function App() {
             <Route path="/lottery" exact={true} component={Ngud} />
             <Route path="/lottery/:ngud" exact={true} component={Lottery} />
             <Route path="/lottery/:ngud/create" component={AddLottery} />
-
-            {/* <Route path="/lottery/ngud/:id" exact={true} component={Reward} />
-            <Route path="/lottery/ngud/reward/:rewardid" component={RewardDetail}/> */}
+            <Route path="/lottery/:ngud/reward" exact={true} component={Reward} />
+            <Route path="/lottery/:ngud/reward/:rewardid" component={RewardDetail} />
           </Switch>
         </div>
       </Router>

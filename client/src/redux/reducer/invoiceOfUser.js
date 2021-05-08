@@ -7,7 +7,7 @@ function invoice(state = initialState, action) {
 
     switch (action.type) {
 
-        case 'isFetching_chart':
+        case 'isFetching_invoice_detail':
             state = {
                 ...state,
                 isFetching: true,
@@ -15,7 +15,7 @@ function invoice(state = initialState, action) {
             }
             return state;
 
-        case 'Fetched_chart':
+        case 'Fetched_invoice_of_user':
             state = {
                 ...state,
                 isFetching: false,

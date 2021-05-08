@@ -90,6 +90,7 @@ import "../stylesheets/login.css";
 import { setloginWithUsername } from "../redux/action/authAction";
 import Axios from "axios";
 import { useSelector } from 'react-redux';
+import { api } from '../environment';
 
 function Login() {
   let history = useHistory();
@@ -111,7 +112,7 @@ function Login() {
     e.preventDefault();
     // alert(email)
     try {
-      Axios.post("http://localhost:3002/auth/login", {
+      Axios.post(api + "/auth/login", {
         email,
         password,
       }).then((res) => {

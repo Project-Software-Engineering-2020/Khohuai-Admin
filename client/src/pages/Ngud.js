@@ -13,8 +13,12 @@ import "../../node_modules/@syncfusion/ej2-inputs/styles/material.css";
 import "../../node_modules/@syncfusion/ej2-popups/styles/material.css";
 import "../../node_modules/@syncfusion/ej2-react-calendars/styles/material.css";
 import { setHeader } from '../redux/action/headerAction'
+import { api } from '../environment'
 
-function Ngud() {
+function Ngud(props) {
+
+  const ngudid = props.match.params.ngud;
+
   const dispatch = useDispatch();
   const ngud = useSelector((state) => state.ngud);
 
@@ -33,7 +37,7 @@ function Ngud() {
   const maxDate = new Date("05/16/2021 12:00 AM");
 
   const chechLottery = async () => {
-    await Axios.get("http://localhost:3002/ngud/check_prize").then((res) => {
+    await Axios.get(api + "/ngud/check_prize").then((res) => {
       if (res.data === "success") {
         alert("ตรวจรางวัลสำเร็จ");
       }
@@ -73,16 +77,16 @@ function Ngud() {
         </div>
         <div className="card-body p-0">
           <div className="table-responsive">
-            <table className="table m-0">
+            <table className="table m-0 table-hover">
               <thead>
                 <tr>
                   <th>งวดที่</th>
                   <th>งวดสลากประจำวันที่</th>
                   <th>วัน/เวลา เริ่มจำหน่าย</th>
                   <th>วัน/เวลา สิ้นสุดการจำหน่าย</th>
+                  <th>สถานะ</th>
                   <th className="text-center">สลากในระบบ (ใบ)</th>
                   <th>ตรวจผลรางวัล</th>
-                  <th>ผู้ถูกรางวัล</th>
                 </tr>
               </thead>
               <tbody>
@@ -103,23 +107,26 @@ function Ngud() {
                           {item.end}
                         </Moment>
                       </td>
+                      <td>
+                        {
+                          item.open ?
+                            <span className="badge badge-warning">เปิดการขาย</span>
+                            :
+                            <span className="badge badge-success">ปิดการขายแล้ว</span>
+                        }
+                      </td>
                       <td className="text-center">
                         <div>{item.total_onhand + " / " + item.total_lottery}</div>
-                        <div><a href={"lottery/" + item.ngud}>จัดการสลาก</a></div>
+                        <div><a className="btn btn-sm" href={"lottery/" + item.ngud}>จัดการสลาก</a></div>
                       </td>
                       <td>
                         {item.check_prize ?
-                          <span>สำเร็จ</span>
+                          <span><a href={"lottery/" + item.ngud + "/reward"}>ผู้ถูกรางวัล</a></span>
                           :
                           <span className="btn btn-sm btn-info float-left" onClick={e => chechLottery()}>ตรวจรางวัล</span>
                         }
                       </td>
-                      <td>
-                        <span>
-                          <a href={"ngud/" + item.ngud}>รายละเอียด</a>
-                        </span>
-                      </td>
-
+                      
                     </tr>
                   );
                 })}

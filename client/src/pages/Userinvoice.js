@@ -107,7 +107,7 @@ const Userinvoice = (props) => {
                     return (
                       <tr key={index}>
                         <td>{index + 1}</td>
-                        <td><a href={"/invoice/" + item.invoiceid}>{item.invoiceid}</a></td>
+                        <td><a href={"/invoice/" + item.id}>{item.id}</a></td>
                         <td><Moment format="DD-MM-YYYY HH:mm:ss">
                           {item.date}
                         </Moment></td>

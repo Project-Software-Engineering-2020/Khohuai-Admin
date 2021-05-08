@@ -76,12 +76,6 @@ const AllLottery = (props) => {
             null
         }
 
-        {/* <MDBCard className="p-4"> */}
-
-        {/* <Button variant="primary" onClick={handleShow}>
-            Launch demo modal
-           </Button> */}
-
         <Link to={"/lottery/"+ngudid+"/create"}>
           <button className="btn btn-primary">
             เพิ่มสลาก

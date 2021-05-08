@@ -123,8 +123,6 @@ function AddLottery() {
               // }
               await insert();
 
-              console.log("121212")
-
             });
         }
 

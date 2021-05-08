@@ -2,21 +2,23 @@ const { firestore } = require('../firebaseDB');
 
 const getAllUserWin = async (req, res) => {
 
+    const ngudid = req.params.id;
+
     let ngud = [];
     let data = [];
 
     try {
 
-        const ngudDB = await firestore.collection('ngud').orderBy("end", "desc").get()
-        await ngudDB.docs.forEach(doc => {
-            ngud.push({
-                ngud: doc.id,
-                end: doc.data().end,
-                start: doc.data().start,
-            })
-        });
+        // const ngudDB = await firestore.collection('ngud').orderBy("end", "desc").get()
+        // await ngudDB.docs.forEach(doc => {
+        //     ngud.push({
+        //         ngud: doc.id,
+        //         end: doc.data().end,
+        //         start: doc.data().start,
+        //     })
+        // });
 
-        await firestore.collection("rewards").where("ngud", "==", ngud[0].ngud).get().then(async (docs) => {
+        await firestore.collection("rewards").where("ngud", "==", ngudid).get().then(async (docs) => {
 
             await docs.forEach((doc) => {
                 data.push(
@@ -32,9 +34,10 @@ const getAllUserWin = async (req, res) => {
 
                     })
             })
-            res.send(data);
+           
         })
-
+        console.log(data);
+        res.send(data);
 
     } catch (error) {
         console.log(error)

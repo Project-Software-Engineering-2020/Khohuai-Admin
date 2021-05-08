@@ -16,3 +16,8 @@ code {
 .header-name {
   font-weight: normal;
 }
+
+td 
+{
+    vertical-align: middle;
+}

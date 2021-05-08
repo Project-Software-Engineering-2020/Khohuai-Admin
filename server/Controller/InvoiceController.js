@@ -74,6 +74,8 @@ const getInvoice = async (req, res) => {
     let ngud_dateee;
     let _status_check = false;
 
+    let data = [];
+
     try {
 
         const ngud = await firestore.collection('ngud').orderBy("end", "desc").get()
@@ -139,13 +141,16 @@ const getInvoiceOfUser = async (req, res) => {
             invoice_customer = doc.data();
         })
 
+
         const invoice = await firestore.collection('invoices')
             .where("userid", "==", userid)
             .orderBy("date", "desc")
             .get()
 
         await invoice.docs.forEach(doc => {
+
             invoiceArray.push({
+                id: doc.id,
                 date: doc.data().date.toDate(),
                 ngud: doc.data().ngud,
                 totalprice: doc.data().totalprice,
