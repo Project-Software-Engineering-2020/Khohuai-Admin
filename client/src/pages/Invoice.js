@@ -12,7 +12,7 @@ const DatatablePage = () => {
 
   useEffect(async () => {
     await dispatch(getAllInvoice());
-    await dispatch(setHeader("Invoices"))
+    await dispatch(setHeader("คำสั่งซื้อทั้งหมด"))
   }, [])
 
 
@@ -20,8 +20,16 @@ const DatatablePage = () => {
   return (
 
     <div className="card">
-      <div className="card-header border-transparent ">
-        <h2 className="card-title pt-2">คำสั่งซื้อทั้งหมด</h2>
+      <div className="h-invoice">
+        <div>
+          <h2 className="card-title pt-2">  คำสั่งซื้อ  </h2>
+        </div>
+        <div>
+          งวดประจำวันที่
+          <select>
+            <option value="01">16 พฤษภาคม 2564</option>
+          </select>
+        </div>
       </div>
       <div className="card-body p-0">
         <div className="table-responsive">
@@ -42,13 +50,13 @@ const DatatablePage = () => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td><a href={"/invoice/"+item.invoiceid}>{item.invoiceid}</a></td>
+                    <td><a href={"/invoice/" + item.invoiceid}>{item.invoiceid}</a></td>
                     <td><Moment format="DD-MM-YYYY HH:mm:ss">
                       {item.date}
                     </Moment></td>
                     <td>{item.quantity}</td>
                     <td>{item.totalprice}</td>
-                    <td><a href={"/invoice/"+item.invoiceid} class="btn btn-sm btn-info float-left">ดูเพิ่มเติม</a></td>
+                    <td><a href={"/invoice/" + item.invoiceid} class="btn btn-sm btn-info">ดูเพิ่มเติม</a></td>
                   </tr>
                 )
 

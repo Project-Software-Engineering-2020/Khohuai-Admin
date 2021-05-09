@@ -16,8 +16,15 @@ const RewardDetail = (props) => {
   const reward = useSelector(state => state.reward)
   const ngud = useSelector((state) => state.ngud);
 
+  const [image, setimage] = useState();
+  const [imagePreview, setImagePreview] = useState()
+
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false)
+    setimage();
+    setImagePreview();
+  };
   const handleShow = () => setShow(true);
 
   const [slip, setSlip] = useState(false);
@@ -27,15 +34,23 @@ const RewardDetail = (props) => {
   const [showLottery, setshowLottery] = useState(false);
   const [lotterydate, setlotterydate] = useState([])
   const handleLotteryClose = () => setshowLottery(false);
-  
+
   const handleShowLottery = (item) => {
     setshowLottery(true);
     setlotterydate(item)
   }
 
-  const [image, setimage] = useState();
-
-
+  const handleChangeImage = (e) => {
+    let file = e.target.files[0];
+    if (file) {
+      setimage(file);
+      let reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      }
+      reader.readAsDataURL(file);
+    }
+  };
 
   const upload = async () => {
 
@@ -102,7 +117,7 @@ const RewardDetail = (props) => {
           <div className="card-body">
             <div className="tab-content p-0">
               <div className="row mb-3 ml-0">
-                <a href={"/lottery/ngud" } class="backBtn"><i class="fa fa-chevron-left" aria-hidden="true"></i>  ย้อนกลับ</a>
+                <a href={"/lottery/ngud"} class="backBtn"><i class="fa fa-chevron-left" aria-hidden="true"></i>  ย้อนกลับ</a>
               </div>
               {/* Morris chart - Sales */}
               <h3> หมายเลขรับรางวัล : {id} </h3>
@@ -220,9 +235,12 @@ const RewardDetail = (props) => {
           <Modal.Title>หลักฐานการโอนเงิน</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-
-          <input type="file" onChange={e => setimage(e.target.files[0])}></input>
-          {/* previewimage */}
+          <div>
+             <input type="file" onChange={e => handleChangeImage(e)}></input>
+          </div>
+          <div>
+                <img src={imagePreview} className="full" alt="preview-slip"></img>
+          </div>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
@@ -240,7 +258,7 @@ const RewardDetail = (props) => {
         </Modal.Header>
         <Modal.Body>
           <div>
-              <img src={reward.data.slip} className="full" alt="สลิปโอนเงิน"/>
+            <img src={reward.data.slip} className="full" alt="สลิปโอนเงิน" />
           </div>
         </Modal.Body>
       </Modal>

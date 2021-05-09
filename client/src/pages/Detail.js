@@ -85,7 +85,6 @@ export default function Detail(props) {
                               :
                               <span className="badge badge-warning">รอการประการผล</span>
                             }
-
                           </td>
 
                           <td>{item.prize.map((p) => {

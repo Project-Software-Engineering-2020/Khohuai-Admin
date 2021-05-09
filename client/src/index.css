@@ -17,7 +17,20 @@ code {
   font-weight: normal;
 }
 
-td 
-{
-    vertical-align: middle;
+table.table thead th {
+  text-align: center;
+}
+
+table.table th, table.table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.h-invoice {
+  padding: .75rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0,0,0,.03);
+  border-bottom: 1px solid rgba(0,0,0,.125);
 }

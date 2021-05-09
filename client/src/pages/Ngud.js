@@ -39,10 +39,11 @@ function Ngud(props) {
   const chechLottery = async () => {
     await Axios.get(api + "/ngud/check_prize").then((res) => {
       if (res.data === "success") {
-        alert("ตรวจรางวัลสำเร็จ");
+        dispatch(getNgud());
       }
     })
   }
+
 
   useEffect(() => {
     dispatch(getNgud());
@@ -98,12 +99,12 @@ function Ngud(props) {
                         {item.end}
                       </Moment></td>
                       <td>
-                        <Moment format="DD MMMM YYYY HH:mm">
+                        <Moment format="DD MM YYYY HH:mm">
                           {item.start}
                         </Moment>
                       </td>
                       <td>
-                        <Moment format="DD MMMM YYYY HH:mm">
+                        <Moment format="DD MM YYYY HH:mm">
                           {item.end}
                         </Moment>
                       </td>
@@ -123,7 +124,7 @@ function Ngud(props) {
                         {item.check_prize ?
                           <span><a href={"lottery/" + item.ngud + "/reward"}>ผู้ถูกรางวัล</a></span>
                           :
-                          <span className="btn btn-sm btn-info float-left" onClick={e => chechLottery()}>ตรวจรางวัล</span>
+                          <span className="btn btn-sm btn-info" onClick={e => chechLottery()}>ตรวจรางวัล</span>
                         }
                       </td>
                       

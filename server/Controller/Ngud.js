@@ -211,19 +211,21 @@ const check_prize = async (req, res) => {
     let win = [];
     let reward = 0;
     let lottery_invoice = [];
-
-
     let AllLottery = [];
 
-    await firestore.collection("lottery").get((docs) => {
-        docs.forEach((doc) => {
-            AllLottery.push({
-                id: doc.id,
-                ngud: doc.data().ngud,
-                photoURL: doc.data().photoURL
-            })
+
+    await firestore.collection("ngud").doc(ngud_id).update({ open: false });
+
+    const lotteryDB = await firestore.collection("lottery").get();
+    await lotteryDB.docs.forEach((doc) => {
+        AllLottery.push({
+            id: doc.id,
+            ngud: doc.data().ngud,
+            photoURL: doc.data().photoURL
         })
     })
+
+
 
     let idUser = "admin";
     let data = "admin";
@@ -247,7 +249,7 @@ const check_prize = async (req, res) => {
         total_item += lot.photoURL.length;
     })
 
-    console.log(Tcart);
+    // console.log(Tcart);
 
     // await createInvoice(data, Tcart, idUser, total_item);
     let data_insert = {
@@ -266,26 +268,27 @@ const check_prize = async (req, res) => {
         lastname: "admin"
     }
 
-    console.log("dataInsrt  ", data_insert);
+    // console.log("dataInsrt  ", data_insert);
 
-    const invoice = await firestore.collection("invoices").doc().set(data_insert).then((res) => {
-        console.log("invoice เพิ่มแล้ว")
+    //     const invoice = await firestore.collection("invoices").doc().set(data_insert).then((res) => {
+    //         console.log("invoice เพิ่มแล้ว")
+    //  })
 
-        // //ลบ item ในตะกร้า
-        // Mycart.map((item) => {
-        //     firestore.collection("users").doc(uid)
-        //         .collection("cart").doc(item.id).delete()
-        //         .then((success) => { console.log("clear ตะกร้าแล้ว") })
-        //         .catch((err) => console.log("ลบไม่ได้", err));
-        // })
-    })
+    //ลบ item ในตะกร้า
+    // Tcart.map((item) => {
+    //     firestore.collection("users").doc(uid)
+    //         .collection("cart").doc(item.id).delete()
+    //         .then((success) => { console.log("clear ตะกร้าแล้ว") })
+    //         .catch((err) => console.log("ลบไม่ได้", err));
+    // })
 
-    await firestore.collection("ngud").doc(ngud_id).update(
-        {
-            total_onhand: 0,
-            total_lottery: 0,
-            open: false
-        })
+
+    // await firestore.collection("ngud").doc(ngud_id).update(
+    //     {
+    //         total_onhand: 0,
+    //         total_lottery: 0,
+    //         open: false
+    //     })
 
 
     await Axios.get("https://lotto.api.rayriffy.com/latest").then((res) => {
@@ -302,9 +305,12 @@ const check_prize = async (req, res) => {
         })
     });
 
+    let this_invoice_have_win = false;
+
     await invoices.forEach(async (invoice, i) => {
 
         lottery_invoice = [];
+
 
         invoice.lottery.forEach(async (your_lottery, index) => {
 
@@ -377,19 +383,20 @@ const check_prize = async (req, res) => {
                         win: false
                     }
                 )
-                firestore.collection("invoices").doc(invoice.id).update(
-                    {
-                        lottery: lottery_invoice,
-                        result: true,
-                        win: false,
-                        check_date: new Date
-                    }
-                )
+                // firestore.collection("invoices").doc(invoice.id).update(
+                //     {
+                //         lottery: lottery_invoice,
+                //         result: true,
+                //         win: false,
+                //         check_date: new Date
+                //     }
+                // )
 
             }
             else {
                 //ถูกรางวัล
-                lottery_invoice.push(
+                this_invoice_have_win = true
+                await lottery_invoice.push(
                     {
                         number: your_lottery.number,
                         status: true,
@@ -400,39 +407,37 @@ const check_prize = async (req, res) => {
                         win: true
                     }
                 )
-                firestore.collection("invoices").doc(invoice.id).update(
-                    {
-                        lottery: lottery_invoice,
-                        result: true,
-                        win: true,
-                        check_date: new Date
-                    }
-                )
+
 
             }
         })
 
+        await firestore.collection("invoices").doc(invoice.id).update(
+            {
+                lottery: lottery_invoice,
+                result: true,
+                win: true,
+                check_date: new Date
+            }
+        )
+
     })
 
-    await createReward();
-    res.status(200).send("success");
+    await createReward(res,ngud_id);
+ 
 
 }
 
-const createReward = async () => {
-
-
-    // invoicesDB = invoicesDB.where("win", "==", true)
+const createReward = async (res,ngud_id) => {
 
     let invoices = [];
     let user_win = [];
     let dataWin = [];
+    let inDataWin = false;
 
     try {
         await firestore.collection('invoices').get()
             .then(async (docs) => docs.forEach(async doc => {
-
-                console.log("uid = == ", doc.data().userid);
 
                 if (doc.data().win === true) {
                     await invoices.push({
@@ -454,26 +459,31 @@ const createReward = async () => {
 
             }));
 
-        console.log("invoices = ", invoices);
-
-        console.log(user_win)
+        // console.log(user_win)
 
         //remove duplicate
         user_win = [...new Set(user_win)];
+        // user_win = [];
+        // user_win.push('xm1thM0BN8NxoqnkIghKVtpiX263');
 
+        dataWin = [];
+        let book_name = ""
+        let book_number = ""
+        let book_provider = ""
 
-        user_win.map(async (userid) => {
+        console.log(user_win);
 
-            console.log("uid   ", userid)
-            let book_name = ""
-            let book_number = ""
-            let book_provider = ""
+        await user_win.map(async (userid, index) => {
 
-            dataWin = [];
+            book_name = ""
+            book_number = ""
+            book_provider = ""
 
             await invoices.map(async (invoice) => {
 
                 if (invoice.uid === userid) {
+
+                    console.log("invoice  ", invoice.id)
 
                     await invoice.lottery.map(async (item_win) => {
 
@@ -483,46 +493,29 @@ const createReward = async () => {
                             book_number = invoice.book_number;
                             book_provider = invoice.book_provider;
 
-                            let inArr = false;
 
-                            if (dataWin.length > 0) {
+                            inDataWin = dataWin.some(item => item.number === item_win.number);
+  
 
-                                // ตรวจสอบว่าเคยมี แล้วหรือยัง 
-                                await dataWin.map((item) => {
-                                    if (item.number === item_win.number) {
+                            // console.log(item_win.number, "   inArr  ", inDataWin)
 
-                                        return inArr = true
-                                    }
-                                    else {
-                                        return inArr = false
-                                    }
-                                })
+                            inDataWin ?
 
-                            }
-                            else {
-                                //เพิ่มลง Arr ครั้งแรก
-                                inArr = false;
-                            }
+                                dataWin = await dataWin.map((w) =>
 
-                            dataWin =
+                                    w.number === item_win.number ?
+                                        {
+                                            ...w,
+                                            qty: w.qty + item_win.qty,
+                                            lottery: [...w.lottery, ...item_win.lottery]
+                                        }
+                                        :
+                                        w
+                                )
 
-                                inArr ?
+                                :
 
-                                    dataWin.map((w) =>
-
-                                        w.number === item_win.number ?
-                                            {
-                                                ...w,
-                                                qty: w.qty + item_win.qty,
-                                                lottery: [...w.lottery, ...item_win.lottery]
-                                            }
-                                            :
-                                            w
-                                    )
-
-                                    :
-
-                                    [...dataWin,
+                                await dataWin.push(
                                     {
                                         number: item_win.number,
                                         lottery: item_win.lottery,
@@ -531,17 +524,17 @@ const createReward = async () => {
                                         reward: item_win.rewards,
                                         win: item_win.status
                                     }
-                                    ]
+                                )
 
                         }
-                        return
+
                     })
                 }
-                return
+
 
             })
+            console.log("user ", index, "   =>  ", dataWin);
 
-            console.log("data", dataWin);
 
             let total = 0;
             let chage = 0;
@@ -571,8 +564,9 @@ const createReward = async () => {
                 }
             );
 
-            await firestore.collection("ngud").doc("01").update({check_prize:true})
+            await firestore.collection("ngud").doc(ngud_id).update({ check_prize: true })
         })
+        res.status(200).send("success");
     }
     catch (err) {
         console.log(err)

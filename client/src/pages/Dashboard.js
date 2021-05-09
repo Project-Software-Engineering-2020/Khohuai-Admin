@@ -16,7 +16,7 @@ const Dashboard = () => {
   const lottery = useSelector(state => state.lottery)
 
   useEffect(async () => {
-    const _header = "Dashboard";
+    const _header = "แดชบอร์ด";
     await dispatch(setHeader(_header));
     dispatch(getAllInvoice());
     dispatch(getAllUser());
