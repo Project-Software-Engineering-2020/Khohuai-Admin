@@ -54,85 +54,12 @@ const getAllLottery = async (req, res, next) => {
             });
             res.status(200).send(lotteryArray);
         }
-        // }
-        // else {
-        //     console.log("คุณยังไม่ได้อยู่ในช่วงเวลาเปิดการขายสลาก")
-        // }
 
     } catch (error) {
         console.log(error);
     }
 }
 
-// const UploadLottery = (req, res) => {
-//     console.log(req.body, req.file);
-
-//     if (!req.file) {
-//         res.status(400).send("Error: No files found")
-//     } else {
-//         const blob = bucket.file(req.file.originalname)
-
-//         const blobWriter = blob.createWriteStream({
-//             metadata: {
-//                 contentType: req.file.mimetype
-//             }
-//         })
-
-//         blobWriter.on('error', (err) => {
-//             console.log(err)
-//         })
-
-//         blobWriter.on('finish', () => {
-//             res.status(200).send("File uploaded.")
-//         })
-
-//         blobWriter.end(req.file.buffer)
-//     }
-
-
-// const url = bucket.file('/lotterys/0.jpg');
-// url.download().then(r => { res.status(200).send()})
-// if (file) {
-//     uploadImageToStorage(file).then((success) => {
-//         res.status(200).send({
-//             status: 'success'
-//         });
-//     }).catch((error) => {
-//         console.error(error);
-//     });
-// }
-
-// }
-
-// const uploadImageToStorage = (file) => {
-//     return new Promise((resolve, reject) => {
-//         if (!file) {
-//             reject('No image file');
-//         }
-//         let newFileName = `${file.originalname}_${Date.now()}`;
-
-//         let fileUpload = bucket.file(newFileName);
-
-//         const blobStream = fileUpload.createWriteStream({
-//             metadata: {
-//                 contentType: file.mimetype
-//             }
-//         });
-
-//         blobStream.on('error', (error) => {
-//             reject('Something is wrong! Unable to upload at the moment.');
-//         });
-
-//         blobStream.on('finish', () => {
-//             // The public URL can be used to directly access the file via HTTP.
-//             const url = format(`https://storage.googleapis.com/${bucket.name}/${fileUpload.name}`);
-//             resolve(url);
-//             console.log("Upload to cloud success");
-//         });
-
-//         blobStream.end(file.buffer);
-//     });
-// }
 
 const insertLottery = async (req, res) => {
 

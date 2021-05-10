@@ -14,59 +14,8 @@ const User = () => {
     await dispatch(setHeader("Users"))
   }, []);
 
-  // const data = {
-  //   columns: [
-  //     {
-  //       label: "ID",
-  //       field: "id",
-  //       sort: "asc",
-  //       width: 50,
-  //     },
-
-  //     {
-  //       label: "ชื่อผู้ใช้",
-  //       field: "displayName",
-  //       sort: "asc",
-  //       width: 50,
-  //     },
-  //     {
-  //       label: "อีเมล",
-  //       field: "email",
-  //       sort: "asc",
-  //       width: 50,
-  //     },
-  //     {
-  //       label: "ชื่อจริง",
-  //       field: "firstname",
-  //       sort: "asc",
-  //       width: 50,
-  //     },
-  //     {
-  //       label: "นามสกุล",
-  //       field: "lastname",
-  //       sort: "asc",
-  //       width: 30,
-  //     },
-  //     {
-  //       label: "ประวัติการซื้อล่าสุด",
-  //       field: "history",
-  //       sort: "asc",
-  //       width: 30,
-  //     },
-  //   ],
-  //   rows: userData.data,
-  // };
-
   return (
-    // <div>
 
-    //   <MDBDataTable
-    //   striped
-    //   bordered
-    //   small
-    //   data={data}
-    // />
-    // </div>
     <div>
       {user.isFetching ? (
         <div></div>
@@ -82,11 +31,12 @@ const User = () => {
                 <thead>
                   <tr>
                     <th>#</th>
-                     <th>ชื่อจริง</th>
+                    <th>ชื่อจริง</th>
                     <th>นามสกุล</th>
                     <th>อีเมล</th>
                     <th>เบอร์โทรศัพท์</th>
                     <th>ประวัติการซื้อ</th>
+                    <th>ประวัติการถูกรางวัล</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -99,20 +49,11 @@ const User = () => {
                           <td>{item.lastname}</td>
                           <td>{item.email}</td>
                           <td>{item.phone}</td>
-                          {/* <td>
-                            <a href={"/invoice/" + item.invoiceid}>
-                              {item.invoiceid}
-                            </a>
-                          </td> */}
-                          {/* <td>
-                            <Moment format="DD MMMM YYYY HH:mm:ss">
-                              {item.date}
-                            </Moment>
-                          </td> */}
-                       
+         
                           <td>
                             <a href={"/user/" + item.id}>ดูเพิ่มเติม</a>
                           </td>
+                          <td></td>
                         </tr>
                       );
                     })

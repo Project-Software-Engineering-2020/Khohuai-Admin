@@ -9,15 +9,6 @@ const getAllUserWin = async (req, res) => {
 
     try {
 
-        // const ngudDB = await firestore.collection('ngud').orderBy("end", "desc").get()
-        // await ngudDB.docs.forEach(doc => {
-        //     ngud.push({
-        //         ngud: doc.id,
-        //         end: doc.data().end,
-        //         start: doc.data().start,
-        //     })
-        // });
-
         await firestore.collection("rewards").where("ngud", "==", ngudid).get().then(async (docs) => {
 
             await docs.forEach((doc) => {
@@ -30,11 +21,9 @@ const getAllUserWin = async (req, res) => {
                         win_total: doc.data().win_total,
                         win_chart: doc.data().win_chart,
                         win_amount: doc.data().win_amount,
-                        update_date: doc.data().update_date.toDate()
-
+                        update_date: doc.data().update_date.toDate(),
                     })
             })
-           
         })
         console.log(data);
         res.send(data);
@@ -50,7 +39,6 @@ const getDetailUserReward = async (req, res) => {
     let data = []
 
     await firestore.collection("rewards").doc(id).get().then((doc) => {
-        console.log(doc.data())
 
         data = {
             id: doc.id,
@@ -77,7 +65,7 @@ const uploadSlip = async (req,res)  => {
 
     const imageurl = req.body.im;
     const id = req.body.id; 
-    const date = new Date
+    const date = new Date;
 
     await firestore.collection("rewards").doc(id).update(
         {
@@ -91,8 +79,10 @@ const uploadSlip = async (req,res)  => {
     res.send("success")
 }
 
+
+
 module.exports = {
     getAllUserWin,
     getDetailUserReward,
-    uploadSlip
+    uploadSlip,
 }

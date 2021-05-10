@@ -41,10 +41,6 @@ const Users = () => {
         </li>
     );
 
-    // const options = {
-    //     sizePerPageOptionRenderer
-    // };
-
     const columns = [
         {
             dataField: 'i',
@@ -68,8 +64,15 @@ const Users = () => {
         },
         {
             dataField: 'id',
-            text: 'รายการสั่งซื้อ',
+            text: 'รายการซื้อ',
             formatter: (cell, row) => <a href={"/user/" + cell} class="btn btn-sm btn-info">
+                ดูเพิ่มเติม
+            </a>
+        },
+        {
+            dataField: 'id',
+            text: 'รายการถูกรางวัล',
+            formatter: (cell, row) => <a href={"/user/reward/" + cell} class="btn btn-sm btn-info">
                 ดูเพิ่มเติม
             </a>
         }

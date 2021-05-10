@@ -12,6 +12,7 @@ import { api } from '../environment'
 const RewardDetail = (props) => {
 
   const id = props.match.params.rewardid
+  const ngid = props.match.params.ngud;
   const dispatch = useDispatch();
   const reward = useSelector(state => state.reward)
   const ngud = useSelector((state) => state.ngud);
@@ -117,7 +118,7 @@ const RewardDetail = (props) => {
           <div className="card-body">
             <div className="tab-content p-0">
               <div className="row mb-3 ml-0">
-                <a href={"/lottery/ngud"} class="backBtn"><i class="fa fa-chevron-left" aria-hidden="true"></i>  ย้อนกลับ</a>
+                <a href={"/lottery/"+ngid+"/reward"} class="backBtn"><i class="fa fa-chevron-left" aria-hidden="true"></i>  ย้อนกลับ</a>
               </div>
               {/* Morris chart - Sales */}
               <h3> หมายเลขรับรางวัล : {id} </h3>

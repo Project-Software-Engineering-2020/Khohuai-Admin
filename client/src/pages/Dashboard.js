@@ -79,14 +79,11 @@ const Dashboard = () => {
         <div className="col-lg-7 col-12">
           <Chart />
         </div>
-        <div className="col-lg-5 col-12">
-          <Chart />
+        <div className="col-lg-5 col-12 mt-2">
+          <LastOders data={invoice.data} />
         </div>
       </div>
-      <div className="mt-2">
-        <LastOders data={invoice.data} />
-      </div>
-      
+
     </div>
   );
 };

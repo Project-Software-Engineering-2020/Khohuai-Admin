@@ -67,9 +67,9 @@ const AllLottery = (props) => {
         {
           ngud.name ?
             <h3 className="mt-2 mb-4">งวดประจำวันที่
-        <Moment format=" DD MMMM YYYY">
+
                 {ngud.name}
-              </Moment>
+    
             </h3>
             :
 

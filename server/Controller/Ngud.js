@@ -5,8 +5,11 @@ moment.locale('th');
 
 const getNgud = async (req, res, next) => {
     let data = [];
+    let current = [];
+    
     try {
-        const ngud = await firestore.collection('ngud').orderBy("end", "desc").get()
+        let ngud = await firestore.collection('ngud').orderBy("end", "desc").get();
+        
         await ngud.docs.forEach(doc => {
 
             data.push({
@@ -20,7 +23,35 @@ const getNgud = async (req, res, next) => {
                 check_prize: doc.data().check_prize
             })
         });
-        res.send(data);
+
+        await firestore.collection('ngud').where("open","==",true).get().then(docs => docs.forEach(doc => {
+
+            current.push({
+                ngud: doc.id,
+                name: moment(new Date(doc.data().end)).format('LL'),
+                end: new Date(doc.data().end),
+                start: new Date(doc.data().start),
+                total_lottery: doc.data().total_lottery,
+                total_onhand: doc.data().total_onhand,
+                open: doc.data().open,
+                check_prize: doc.data().check_prize
+            })
+        })
+        )
+
+        let ready = false;
+        if(current === undefined) {
+            ready = true;
+        }
+
+
+        let alldata =  {
+            all: data, 
+            current: current[0],
+            ready:ready
+        }
+
+        res.send(alldata);
 
     } catch (error) {
         console.log(error);
@@ -30,11 +61,12 @@ const getNgud = async (req, res, next) => {
 const createNgud = (req, res) => {
     const data = req.body;
 
-
-    console.log(data);
-
     try {
-        firestore.collection("ngud").doc(data.ngud_id).set(data)
+        firestore.collection("ngud").doc(data.ngud_id).set(data).then((r) => {
+
+            getNgud(req,res)
+        })
+
     } catch (err) {
         console.log(err);
     }
@@ -202,8 +234,8 @@ const createInvoice = async (data, doto, idUser, totalItem) => {
 
 const check_prize = async (req, res) => {
 
-    console.log("ตรวจรางวัล")
-    let ngud_id = "01";
+
+    let ngud_id = req.params.id;
     let Prizes = [];
     let RunningNumbers = [];
     let invoices = [];
@@ -213,6 +245,7 @@ const check_prize = async (req, res) => {
     let lottery_invoice = [];
     let AllLottery = [];
 
+    console.log("ตรวจรางวัล  ", ngud_id);
 
     await firestore.collection("ngud").doc(ngud_id).update({ open: false });
 
@@ -236,8 +269,6 @@ const check_prize = async (req, res) => {
 
     await AllLottery.map(async (lot) => {
 
-        // await lot.photoURL
-
         await Tcart.push({
             lottery: lot.photoURL,
             number: lot.id,
@@ -247,6 +278,9 @@ const check_prize = async (req, res) => {
         })
         totolPrice += (lot.photoURL.length * 80);
         total_item += lot.photoURL.length;
+
+        await firestore.collection("lottery").doc(lot.id).delete();
+
     })
 
     // console.log(Tcart);
@@ -268,28 +302,9 @@ const check_prize = async (req, res) => {
         lastname: "admin"
     }
 
-    // console.log("dataInsrt  ", data_insert);
-
-    //     const invoice = await firestore.collection("invoices").doc().set(data_insert).then((res) => {
-    //         console.log("invoice เพิ่มแล้ว")
-    //  })
-
-    //ลบ item ในตะกร้า
-    // Tcart.map((item) => {
-    //     firestore.collection("users").doc(uid)
-    //         .collection("cart").doc(item.id).delete()
-    //         .then((success) => { console.log("clear ตะกร้าแล้ว") })
-    //         .catch((err) => console.log("ลบไม่ได้", err));
-    // })
-
-
-    // await firestore.collection("ngud").doc(ngud_id).update(
-    //     {
-    //         total_onhand: 0,
-    //         total_lottery: 0,
-    //         open: false
-    //     })
-
+    await firestore.collection("invoices").doc().set(data_insert).then((res) => {
+        console.log("invoice เพิ่มแล้ว")
+    })
 
     await Axios.get("https://lotto.api.rayriffy.com/latest").then((res) => {
         Prizes = res.data.response.prizes;
@@ -297,15 +312,14 @@ const check_prize = async (req, res) => {
     })
 
     const invoice_DB = await firestore.collection("invoices").get()
-    await invoice_DB.docs.forEach(doc => {
-        invoices.push({
+    await invoice_DB.docs.forEach(async (doc) => {
+        await invoices.push({
             id: doc.id,
             lottery: doc.data().lottery,
             uid: doc.data().userid
         })
     });
 
-    let this_invoice_have_win = false;
 
     await invoices.forEach(async (invoice, i) => {
 
@@ -423,12 +437,12 @@ const check_prize = async (req, res) => {
 
     })
 
-    await createReward(res,ngud_id);
- 
+    await createReward(res, ngud_id);
+
 
 }
 
-const createReward = async (res,ngud_id) => {
+const createReward = async (res, ngud_id) => {
 
     let invoices = [];
     let user_win = [];
@@ -444,6 +458,8 @@ const createReward = async (res,ngud_id) => {
                         id: doc.id,
                         lottery: doc.data().lottery,
                         uid: doc.data().userid,
+                        firstname: doc.data().firstname,
+                        lastname: doc.data().lastname,
                         ngud_date: doc.data().check_date,
                         ngud: doc.data().nguad,
                         win: doc.data().win,
@@ -466,42 +482,46 @@ const createReward = async (res,ngud_id) => {
         // user_win = [];
         // user_win.push('xm1thM0BN8NxoqnkIghKVtpiX263');
 
-        dataWin = [];
         let book_name = ""
         let book_number = ""
         let book_provider = ""
+        let firstname = "";
+        let lastname = "";
 
         console.log(user_win);
 
-        await user_win.map(async (userid, index) => {
+        await user_win.map((userid, index) => {
 
             book_name = ""
             book_number = ""
             book_provider = ""
+            dataWin = [];
 
-            await invoices.map(async (invoice) => {
+            invoices.map((invoice) => {
 
                 if (invoice.uid === userid) {
+                     console.log(dataWin)
+                    console.log( invoice.uid,"  === ",userid)
 
-                    console.log("invoice  ", invoice.id)
-
-                    await invoice.lottery.map(async (item_win) => {
+                    invoice.lottery.map(async (item_win) => {
 
                         if (item_win.win === true) {
 
                             book_name = invoice.book_name;
                             book_number = invoice.book_number;
                             book_provider = invoice.book_provider;
+                            firstname = invoice.firstname,
+                                lastname = invoice.lastname,
 
 
-                            inDataWin = dataWin.some(item => item.number === item_win.number);
-  
+                                inDataWin = dataWin.some(item => item.number === item_win.number);
+
 
                             // console.log(item_win.number, "   inArr  ", inDataWin)
 
                             inDataWin ?
 
-                                dataWin = await dataWin.map((w) =>
+                                dataWin = dataWin.map((w) =>
 
                                     w.number === item_win.number ?
                                         {
@@ -515,7 +535,7 @@ const createReward = async (res,ngud_id) => {
 
                                 :
 
-                                await dataWin.push(
+                                dataWin.push(
                                     {
                                         number: item_win.number,
                                         lottery: item_win.lottery,
@@ -530,24 +550,21 @@ const createReward = async (res,ngud_id) => {
 
                     })
                 }
-
-
             })
-            console.log("user ", index, "   =>  ", dataWin);
 
 
             let total = 0;
             let chage = 0;
             let amount = 0;
 
-            await dataWin.map((d) => {
+            dataWin.map((d) => {
 
                 total = total + (d.reward * d.qty);
                 chage = (total / 100) * 1.5;
                 amount = total - chage;
             })
 
-            await firestore.collection("rewards").doc().set(
+            firestore.collection("rewards").doc().set(
                 {
                     lottery: dataWin,
                     win_total: total,
@@ -557,6 +574,8 @@ const createReward = async (res,ngud_id) => {
                     create_date: new Date,
                     update_date: new Date,
                     uid: userid,
+                    firstname: firstname,
+                    lastname: lastname,
                     book_name: book_name,
                     book_number: book_number,
                     book_provider: book_provider,
@@ -564,9 +583,16 @@ const createReward = async (res,ngud_id) => {
                 }
             );
 
-            await firestore.collection("ngud").doc(ngud_id).update({ check_prize: true })
+            firestore.collection("ngud").doc(ngud_id).update(
+                {
+                    check_prize: true,
+                    open: false,
+                    total_onhand: 0,
+                    update: new Date
+                })
+                
         })
-        res.status(200).send("success");
+        await res.status(200).send("success")
     }
     catch (err) {
         console.log(err)
@@ -574,265 +600,6 @@ const createReward = async (res,ngud_id) => {
 
 }
 
-
-
-// const createReward = async () => {
-
-//     const invoicesDB = await firestore.collection('invoices').where("win", "==", true);
-//     let invoices = [];
-
-//     try {
-//         await invoicesDB.get().then((docs) => docs.forEach(doc => {
-
-//             invoices.push({
-//                 id: doc.id,
-//                 lottery: doc.data().lottery,
-//                 uid: doc.data().userid,
-//                 ngud_date: doc.data().check_date,
-//                 ngud: 01,
-//                 win: doc.data().win
-//             })
-//         }));
-
-//         invoices.map(async (invoice) => {
-
-//             // let winReward = []
-
-//             let uid = invoice.uid;
-//             let ngud = 01
-
-//             // console.log(invoice)
-
-//             invoice.lottery.map(async (lot) => {
-
-//                 if (lot.win === true) {
-
-//                     console.log(lot.prize)
-
-//                     let myRewardDB = undefined;
-
-//                     myRewardDB = await firestore.collection('rewards')
-//                     myRewardDB = await myRewardDB.where("ngud", "==", ngud)
-//                     myRewardDB = await myRewardDB.where("uid", "==", uid)
-
-//                     await myRewardDB.get().then(async (doc) => {
-
-//                         console.log("check", doc.docs)
-
-
-//                         if (doc.docs.length != 0) {
-
-//                             console.log("have data of user in reward")
-
-//                             doc.docs.forEach(async (myReport) => {
-
-//                                 // await invoice.lottery.map(async (lot) => {
-
-
-//                                 //     console.log("have data", myReport.data())
-
-//                                 //     if (lot.win === true) {
-
-//                                 //         console.log("ฉํนถูกรางวัล", lot.number)
-
-
-
-//                                 //         await myReport.lottery.map(async (my_win) => {
-
-//                                 //             console.log(my_win.number + " === " + lot.number)
-
-//                                 //             if (my_win.number === lot.number) {
-//                                 //                 //ถูกเลขนี้แล้ว ให้ update ยอดเงิน
-
-//                                 //                 const total = myReport.data().win_total + lot.rewards;
-//                                 //                 const chage = (total / 100) * 1.5;
-//                                 //                 const amount = total - chage;
-
-//                                 //                 // await firestore.collection("rewards").doc(myReport.id).update({
-//                                 //                 //     lottery: invoice.lottery,
-//                                 //                 //     win_total: total,
-//                                 //                 //     win_chart: chage,
-//                                 //                 //     win_amount: amount,
-//                                 //                 //     uid: uid,
-//                                 //                 //     success: false,
-//                                 //                 //     create_date: new Date,
-//                                 //                 //     update_date: new Date
-//                                 //                 // })
-
-//                                 //                 console.log(total, chage, amount)
-//                                 //             }
-//                                 //             else {
-//                                 //                 const total = myReport.data().win_total + lot.rewards;
-//                                 //                 const chage = (total / 100) * 1.5;
-//                                 //                 const amount = total - chage;
-
-//                                 //                 console.log(total, chage, amount)
-
-
-
-//                                 //                 // await firestore.collection("rewards").doc(myReport.id).update({
-//                                 //                 //     lottery: invoice.lottery,
-//                                 //                 //     win_total: total,
-//                                 //                 //     win_chart: chage,
-//                                 //                 //     win_amount: amount,
-//                                 //                 //     uid: uid,
-//                                 //                 //     success: false,
-//                                 //                 //     create_date: new Date,
-//                                 //                 //     update_date: new Date
-//                                 //                 // })
-//                                 //             }
-
-//                                 //         })
-
-//                                 //     }
-
-
-//                                 // })
-
-//                             })
-
-
-
-//                         }
-//                         else {
-
-//                             console.log("not have in record");
-
-//                             console.log(lot.prize)
-
-//                             const total = lot.rewards;
-//                             const chage = (total / 100) * 1.5;
-//                             const amount = total - chage;
-
-//                             await firestore.collection("rewards").doc().set({
-//                                 lottery: lot,
-//                                 ngud:ngud,
-//                                 win_total: total,
-//                                 win_chart: chage,
-//                                 win_amount: amount,
-//                                 uid: uid,
-//                                 success: false,
-//                                 create_date: new Date,
-//                                 update_date: new Date
-//                             })
-//                         }
-
-//                     })
-//                 }
-//             })
-
-
-
-//         })
-
-
-//     } catch (error) {
-//         console.log(error)
-//     }
-
-
-// }
-
-
-
-// const createReportReward = async (_lottery, uid) => {
-
-//     let rewards_DB = await firestore.collection('rewards').where("uid", "==", uid);
-
-//     let report = {}
-
-//     try {
-//         await rewards_DB.get().then((docs) => docs.forEach(doc => {
-//             if (doc) {
-//                 report = {
-//                     id: doc.id,
-//                     lottery: doc.data().lottery,
-//                     uid: doc.data().uid,
-//                     win_total: doc.data().win_total,
-//                     win_chart: doc.data().win_chart,
-//                     win_amount: doc.data().win_amount,
-//                 };
-//                 console.log("get reward report ", report);
-//             }
-//             else {
-//                 console.log("no reward report in collection", report)
-//             }
-//         }));
-//     } catch (error) {
-//         console.log(error)
-//     }
-
-
-
-//     if (Object.keys(report).length !== 0) {
-
-//         console.log("created  ");
-
-//         console.log("lot ", _lottery);
-//         const _total = report.win_total + _lottery.rewards;
-//         const _chage = (_lottery.rewards / 100) * 1.5;
-//         const _amount = _total - _chage;
-
-//         console.log(report);
-
-//         report = {
-//             ...report,
-//             lottery: report.lottery.map((item) => {
-
-//                 //ถูกเลขนี้อยู่แล้ว ให้บวกเพิ่มรางวัล แล้วเอารูปใส่ใน arr
-
-//                 console.log("report ", item.number);
-//                 console.log("this", _lottery.number)
-
-//                 return item.number === _lottery.number ?
-//                     {
-//                         ...item,
-//                         qty: item.qty + 1,
-//                         lottery: [...item.lottery, ..._lottery.lottery]
-//                     }
-//                     :
-//                     //ยังไม่ถูกเลขนี้อยู่แล้ว เอารูปใส่ใน arr
-//                     item
-
-//             })
-//         }
-
-//         report = {
-//             ...report,
-//             lottery: [...report.lottery, _lottery]
-//         };
-
-//         return await firestore.collection("rewards").doc(report.id).update({
-//             lottery: report.lottery,
-//             win_total: _total,
-//             win_chart: _chage,
-//             win_amout: _amount,
-//             update_date: new Date
-//         });
-//     }
-//     else {
-
-//         console.log("not create  ", report);
-
-//         const total = _lottery.rewards;
-//         const chage = (_lottery.rewards / 100) * 1.5;
-//         const amount = total - chage;
-
-//         const lot_data = [];
-//         lot_data.push(_lottery);
-
-//         return await firestore.collection("rewards").doc().set({
-//             lottery: lot_data,
-//             win_total: total,
-//             win_chart: chage,
-//             win_amount: amount,
-//             uid: uid,
-//             success: false,
-//             create_date: new Date,
-//             update_date: new Date
-//         });
-//     }
-// }
 
 
 module.exports = {

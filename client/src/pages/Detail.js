@@ -30,13 +30,7 @@ export default function Detail(props) {
             <div className="card-tools">
               <ul className="nav nav-pills ml-auto">
                 <li className="nav-item">
-                  {/* <a
-                    className="nav-link active"
-                    href="#revenue-chart"
-                    data-toggle="tab"
-                  >
-                    รอการประการผล
-                  </a> */}
+                 
                 </li>
               </ul>
             </div>
@@ -56,6 +50,9 @@ export default function Detail(props) {
                 <Moment format="DD MMMM YYYY" locale="th">
                   {invoice.data.ngud_date}
                 </Moment>
+              </p>
+              <p>
+                ชื่อ นามสกุล : {invoice.data.firstname  + "   " + invoice.data.lastname}
               </p>
 
               <table className="table m-0">

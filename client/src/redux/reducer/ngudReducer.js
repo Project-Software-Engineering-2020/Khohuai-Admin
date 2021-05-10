@@ -1,6 +1,7 @@
 const initialState = {
     data: [],
     widget: [],
+    ready: false,
     isFetching: false,
     open: false,
     name: null
@@ -17,13 +18,15 @@ const initialState = {
         };
   
       case "FETCHED_NGUD":
+        console.log(action);
         return {
           ...state,
           data: action.data,
           widget: action.widget,
           isFetching: false,
           open: action.data[0].open,
-          name: action.data[0].end
+          name: action.widget.name,
+          ready: action.ready
         };
   
       default:

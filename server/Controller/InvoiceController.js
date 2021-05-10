@@ -1,10 +1,17 @@
 const { firestore } = require('../firebaseDB');
 
 const getAllInvoice = async (req, res, next) => {
+
+    const ngud_id = req.params.id
+
     let invoiceArray = []
 
     try {
-        const invoice = await firestore.collection('invoices').orderBy("date", "desc").get()
+        let invoice = await firestore.collection('invoices')
+            .where("userid", "!=", "admin")
+            // .where("ngud", "!=", ngud_id)
+            .get()
+        // 
         if (invoice.empty) {
             res.status(400).send("No lottery in record")
         } else {
@@ -16,7 +23,10 @@ const getAllInvoice = async (req, res, next) => {
                     invoiceid: doc.id,
                     quantity: doc.data().quantity,
                     lottery: doc.data().lottery,
-                    userid: doc.data().userid
+                    userid: doc.data().userid,
+                    firstname: doc.data().firstname,
+                    lastname: doc.data().lastname,
+                    result: doc.data().result
                 });
             });
             res.send(invoiceArray)
@@ -39,12 +49,13 @@ const getSummary = async (req, res) => {
         await invoice.docs.forEach(doc => {
             invoiceArray.push({
                 date: doc.data().date.toDate(),
-                nguad: doc.data().nguad,
+                nguad: doc.data().ngud,
                 totalprice: doc.data().totalprice,
                 invoiceid: doc.id,
                 quantity: doc.data().quantity,
                 lottery: doc.data().lottery,
-                userid: doc.data().userid
+                userid: doc.data().userid,
+                result: doc.data().result
             });
         });
 
@@ -78,48 +89,73 @@ const getInvoice = async (req, res) => {
 
     try {
 
-        const ngud = await firestore.collection('ngud').orderBy("end", "desc").get()
-        await ngud.docs.forEach(async(doc) => {
-            await data.push({
-                ngud: doc.id,
-                end: doc.data().end,
-                start: doc.data().start,
-                total_lottery: doc.data().total_lottery,
-                total_onhand: doc.data().total_onhand,
-                open: doc.data().open
-            })
-        });
+        // const ngud = await firestore.collection('ngud').orderBy("end", "desc").get()
+        // await ngud.docs.forEach(async(doc) => {
+        //     await data.push({
+        //         ngud: doc.id,
+        //         end: doc.data().end,
+        //         start: doc.data().start,
+        //         total_lottery: doc.data().total_lottery,
+        //         total_onhand: doc.data().total_onhand,
+        //         open: doc.data().open
+        //     })
+        // });
 
         const invoice = await firestore.collection('invoices').doc(id);
 
         await invoice.get().then((doc) => {
 
-            ngud_number = doc.data().nguad;
-            _date = doc.data().date.toDate();
-            _ngud = doc.data().ngud;
-            _totalprice = doc.data().totalprice;
-            _invoiceid = doc.id;
-            _quantity = doc.data().quantity;
-            _lottery = doc.data().lottery;
-            _userid = doc.data().userid;
-        });
-        await firestore.collection('ngud').doc("01").get()
-            .then((d) => {
-                ngud_dateee = d.data().end
-
-                invoiceArray.push({
-                    invoiceid: _invoiceid,
-                    date: _date,
-                    ngud: _ngud,
-                    ngud_date: d.data().end,
-                    totalprice: _totalprice,
-                    quantity: _quantity,
-                    lottery: _lottery,
-                    userid: _userid,
-                    status_check: _status_check
-                });
-
+            invoiceArray.push({
+                date: doc.data().date.toDate(),
+                ngud: doc.data().ngud,
+                totalprice: doc.data().totalprice,
+                invoiceid: doc.id,
+                quantity: doc.data().quantity,
+                lottery: doc.data().lottery,
+                userid: doc.data().userid,
+                firstname: doc.data().firstname,
+                lastname: doc.data().lastname,
+                result: doc.data().result
             });
+
+            // ngud_number = doc.data().ngud;
+            // _date = doc.data().date.toDate();
+            // _ngud = doc.data().ngud;
+            // _totalprice = doc.data().totalprice;
+            // _invoiceid = doc.id;
+            // _quantity = doc.data().quantity;
+            // _lottery = doc.data().lottery;
+            // _userid = doc.data().userid;
+
+            // invoiceArray.push({
+            //     invoiceid: _invoiceid,
+            //     date: _date,
+            //     ngud: _ngud,
+            //     ngud_date: d.data().end,
+            //     totalprice: _totalprice,
+            //     quantity: _quantity,
+            //     lottery: _lottery,
+            //     userid: _userid,
+            //     status_check: _status_check
+            // });
+        });
+        // await firestore.collection('ngud').doc("01").get()
+        //     .then((d) => {
+        //         ngud_dateee = d.data().end
+
+        //         invoiceArray.push({
+        //             invoiceid: _invoiceid,
+        //             date: _date,
+        //             ngud: _ngud,
+        //             ngud_date: d.data().end,
+        //             totalprice: _totalprice,
+        //             quantity: _quantity,
+        //             lottery: _lottery,
+        //             userid: _userid,
+        //             status_check: _status_check
+        //         });
+
+        //     });
 
 
         await res.status(200).send(invoiceArray);
@@ -133,7 +169,7 @@ const getInvoiceOfUser = async (req, res) => {
     const userid = req.params.userid;
     let invoice_customer;
     let invoiceArray = []
-    let data_result = [] 
+    let data_result = []
     try {
 
         const userdata = await firestore.collection('users').doc(userid)
@@ -158,7 +194,8 @@ const getInvoiceOfUser = async (req, res) => {
                 quantity: doc.data().quantity,
                 lottery: doc.data().lottery,
                 userid: doc.data().userid,
-                
+                result: doc.data().result,
+                win: doc.data().win
             });
         });
 

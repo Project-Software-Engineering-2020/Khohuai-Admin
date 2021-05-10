@@ -3,9 +3,9 @@ import Axios from "axios";
 import "../stylesheets/AddLottery.css";
 import { storage, firestore } from '../firebase/firebase';
 import { getNgud } from '../redux/action/ngudAction'
-import { Modal,Button } from "react-bootstrap"
+import { Modal, Button } from "react-bootstrap"
 import { api } from '../environment'
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 function AddLottery() {
 
@@ -50,7 +50,7 @@ function AddLottery() {
               style={{ width: "100%", height: "100%", padding: "10px" }}
               src={photo}
             />
-            <button 
+            <button
               type="button"
               className="delbtn"
               onClick={(e) => delImg(index)}
@@ -73,75 +73,60 @@ function AddLottery() {
   const UploadLottery = async (e) => {
     e.preventDefault()
 
-    const data = new FormData();
-   
+    if (number !== "") {
 
-    // data.append("image", image_url);
-    // data.append("number", number);
 
-    const insert = async () => {
-      console.log(image_boss);
 
-      const _ngud = "01";
+      const data = new FormData();
+
+      const insert = async () => {
+
+        const _ngud = ngud.widget.ngud;
+
+        await Axios.post(api + "/lottery", { number, image_boss, _ngud }).then((res) => {
+          if (res.data === "success") {
+            setShow(true);
+            window.location.reload(false);
+          }
+          console.log("upload success");
+        });
+      }
+
+      // console.log(image);
+
+      await image_upload.forEach(async (item) => {
+
+        const imageName = item.name;
+
+        const uploadTask = storage.ref("lotterys/" + imageName).put(item);
+
+        await uploadTask.on(
+          "state_change",
+          (snapshot) => { },
+          (error) => {
+            console.log(error);
+          },
+          async () => {
+            console.log(imageName);
+            await storage
+              .ref("lotterys")
+              .child(imageName)
+              .getDownloadURL()
+              .then(async (url) => {
+
+
+                await image_boss.push(url);
  
-      await Axios.post(api + "/lottery", { number, image_boss, _ngud }).then((res) => {
-        if(res.data === "success") {
-          setShow(true);
-        }
-        console.log("upload success");
-      });
+                await insert();
+
+              });
+          }
+
+        )
+
+      })
+
     }
-
-    // console.log(image);
-
-    await image_upload.forEach(async (item) => {
-
-      const imageName = item.name;
-
-      const uploadTask = storage.ref("lotterys/" + imageName).put(item);
-    
-      await uploadTask.on(
-        "state_change",
-        (snapshot) => { },
-        (error) => {
-          console.log(error);
-        },
-        async () => {
-          console.log(imageName);
-          await storage
-            .ref("lotterys")
-            .child(imageName)
-            .getDownloadURL()
-            .then(async (url) => {
-              // buff = url;
-              // console.log(buff)
-
-              // const addImage = (buff) => {
-
-
-              await image_boss.push(url);
-              // }
-              await insert();
-
-            });
-        }
-
-      )
-
-    })
-
-    // console.log(image_boss);
-
-    // data.append("image", image_url);
-    // data.append("number", number);
-
-    // const d = {
-    //   image: image_url,
-    //   number: number
-    // }
-
-    // console.log(image_boss[0]);
-
   };
 
 
@@ -226,9 +211,7 @@ function AddLottery() {
           เพิ่มสลากเข้าสู่ระบบสำเร็จ
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="success" onClick={handleClose}>
-            ตกลง
-          </Button>
+
         </Modal.Footer>
       </Modal>
     </div>

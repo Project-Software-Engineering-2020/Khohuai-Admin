@@ -5,13 +5,12 @@ const getSellperNgud = async (req, res, next) => {
     const type = "ngud";
     const number = req.query.number.toString();
 
-    let _ngud = [];
     let day_start;
     let day_end;
-    let invoiceArray = [];
     let sell_per_ngud = [];
-    let inDay;
-    let new_array = [];
+
+
+    console.log("chart  ",number)
 
     try {
 
@@ -24,6 +23,8 @@ const getSellperNgud = async (req, res, next) => {
                     day_start = new Date(doc.data().start)
                     day_end = new Date(doc.data().end)
                 });
+            
+            
 
             //สร้าง Array วันที่ในงวดนั้นๆ
             for (let i = day_start.getDate(); i <= day_end.getDate(); i++) {
@@ -36,7 +37,9 @@ const getSellperNgud = async (req, res, next) => {
                 )
             }
 
-            const invoice = await firestore.collection('invoices').get()
+            console.log(sell_per_ngud);
+
+            const invoice = await firestore.collection('invoices').where("userid", "!=", "admin").get()
             if (invoice.empty) {
                 console.log("ไม่มีข้อมูล")
             } else {
@@ -47,6 +50,8 @@ const getSellperNgud = async (req, res, next) => {
                     let _qty = doc.data().quantity;
                     let _price = doc.data().totalprice;
 
+                    console.log("invoice  date", _day)
+
                     sell_per_ngud = sell_per_ngud.map(element => element.day === _day ?
                         {
                             ...element,
@@ -55,7 +60,7 @@ const getSellperNgud = async (req, res, next) => {
                         }
                         : element);
                 });
-
+                console.log(sell_per_ngud);
                 res.status(200).send(sell_per_ngud);
             }
         }

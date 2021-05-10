@@ -24,7 +24,32 @@ const getAllUser = async (req, res, next) => {
         console.log(error);
     }
 }
+const rewardOfUser = (req,res) => {
+
+    let data = [];
+    const id = req.params.id;
+
+    firestore.collection("rewards").where("uid","==",id).get().then((docs) => docs.forEach((doc) => {
+        data.push({
+            id: doc.id,
+            lottery: doc.data().lottery,
+            win_total: doc.data().win_total,
+            uid: doc.data().uid,
+            win_chart: doc.data().win_chart,
+            win_amount: doc.data().win_amount,
+            success: doc.data().success,
+            update_date: doc.data().update_date.toDate(),
+            create_date: doc.data().create_date.toDate(),
+            ngud: doc.data().ngud,
+            book_name: doc.data().book_name,
+            book_number: doc.data().book_number,
+            book_provider: doc.data().book_provider,
+            slip:doc.data().slip
+        })
+    }))
+}
 
 module.exports = {
-    getAllUser
+    getAllUser,
+    rewardOfUser
 }

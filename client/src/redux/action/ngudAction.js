@@ -9,8 +9,12 @@ export function getNgud() {
     return function (dispatch) {
         return Axios.get(api + "/ngud")
             .then(ngud => {
-                console.log(ngud.data);
-                dispatch({type:"FETCHED_NGUD",data:ngud.data,widget:ngud.data[0]})
+                dispatch(
+                    {type:"FETCHED_NGUD",
+                    data:ngud.data.all,
+                    widget:ngud.data.current,
+                    ready: ngud.data.ready
+                })
             });
     }
 }
@@ -20,8 +24,12 @@ export function addNgud(data) {
     return function (dispatch) {
         return Axios.post(api + "/ngud",data)
             .then(ngud => {
-                console.log(ngud.data);
-                dispatch({type:"FETCHED_NGUD",data:ngud.data})
+                dispatch(
+                    {type:"FETCHED_NGUD",
+                    data:ngud.data.all,
+                    widget:ngud.data.current,
+                    ready: ngud.data.ready
+                })
             });
     }
 }
