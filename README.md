@@ -2,20 +2,20 @@
 
 ## Run server
 
-** change directory **
-  ##### cd server 
-** install node module **
-  ##### npm install
-** run project **
-  ##### npm start
+### 1 change directory
+  ###### cd server 
+### 2 install node module
+  ###### npm install
+### 3 run project
+  ###### npm start
   
   
 ## Run client
 
-### change directory
-  ### cd client
-### install node module
-  ### npm install
-### run project
-  ### npm start
+### 1 change directory
+  ###### cd client
+### 2 install node module
+  ######  npm install
+### 3 run project
+  ######  npm start
   
