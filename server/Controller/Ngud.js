@@ -6,10 +6,10 @@ moment.locale('th');
 const getNgud = async (req, res, next) => {
     let data = [];
     let current = [];
-    
+
     try {
         let ngud = await firestore.collection('ngud').orderBy("end", "desc").get();
-        
+
         await ngud.docs.forEach(doc => {
 
             data.push({
@@ -24,7 +24,7 @@ const getNgud = async (req, res, next) => {
             })
         });
 
-        await firestore.collection('ngud').where("open","==",true).get().then(docs => docs.forEach(doc => {
+        await firestore.collection('ngud').where("open", "==", true).get().then(docs => docs.forEach(doc => {
 
             current.push({
                 ngud: doc.id,
@@ -38,17 +38,24 @@ const getNgud = async (req, res, next) => {
             })
         })
         )
-
+        let alldata = {};
         let ready = false;
-        if(current === undefined) {
+
+        console.log("current  ",current)
+        if (current.length === 0) {
             ready = true;
+            alldata = {
+                all: data,
+                current: data[0],
+                ready: ready
+            }
         }
-
-
-        let alldata =  {
-            all: data, 
-            current: current[0],
-            ready:ready
+        else {
+            alldata = {
+                all: data,
+                current: current[0],
+                ready: ready
+            }
         }
 
         res.send(alldata);
@@ -64,7 +71,7 @@ const createNgud = (req, res) => {
     try {
         firestore.collection("ngud").doc(data.ngud_id).set(data).then((r) => {
 
-            getNgud(req,res)
+            getNgud(req, res)
         })
 
     } catch (err) {
@@ -500,8 +507,8 @@ const createReward = async (res, ngud_id) => {
             invoices.map((invoice) => {
 
                 if (invoice.uid === userid) {
-                     console.log(dataWin)
-                    console.log( invoice.uid,"  === ",userid)
+                    console.log(dataWin)
+                    console.log(invoice.uid, "  === ", userid)
 
                     invoice.lottery.map(async (item_win) => {
 
@@ -590,7 +597,7 @@ const createReward = async (res, ngud_id) => {
                     total_onhand: 0,
                     update: new Date
                 })
-                
+
         })
         await res.status(200).send("success")
     }

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllUserReward } from '../redux/action/rewardAction'
 import Moment from 'react-moment';
 import 'moment/locale/th'
+import NumberFormat from 'react-number-format';
 
 const Reward = (props) => {
 
@@ -27,8 +28,9 @@ const Reward = (props) => {
                         <tr>
                             <th>#</th>
                             <th>หมายเลขรับรางวัล</th>
+                            <th>ชื่อ นามสกุล</th>
                             <th>อัพเดตเมื่อ</th>
-                            <th>เงินรางวัล</th>
+                            <th className="text-right">เงินรางวัล (บาท)</th>
                             <th>สถานะ</th>
                         </tr>
                     </thead>
@@ -40,11 +42,12 @@ const Reward = (props) => {
                                     <td style={{ textDecoration: 'underline' }}>
                                         <a href={"reward/" + item.id}>{item.id}</a>
                                     </td>
+                                    <td>{item.firstname + "  " + item.lastname}</td>
                                     <td><Moment format="DD MMMM YYYY" locale="th">
                                         {item.update_date}
                                     </Moment>
                                     </td>
-                                    <td>{item.win_amount}</td>
+                                    <td className="text-right"><NumberFormat value={item.win_amount} displayType={'text'} thousandSeparator={true}>{item.win_amount}</NumberFormat></td>
                                     <td>{item.success ?
                                         <span className="badge badge-success">โอนเงินรางวัลแล้ว</span>
                                         :

@@ -110,7 +110,7 @@ const RewardDetail = (props) => {
   }, [])
 
   return (
-    <div className="container mt-3 p-3 bg-white">
+    <div className="container mt-3 p-4 bg-white">
       <div className="history-user-buy">
         <div className="card">
 
@@ -121,7 +121,7 @@ const RewardDetail = (props) => {
                 <a href={"/lottery/"+ngid+"/reward"} class="backBtn"><i class="fa fa-chevron-left" aria-hidden="true"></i>  ย้อนกลับ</a>
               </div>
               {/* Morris chart - Sales */}
-              <h3> หมายเลขรับรางวัล : {id} </h3>
+              <h5> หมายเลขรับรางวัล : {id} </h5>
               <p>
                 งวดประจำวันที่{" "}
                 <Moment format="DD MMMM YYYY" locale="th">
@@ -173,10 +173,10 @@ const RewardDetail = (props) => {
                     : null}
                 </tbody>
               </table>
-              <div className="section-summary-invoice">
+              <div className="section-summary-invoice mr-5">
                 <div>**เลือกที่เลขสลากเพื่อดูสลากใบจริง**</div>
                 <div>
-                  <div className="summary-invoice">
+                  <div className="summary-invoice ">
                     <div className="info-summary">
                       <div>เงินรางวัลรวม</div>
                       <NumberFormat value={reward.data.win_total} displayType={'text'} thousandSeparator={true} className="winNumber"><div>{reward.data.win_total}</div></NumberFormat>
