@@ -4,9 +4,9 @@
 
 ** change directory **
   ** cd server **
-### install node module
+##### install node module
   ### npm install
-### run project
+##### run project
   ### npm start
   
   
