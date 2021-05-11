@@ -62,7 +62,7 @@ export default function App() {
   return (
     <div className="wrapper">
       <Router>
-        {auth.status === true ?
+        {auth.status === false ?
           null
           :
           <div>
