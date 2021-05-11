@@ -15,8 +15,7 @@ export default function Menu() {
   console.log("Rediract =========================================",stetus.status)
 
   // alert(redirect)
-  useEffect(() => {
-  },[redirect])
+
   return (
     <div>
       <aside className="main-sidebar sidebar-dark-primary elevation-4">

@@ -44,7 +44,6 @@ export default function App() {
       } else {
         // console.log("Samart Decoder :" , decodedToken)
         // dispatch(setloginWithEmail())
-        console.log(auth.status)
         dispatch(setauthenticate(role,photoURL, displayName));
         // Axios.defaults.headers.common['Authorization'] = token;
         // dispatch(getUserData());

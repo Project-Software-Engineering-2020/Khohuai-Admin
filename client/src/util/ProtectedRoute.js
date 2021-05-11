@@ -1,25 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Redirect } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
-function ProtectedRoute({component: Component, ...rest}) {
+function ProtectedRoute({ component: Component, ...rest }) {
+    const auth = useSelector(state => state.auth);
 
     //status user login
-    const auth = useSelector(state => state.auth);
+
     return (
-        <Route 
+        <Route
             {...rest}
             component={(props) => {
                 // check login
-                if(auth.status === true) {
+                if (auth.status === true) {
                     return <Component {...props} />
                 }
-                else{
+                else {
                     return <Redirect to="/adminLogin" />
                 }
             }}
         />
-     
+
     )
 }
 
