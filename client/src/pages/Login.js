@@ -129,16 +129,16 @@ function Login() {
             setUserErr("คุณใส่รหัสผ่านผิดเกิน 3 ครั้ง กรุณารอสักครู่");
           }
         } else if (res.status === 200) {
-          dispatch(setloginWithUsername(res))
+          dispatch({type:"SET_TOKEN",data:res.data})
           // localStorage.setItem('token', res.data)
           history.push("/")
-          console.log("++++++++++++++++++++++++++++++++++++" , res)
-          console.log(res)
+          // console.log("++++++++++++++++++++++++++++++++++++" , res)
+          // console.log(res)
         }
-        console.log("+++++++++++++++++++++++++++++++++++++ Res")
+        // console.log("+++++++++++++++++++++++++++++++++++++ Res")
       });
     } catch (error) {
-      console.log("Error น๊ะจ๊ะ ============================================>");
+      console.log("Error ============================================>",error);
     }
   }
 

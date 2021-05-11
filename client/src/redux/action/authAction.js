@@ -38,6 +38,25 @@ export function setloginWithUsername(user) {
   });
 }
 
+export function setauthenticate(role,photoURL,displayName){
+  return store.dispatch({
+      type: 'SET_AUTHENTICATED',
+      data:{
+          photoURL:photoURL,
+          displayName:displayName,
+          role:role,
+          status: true,
+      }
+  })
+}
+
 export function setlogout() {
   return store.dispatch({ type: "SET_LOGOUT" });
+  store.dispatch({ type: "SET_LOGOUT" })
+  return function (dispatch) {
+
+    return (
+      dispatch({ type: "SET_DELETETOKEN" })
+    )
+  }
 }
