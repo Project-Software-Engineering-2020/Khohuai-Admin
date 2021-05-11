@@ -24,7 +24,7 @@ export function setloginWithUsername(user) {
   return store.dispatch({
     type: "SET_ADMIN_LOGIN",
     data: {
-      uid : user.data.uid,
+      uid: user.data.uid,
       displayName: user.data.displayName,
       photoURL: user.data.photoURL,
       role: user.data.role,
@@ -38,6 +38,24 @@ export function setloginWithUsername(user) {
   });
 }
 
+export function setauthenticate(role,photoURL,displayName){
+  return store.dispatch({
+      type: 'SET_AUTHENTICATED',
+      data:{
+          photoURL:photoURL,
+          displayName:displayName,
+          role:role,
+          status: true,
+      }
+  })
+}
+
 export function setlogout() {
-  return store.dispatch({ type: "SET_LOGOUT" });
+  store.dispatch({ type: "SET_LOGOUT" })
+  return function (dispatch) {
+
+    return (
+      dispatch({ type: "SET_DELETETOKEN" })
+    )
+  }
 }

@@ -15,6 +15,7 @@ import ngudReducer from "./reducer/ngudReducer";
 import headerReducer from "./reducer/headerReducer";
 import authReducer from "./reducer/authReducer";
 import reward from "./reducer/rewardReducer";
+import tokenReducer from "./reducer/tokenReducer"
 
 
 // ******Combine Reducers******
@@ -28,13 +29,14 @@ const rootReducer = combineReducers({
   chart:chartReducer,
   ngud:ngudReducer,
   header:headerReducer,
-  reward:reward
+  reward:reward,
+  token:tokenReducer
 });
 
 const PersistConfig = {
   key: "root",
   storage: storage,
-  whitelist: [],
+  whitelist: ["token"],
 };
 
 const persitReducer = persistReducer(PersistConfig, rootReducer);
