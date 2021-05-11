@@ -2,8 +2,8 @@
 
 ## Run server
 
-### change directory
-  ### cd server
+** change directory **
+  ** cd server **
 ### install node module
   ### npm install
 ### run project
