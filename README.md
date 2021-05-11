@@ -1,21 +1,21 @@
 # Khohuai-Admin
 
-#Run server
+## Run server
 
-#change directory
-  #cd server
-#install node module
-  #npm install
-#run project
-  #npm start
+### change directory
+  ### cd server
+### install node module
+  ### npm install
+### run project
+  ### npm start
   
   
-Run client
+## Run client
 
-change directory
-  cd client
-install node module
-  npm install
-run project
-  npm start
+### change directory
+  ### cd client
+### install node module
+  ### npm install
+### run project
+  ### npm start
   
