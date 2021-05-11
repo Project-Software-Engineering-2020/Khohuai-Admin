@@ -38,3 +38,15 @@ export function getInvoiceOfUser(user_id) {
             });
     }
 }
+export function getRewardOfUser(user_id) {
+    //แสดง loading
+    store.dispatch({type:"isFetching_invoice_detail"});
+    //ดึงข้อมูล และส่งข้มูลไปแสดงผล
+    return function (dispatch) {
+        return Axios.get(api + "/user/reward/"+user_id)
+            .then(invoice => {
+                console.log(invoice.data);
+                dispatch({type:"Fetched_invoice_of_user",data:invoice.data})
+            });
+    }
+}

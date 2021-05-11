@@ -15,7 +15,6 @@ import PrivateRoute from "./util/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Lottery from "./pages/Lottery";
 import Invoice from "./pages/Invoice";
-// import User from "./pages/User";
 import AddLottery from "./pages/AddLottery";
 import Login from "./pages/Login";
 import Userinvoice from "./pages/Userinvoice";
@@ -32,7 +31,7 @@ export default function App() {
   return (
     <div className="wrapper">
       <Router>
-        {auth.status === false ?
+        {auth.status === true ?
           null
           :
           <div>
@@ -47,8 +46,8 @@ export default function App() {
             <PrivateRoute path="/" exact={true} component={Dashboard} />
             <PrivateRoute path="/invoice" exact={true} component={Invoice} />
             <PrivateRoute path="/user" exact={true} component={Users} />
-            <PrivateRoute path="/user/:id" component={Userinvoice} />
-            <PrivateRoute path="/user/reward/:id" component={UserReward} />
+            <PrivateRoute path="/user/:id" exact={true} component={Userinvoice} />
+            <PrivateRoute path="/user/reward/:id" exact={true} component={UserReward} />
             <PrivateRoute path="/invoice/:id" component={Detail} />
             <PrivateRoute path="/lottery" exact={true} component={Ngud} />
             <PrivateRoute path="/lottery/:ngud" exact={true} component={Lottery} />

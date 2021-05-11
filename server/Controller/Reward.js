@@ -9,7 +9,7 @@ const getAllUserWin = async (req, res) => {
 
     try {
 
-        await firestore.collection("rewards").where("ngud", "==", ngudid).get().then(async (docs) => {
+        await firestore.collection("rewards").where("uid","!=","admin").where("ngud", "==", ngudid).get().then(async (docs) => {
 
             await docs.forEach((doc) => {
                 data.push(
@@ -22,6 +22,8 @@ const getAllUserWin = async (req, res) => {
                         win_chart: doc.data().win_chart,
                         win_amount: doc.data().win_amount,
                         update_date: doc.data().update_date.toDate(),
+                        firstname: doc.data().firstname,
+                        lastname: doc.data().lastname
                     })
             })
         })
