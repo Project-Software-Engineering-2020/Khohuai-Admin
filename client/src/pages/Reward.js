@@ -13,16 +13,16 @@ const Reward = (props) => {
     const ngudid = props.match.params.ngud;
 
     useEffect(async () => {
-        console.log("reward   " + ngudid)
+   
         await dispatch(getAllUserReward(ngudid));
     }, [])
 
     return (
         <div className="card">
             <div className="card-header">
-                <h2 className="card-title pt-2">ผู้ถูกรางวัลประจำงวดวันที่ </h2>
+                <h2 className="card-title pt-2">ผู้ถูกรางวัล </h2>
             </div>
-            <div className="card-body p-0">
+            <div className="card-body p-0 table-responsive">
                 <table className="table m-0 table-hover">
                     <thead>
                         <tr>

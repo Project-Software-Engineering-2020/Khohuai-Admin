@@ -12,7 +12,7 @@ const Users = () => {
     const user = useSelector(state => state.user)
     useEffect(async () => {
         await dispatch(getAllUser());
-        await dispatch(setHeader("Users"));
+        await dispatch(setHeader("สมาชิกทั้งหมด"));
     }, [])
 
     const sizePerPageOptionRenderer = ({
@@ -139,7 +139,7 @@ const Users = () => {
         <div>
             <div className="card">
                 <div className="card-header border-transparent ">
-                    <h2 className="card-title pt-2">ผู้ใช้งานทั้งหมด</h2>
+                    <h2 className="card-title pt-2">ข้อมูลสมาชิก</h2>
                 </div>
                 <div className="card-body p-3">
                     <PaginationProvider

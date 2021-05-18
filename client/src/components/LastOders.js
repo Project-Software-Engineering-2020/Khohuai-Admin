@@ -4,6 +4,7 @@ import 'moment/locale/th';
 const LastOders = ({ data }) => {
     return (
         <div>
+  
             <div className="card">
                 <div className="card-header border-transparent">
                     <h3 className="card-title">คำสั่งซื้อล่าสุด</h3>
@@ -16,6 +17,7 @@ const LastOders = ({ data }) => {
                                 <tr>
                                     <th>#</th>
                                     <th>หมายเลขคำสั่งซื้อ</th>
+                                    <th>ชื่อผู้ซื้อ</th>
                                     <th>วัน/เวลา</th>
                                     <th>จำนวน(ใบ)</th>
                                 </tr>
@@ -25,8 +27,9 @@ const LastOders = ({ data }) => {
                                     if (index < 5) {
                                         return (
                                             <tr key={index}>
-                                                <td>{index+1}</td>
+                                                <td>{index + 1}</td>
                                                 <td><a href={"/invoice/"+item.invoiceid}>{item.invoiceid}</a></td>
+                                                <td>{item.firstname}  {item.lastname}</td>
                                                 <td><Moment format="DD-MM-YYYY HH:mm:ss">
                                                     {item.date}
                                                 </Moment></td>
@@ -48,7 +51,7 @@ const LastOders = ({ data }) => {
                 </div>
                 {/* /.card-body */}
                 <div className="card-footer">
-                    {/* <a href="javascript:void(0)" className="btn btn-sm btn-info float-left">Place New Order</a> */}
+                  
                     <a href="/invoice" className="float-right">ดูคำสั่งซื้อทั้งหมด</a>
                 </div>
                 {/* /.card-footer */}

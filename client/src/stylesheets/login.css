@@ -25,6 +25,12 @@
   border-radius: 8px;
   width: 100%;
 }
+.login-form {
+  margin: 10px auto;
+  width: 380px;
+  border: 1px solid rgb(212, 212, 212);
+  padding: 25px;
+}
 
 .btn-login:hover {
   background-color: rgb(141, 125, 236);

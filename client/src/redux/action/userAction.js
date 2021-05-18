@@ -11,7 +11,7 @@ export function getAllUser() {
     return function (dispatch) {
         return Axios.get(api + "/user")
             .then(user => {
-                console.log(user.data);
+            
                 data_user = user.data;
                 dispatch({type:"Fetched_users",data:data_user});
             });

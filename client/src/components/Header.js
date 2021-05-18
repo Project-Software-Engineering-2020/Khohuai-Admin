@@ -180,20 +180,11 @@ export default function Header() {
             <i className="fas fa-th-large" />
           </a>
         </li> */}
-        {/* <li className="nav-item has-treeview">
-              <NavLink to="/adminlogin" className="nav-link p-3" activeClassName="active menu-open has-treeview ">
-                  <i className="nav-icon fas fa-user" /> 
-                  <p>
-                  &nbsp; Login
-                 
-                  </p>
-                </NavLink>
+              <li>
+              <i class="fas fa-sign-out-alt"></i>
+              <a onClick={signouthandle}>ออกจากระบบ</a>
                 
               </li>
-              <li>
-              <button onClick={signouthandle}>Logout</button>
-                
-              </li> */}
         </ul>
     </nav>
   );

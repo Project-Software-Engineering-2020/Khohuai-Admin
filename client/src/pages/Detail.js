@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getInvoiceDetail } from "../redux/action/invoiceAction";
 import Moment from "react-moment";
-// import NumberFormat from 'react-number-format';
+import NumberFormat from 'react-number-format';
 import "moment/locale/th";
 import "./detail.css";
 
@@ -67,7 +67,7 @@ export default function Detail(props) {
                   </tr>
                 </thead>
                 <tbody>
-                  {console.log(detail.lottery)}
+               
                   {invoice.data.lottery
                     ? invoice.data.lottery.map((item, index) => {
                       return (
@@ -75,7 +75,7 @@ export default function Detail(props) {
                           <td>{index+1}</td>
                           <td>{item.number}</td>
                           <td>{item.qty}</td>
-                          <td>{item.qty * 80}</td>
+                          <td><NumberFormat value={item.qty * 80} displayType={'text'} thousandSeparator={true}>{item.qty * 80}</NumberFormat></td>
                           <td>
                             {item.status ?
                               <span className="badge badge-success">ตรวจรางวัลแล้ว</span>
@@ -106,10 +106,10 @@ export default function Detail(props) {
                       <div>{invoice.data.quantity}</div>
                       <div>ใบ</div>
                     </div>
-
+{/* 
                     <div className="info-summary">
                       <div>ยอดรวม</div>
-                      <div>{invoice.data.totalprice}</div>
+                      <div>{invoice.data.totalprice}<NumberFormat value={invoice.data.totalprice} displayType={'text'} thousandSeparator={true}>{invoice.data.totalprice}</NumberFormat>{invoice.data.totalprice}</div>
                       <div>บาท</div>
                     </div>
 
@@ -117,11 +117,11 @@ export default function Detail(props) {
                       <div>ส่วนลด</div>
                       <div>0</div>
                       <div>บาท</div>
-                    </div>
+                    </div> */}
 
                     <div className="info-summary total">
                       <div>ยอดรวมทั้งสิ้น</div>
-                      <h4 className="total2">{invoice.data.totalprice}</h4>
+                      <h4 className="total2"><NumberFormat value={invoice.data.totalprice} displayType={'text'} thousandSeparator={true}>{invoice.data.totalprice}</NumberFormat></h4>
                       <div>บาทถ้วน</div>
                     </div>
 

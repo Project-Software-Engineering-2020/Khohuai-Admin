@@ -13,18 +13,39 @@ const DatatablePage = () => {
 
   useEffect(async () => {
     await dispatch(getNgud());
-    await dispatch(getAllInvoice());
     await dispatch(setHeader("คำสั่งซื้อทั้งหมด"));
+    await dispatch(getAllInvoice("lastest"));
   }, [])
+
+  const OnchangeInvoice =  async(number_ngud) => {
+    await dispatch(getAllInvoice(number_ngud));
+  }
+
 
   return (
 
     <div className="card">
       <div className="h-invoice">
-        <div>
-          <h2 className="card-title pt-2">  คำสั่งซื้อ  </h2>
-        </div>
+      
+          <div>
+            <h2 className="card-title pt-2">  คำสั่งซื้อ  </h2>
+          </div>
 
+          <div>
+            <div>
+              งวดประจำวันที่&nbsp;&nbsp;
+                    <select onChange={e => OnchangeInvoice(e.target.value)}>
+                {ngud.data.map((item) => {
+                  return (
+                    <option value={item.ngud}>
+                      {item.name}
+                    </option>
+                  )
+                })}
+              </select>
+            </div>
+          </div>
+ 
       </div>
       <div className="card-body p-0">
         <div className="table-responsive">

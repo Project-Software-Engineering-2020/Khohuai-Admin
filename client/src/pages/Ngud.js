@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getNgud, addNgud } from "../redux/action/ngudAction";
+import { getNgud, addNgud,updateNgud } from "../redux/action/ngudAction";
 import { Modal, Button, Form } from "react-bootstrap";
-import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars'
+import {  DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import Moment from "react-moment";
 import "moment/locale/th";
 import Axios from "axios"
@@ -12,17 +12,18 @@ import "../../node_modules/@syncfusion/ej2-lists/styles/material.css";
 import "../../node_modules/@syncfusion/ej2-inputs/styles/material.css";
 import "../../node_modules/@syncfusion/ej2-popups/styles/material.css";
 import "../../node_modules/@syncfusion/ej2-react-calendars/styles/material.css";
-import { setHeader } from '../redux/action/headerAction'
+import { setHeader } from '../redux/action/headerAction';
 import { api } from '../environment'
 
 function Ngud(props) {
 
-  const ngudid = props.match.params.ngud;
 
   const dispatch = useDispatch();
   const ngud = useSelector((state) => state.ngud);
 
   const [ModaladdNgud, setModalAddNgud] = useState(false);
+  const [ModaleditNgud, setModalEditNgud] = useState(false);
+
   const [warning, setwarning] = useState(false);
 
   const openModel = () => {
@@ -36,10 +37,14 @@ function Ngud(props) {
 
   const [startsell, setstartsell] = useState();
   const [endsell, setendsell] = useState();
-  const [ngudtext, setngud] = useState()
+  const [ngudtext, setngud] = useState();
+
+  const [edit_start, set_edit_start] = useState();
+  const [edit_end, set_edit_end] = useState();
+  const [edit_ngud, set_edit_ngud] = useState();
 
   const dateValue = Date.now()
-  const minDate = new Date("04/30/2021 00:00 AM");
+  const minDate = new Date;
   const maxDate = new Date("05/16/2021 12:00 AM");
 
   const chechLottery = async (ngud_) => {
@@ -74,6 +79,25 @@ function Ngud(props) {
 
   }
 
+  const edit = (_ngud,start,end) => {
+
+    set_edit_start(start);
+    set_edit_end(end);
+    set_edit_ngud(_ngud);
+  
+    setModalEditNgud(true);
+  }
+
+  const onupdate = () => {
+
+    const data = {
+      start: edit_start,
+      end: edit_end,
+      ngud_id: edit_ngud
+    }
+    setModalEditNgud(false);
+    dispatch(updateNgud(data))
+  }
 
   return (
     <div>
@@ -97,11 +121,12 @@ function Ngud(props) {
                       <tr>
                         <th>งวดที่</th>
                         <th>งวดสลากประจำวันที่</th>
-                        <th>วัน/เวลา เริ่มจำหน่าย</th>
-                        <th>วัน/เวลา สิ้นสุดการจำหน่าย</th>
+                        <th>วันเริ่มจำหน่าย</th>
+                        <th>วันสิ้นสุดการจำหน่าย</th>
                         <th>สถานะ</th>
-                        <th className="text-center">สลากในระบบ (ใบ)</th>
+                        <th className="text-center">สลากคงเหลือ (ใบ)</th>
                         <th>ตรวจผลรางวัล</th>
+                        <th>แก้ไข</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -113,12 +138,12 @@ function Ngud(props) {
                               {item.end}
                             </Moment></td>
                             <td>
-                              <Moment format="DD MM YYYY HH:mm">
+                              <Moment format="DD / MM / YYYY ">
                                 {item.start}
                               </Moment>
                             </td>
                             <td>
-                              <Moment format="DD MM YYYY HH:mm">
+                              <Moment format="DD / MM / YYYY ">
                                 {item.end}
                               </Moment>
                             </td>
@@ -144,6 +169,14 @@ function Ngud(props) {
                                 <span><a href={"lottery/" + item.ngud + "/reward"}>ผู้ถูกรางวัล</a></span>
                                 :
                                 <span className="btn btn-sm btn-info" onClick={e => chechLottery(item.ngud)}>ตรวจรางวัล</span>
+                              }
+                            </td>
+                            <td>
+                              {
+                                item.open ?
+                                  <span onClick={e => edit(item.ngud,item.start,item.end)}><i class="fas fa-pencil-alt"></i></span>
+                                  :
+                                    null
                               }
                             </td>
 
@@ -188,21 +221,21 @@ function Ngud(props) {
 
                   <Form.Group >
 
-                    <DateTimePickerComponent
-                      placeholder="วัน/เวลา เริ่มต้นการจำหน่าย"
-                      format="dd MM yyyy HH:mm"
-                      min={minDate}
-                      max={maxDate}
-                      minDays={10}
+                    <DatePickerComponent
+                      placeholder="วัน เริ่มต้นการจำหน่าย"
+                      format="dd MM yyyy"
+                      // min={minDate}
+                      // max={maxDate}
+                      // minDays={10}
                       onChange={e => setstartsell(e.target.value)}
                     />
                   </Form.Group>
                   <Form.Group >
-                    <DateTimePickerComponent
-                      placeholder="วัน/เวลา สิ้นสุดการจำหน่าย"
-                      format="dd MM yyyy HH:mm"
-                      min={minDate}
-                      max={maxDate}
+                    <DatePickerComponent
+                      placeholder="วัน สิ้นสุดการจำหน่าย"
+                      format="dd MM yyyy"
+                      // min={minDate}
+                      // max={maxDate}
                       onChange={e => setendsell(e.target.value)}
                     />
                   </Form.Group>
@@ -219,6 +252,60 @@ function Ngud(props) {
           </Button>
                 <Button variant="primary" onClick={onsubmit}>
                   Save Changes
+          </Button>
+              </Modal.Footer>
+            </Modal>
+
+
+            <Modal
+              show={ModaleditNgud}
+              onHide={(e) => setModalEditNgud(false)}
+              size="md"
+              aria-labelledby="contained-modal-title-vcenter"
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>งวดสลาก</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form >
+
+                  <Form.Group >
+
+                    <input className="e-input" type="text" value={edit_ngud} placeholder="งวดที่" onChange={e => set_edit_ngud(e.target.value)} />
+
+                  </Form.Group >
+
+                  <Form.Group >
+
+                    <DatePickerComponent
+                      placeholder="วัน/เวลา เริ่มต้นการจำหน่าย"
+                      format="dd MM yyyy"
+                      value={edit_start}
+                      minDays={10}
+                      onChange={e =>  set_edit_start(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group >
+                    <DatePickerComponent
+                      placeholder="วัน/เวลา สิ้นสุดการจำหน่าย"
+                      format="dd MM yyyy"
+                      value={edit_end}
+                      onChange={e => set_edit_end(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  {/* <Button variant="primary" type="button" onClick={onsubmit}>
+              Submit
+            </Button > */}
+                </Form>
+
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={(e) => setModalEditNgud(false)}>
+                  Close
+          </Button>
+                <Button variant="primary" onClick={onupdate}>
+                  Update
           </Button>
               </Modal.Footer>
             </Modal>

@@ -34,7 +34,6 @@ function AddLottery() {
       console.log(image);
 
       console.log(e.target.files);
-
       Array.from(e.target.files).map((file) =>
         setimage_upload(pre => [...pre, file])
       )

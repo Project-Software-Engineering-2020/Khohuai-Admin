@@ -11,16 +11,16 @@ export function getAllLottery() {
     return function (dispatch) {
         return Axios.get(api + "/lottery")
             .then(lo => {
-                console.log(lo.data);
+
+                console.log(lo.data)
+              
                 let data = lo.data;
                 let count = 0;
 
                 data.map((item) => {
                     count += item.photoURL.length
                 })
-                // data.map((item) => {
-                //     count += item.photoURL.length 
-                // })
+ 
 
                 dispatch({type:"Fetched_lottery",data:data, count:count})
             });

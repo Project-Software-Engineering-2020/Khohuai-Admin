@@ -57,7 +57,7 @@ const AllLottery = (props) => {
   useEffect(async () => {
     await dispatch(getAllLottery());
     await dispatch(getNgud())
-    await dispatch(setHeader("Lottery"))
+    await dispatch(setHeader("สลากทั้งหมด"))
   }, [])
 
   return (
@@ -66,9 +66,9 @@ const AllLottery = (props) => {
       <div className="">
         {
           ngud.name ?
-            <h3 className="mt-2 mb-4">งวดประจำวันที่
+            <h3 className="mt-2 mb-4">งวดประจำวันที่&nbsp;
 
-                {ngud.name}
+                { ngud.name}
     
             </h3>
             :

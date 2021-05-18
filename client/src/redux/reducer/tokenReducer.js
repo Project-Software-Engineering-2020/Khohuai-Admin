@@ -1,4 +1,4 @@
-function tokenAuth(state = null , action) {
+function tokenAuth(state = "" , action) {
 
     switch (action.type) {
 
@@ -6,7 +6,7 @@ function tokenAuth(state = null , action) {
             state = action.data
             return state;
         case 'SET_DELETETOKEN':
-            return state = null
+            return state = ""
         default:
             return state;
 

@@ -11,7 +11,7 @@ const User = () => {
   const user = useSelector((state) => state.user);
   useEffect(async () => {
     await dispatch(getAllUser());
-    await dispatch(setHeader("Users"))
+    await dispatch(setHeader("ผู้ใช้งาน"))
   }, []);
 
   return (
@@ -21,7 +21,7 @@ const User = () => {
         <div></div>
       ) : (
         <div className="card">
-          {console.log(user)}
+      
           <div className="card-header border-transparent ">
             <h2 className="card-title pt-2">ผู้ใช้งานทั้งหมด</h2>
           </div>

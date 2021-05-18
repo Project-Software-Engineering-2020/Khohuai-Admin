@@ -67,10 +67,6 @@ const insertLottery = async (req, res) => {
     const image = req.body.image_boss;
     let ngud = req.body._ngud
     ngud = ngud.toString()
-
-
-    console.log(number);
-    console.log("ngud",ngud);
     
 
     let total_lottery = 0;
@@ -107,12 +103,17 @@ const insertLottery = async (req, res) => {
                     ngud: ngud
                 });
             console.log("ครั้งแรก")
+
+            await firestore.collection("ngud").doc(ngud).get().then((doc) => {
+                total_lottery = doc.data().total_lottery;
+                total_onhand = doc.data().total_onhand;
+            })
+
             
             total_lottery = total_lottery + image.length;
             total_onhand = total_onhand + image.length;
 
-            console.log("total_lottery  =", total_lottery, "total_onhand  =", total_onhand)
-
+          
 
             await firestore.collection("ngud").doc(ngud).update(
                 {
@@ -120,7 +121,6 @@ const insertLottery = async (req, res) => {
                     total_onhand: total_onhand
                 }
             )
-
 
             res.status(200).send("success");
 
@@ -142,7 +142,6 @@ const insertLottery = async (req, res) => {
             total_lottery = total_lottery + image.length;
             total_onhand = total_onhand + image.length;
 
-            console.log("ngud : ",ngud," total_lottery  =", total_lottery, "total_onhand  =", total_onhand)
 
             await firestore.collection("ngud").doc(ngud).update(
                 {

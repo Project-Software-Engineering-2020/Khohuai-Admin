@@ -1,4 +1,6 @@
 const { firestore } = require('../firebaseDB');
+const moment = require('moment')
+moment.locale('th');
 
 const getSellperNgud = async (req, res, next) => {
 
@@ -10,21 +12,33 @@ const getSellperNgud = async (req, res, next) => {
     let sell_per_ngud = [];
 
 
-    console.log("chart  ",number)
 
     try {
 
         if (type === "ngud") {
 
-            await firestore.collection('ngud')
-                .doc(number)
-                .get()
-                .then((doc) => {
-                    day_start = new Date(doc.data().start)
-                    day_end = new Date(doc.data().end)
+            if (number != "") {
+                await firestore.collection('ngud')
+                    .doc(number)
+                    .get()
+                    .then((doc) => {
+                        day_start = new Date(doc.data().start)
+                        day_end = new Date(doc.data().end)
+                    });
+            }
+            else {
+                const ngud_DB = await firestore.collection('ngud').orderBy("end", "desc").get();
+                await ngud_DB.docs.forEach((doc,index) => {
+                    
+                    if(index == 0) {
+                        // console.log(index)
+                        day_start = new Date(doc.data().start)
+                        day_end = new Date(doc.data().end)
+                    }
+                    
                 });
-            
-            
+            }
+
 
             //สร้าง Array วันที่ในงวดนั้นๆ
             for (let i = day_start.getDate(); i <= day_end.getDate(); i++) {
@@ -36,10 +50,9 @@ const getSellperNgud = async (req, res, next) => {
                     }
                 )
             }
+    
 
-            console.log(sell_per_ngud);
-
-            const invoice = await firestore.collection('invoices').where("userid", "!=", "admin").get()
+            const invoice = await firestore.collection('invoices').where("userid", "!=", "khohuai").get()
             if (invoice.empty) {
                 console.log("ไม่มีข้อมูล")
             } else {
@@ -50,8 +63,6 @@ const getSellperNgud = async (req, res, next) => {
                     let _qty = doc.data().quantity;
                     let _price = doc.data().totalprice;
 
-                    console.log("invoice  date", _day)
-
                     sell_per_ngud = sell_per_ngud.map(element => element.day === _day ?
                         {
                             ...element,
@@ -60,7 +71,7 @@ const getSellperNgud = async (req, res, next) => {
                         }
                         : element);
                 });
-                console.log(sell_per_ngud);
+   
                 res.status(200).send(sell_per_ngud);
             }
         }
@@ -68,7 +79,32 @@ const getSellperNgud = async (req, res, next) => {
         console.log(error);
     }
 }
+const getIncome = async (req,res) =>{
+    console.log("in")
+    let data = [];
+    try {
+        await firestore.collection("ngud").where("check_prize", "==", true).get()
+            .then((docs) => docs.forEach((doc) => {
+                data.push(
+                    {
+                        ngud: doc.id, 
+                        total_lottery: doc.data().total_lottery,
+                        total_onhand: doc.data().total_onhand,
+                        cost_buy: doc.data().cost_buy,
+                        end: new Date(doc.data().end),
+                        name: moment(new Date(doc.data().end)).format('LL'),
+                        income: doc.data().income,
+                        spend_reward: doc.data().spend_reward
+                    }
+                )
+            }))
+    } catch (error) {
+        
+    }
+    res.send(data);
+}
 
 module.exports = {
-    getSellperNgud
+    getSellperNgud,
+    getIncome
 }

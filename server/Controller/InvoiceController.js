@@ -2,42 +2,82 @@ const { firestore } = require('../firebaseDB');
 
 const getAllInvoice = async (req, res, next) => {
 
-    const ngud_id = req.params.id
+    let ngud_id = req.params.id;
+
 
     let invoiceArray = []
 
     try {
-        let invoice = await firestore.collection('invoices')
-            .where("userid", "!=", "admin")
-            // .where("ngud", "!=", ngud_id)
-            .get()
-        // 
-        if (invoice.empty) {
-            res.status(400).send("No lottery in record")
-        } else {
-            invoice.docs.forEach(doc => {
-                invoiceArray.push({
-                    date: doc.data().date.toDate(),
-                    ngud: doc.data().ngud,
-                    totalprice: doc.data().totalprice,
-                    invoiceid: doc.id,
-                    quantity: doc.data().quantity,
-                    lottery: doc.data().lottery,
-                    userid: doc.data().userid,
-                    firstname: doc.data().firstname,
-                    lastname: doc.data().lastname,
-                    result: doc.data().result
-                });
+        if (ngud_id === "lastest") {
+            let ngudDB = await firestore.collection('ngud').orderBy("end", "desc").get();
+
+            await ngudDB.docs.forEach((doc, index) => {
+              
+                if (index == 0) {
+                    ngud_id = doc.id;
+                }
             });
-            res.send(invoiceArray)
+
+            let invoice = await firestore.collection('invoices')
+                .where("ngud", "==", ngud_id)
+                .get()
+            // 
+            if (invoice.empty) {
+                res.status(400).send("No lottery in record")
+            } else {
+                invoice.docs.forEach(doc => {
+                    invoiceArray.push({
+                        date: doc.data().date.toDate(),
+                        ngud: doc.data().ngud,
+                        totalprice: doc.data().totalprice,
+                        invoiceid: doc.id,
+                        quantity: doc.data().quantity,
+                        lottery: doc.data().lottery,
+                        userid: doc.data().userid,
+                        firstname: doc.data().firstname,
+                        lastname: doc.data().lastname,
+                        result: doc.data().result
+                    });
+                });
+                res.send(invoiceArray)
+            }
+
         }
+        else {
+            let invoice = await firestore.collection('invoices')
+                // .where("userid", "!=", "khohuai")
+                .where("ngud", "==", ngud_id)
+                .get()
+            // 
+            if (invoice.empty) {
+                res.status(400).send("No lottery in record")
+            } else {
+                invoice.docs.forEach(doc => {
+                    invoiceArray.push({
+                        date: doc.data().date.toDate(),
+                        ngud: doc.data().ngud,
+                        totalprice: doc.data().totalprice,
+                        invoiceid: doc.id,
+                        quantity: doc.data().quantity,
+                        lottery: doc.data().lottery,
+                        userid: doc.data().userid,
+                        firstname: doc.data().firstname,
+                        lastname: doc.data().lastname,
+                        result: doc.data().result
+                    });
+                });
+                res.send(invoiceArray)
+            }
+        }
+
+
     } catch (error) {
         console.log(error);
     }
 }
 
 const getSummary = async (req, res) => {
-    console.log("getchart")
+   
     let start = new Date('2021-03-01');
     let end = new Date('2021-03-31');
     let invoiceArray = []
@@ -60,7 +100,7 @@ const getSummary = async (req, res) => {
         });
 
         res.status(200).send(invoiceArray);
-        console.log(invoiceArray)
+       
 
     } catch (error) {
 

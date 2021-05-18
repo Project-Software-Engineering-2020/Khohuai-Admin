@@ -1,19 +1,17 @@
-const { auth, firebaseApp, admin, firestore } = require("../firebaseDB")
-const User = require("../Models/User");
-const firebase = require('firebase');
+const { auth, firestore } = require("../firebaseDB")
+
 const sign = require("jwt-encode")
 const secret = 'secret';
-// const jwt = require('jsonwebtoken')
-// let refreshToken = [];
+
 
 const signin = async (req, res) => {
     const _email = req.body.email;
     const _password = req.body.password;
-    // console.log(_email)
+ 
     try {
         auth.signInWithEmailAndPassword(_email, _password)
         .then(async (result) => {
-            console.log(result.user.uid)
+ 
             let user = {};
 
             await firestore.collection("users").doc(result.user.uid)
@@ -33,13 +31,13 @@ const signin = async (req, res) => {
                     // token = jwt.sign({id},"jwtSecret")
                 }
                 const jwt = sign(user,secret)
-                console.log("jwt Encode =>",jwt)
+        
                 res.status(200).send(jwt)
                 // console.log("Song Laewna +++++++++++++++++")
                 // res.status(200).send(user);
                     })
             }).catch((error) => {
-                console.log("Error ",error)
+  
                 res.status(201).send(error.code);
             })
     } catch (error) {

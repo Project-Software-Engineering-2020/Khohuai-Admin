@@ -64,8 +64,6 @@ const RewardDetail = (props) => {
 
     const updateToServer = async () => {
 
-      console.log("send to server");
-
       const im = image_complete[0];
 
       await Axios.put(api + "/reward/uploadslip", { id, im }).then((res) => {
@@ -73,7 +71,7 @@ const RewardDetail = (props) => {
           dispatch(getDetailUserReward(id));
           handleClose();
         }
-        console.log("upload success");
+       
       });
     }
 
@@ -84,7 +82,7 @@ const RewardDetail = (props) => {
         console.log(error);
       },
       async () => {
-        console.log(imageName);
+        
         await storage
           .ref("slip")
           .child(imageName)
@@ -116,7 +114,7 @@ const RewardDetail = (props) => {
 
           {/* /.card-header */}
           <div className="card-body">
-            <div className="tab-content p-0">
+            <div className="tab-content p-0 table-responsive">
               <div className="row mb-3 ml-0">
                 <a href={"/lottery/"+ngid+"/reward"} class="backBtn"><i class="fa fa-chevron-left" aria-hidden="true"></i>  ย้อนกลับ</a>
               </div>
@@ -145,7 +143,7 @@ const RewardDetail = (props) => {
 
               }
 
-              <table className="table m-0">
+              <table className="table m-0 ">
                 <thead>
                   <tr>
                     <th>เลขสลาก</th>

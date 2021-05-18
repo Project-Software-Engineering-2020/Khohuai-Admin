@@ -27,7 +27,7 @@ const getAllUserWin = async (req, res) => {
                     })
             })
         })
-        console.log(data);
+        
         res.send(data);
 
     } catch (error) {
@@ -76,7 +76,7 @@ const uploadSlip = async (req,res)  => {
             slip: imageurl
         }
     ).then(res => {
-        console.log("update slip", res)
+        // console.log("update slip", res)
     })
     res.send("success")
 }

@@ -8,7 +8,7 @@ export function getAllUserReward(ngudid) {
     return function (dispatch) {
         return Axios.get(api + "/reward/" + ngudid)
             .then(doc => {
-                console.log(doc.data);
+           
                 dispatch({type:"FETCHED_REWARD",data:doc.data})
             });
     }
@@ -22,7 +22,7 @@ export function getDetailUserReward(id) {
     return function (dispatch) {
         return Axios.get(api + "/reward/detail/" + id)
             .then(doc => {
-                console.log(doc.data);
+       
                 dispatch({type:"FETCHED_REWARD",data:doc.data})
             });
     }

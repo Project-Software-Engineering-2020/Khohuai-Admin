@@ -12,9 +12,7 @@ export default function Menu() {
   function onLogout() {
     dispatch(setlogout())
   }
-  console.log("Rediract =========================================",stetus.status)
-
-  // alert(redirect)
+ 
 
   return (
     <div>
@@ -105,13 +103,13 @@ export default function Menu() {
               <NavLink to="/user" className="nav-link p-3" activeClassName="active menu-open has-treeview ">
                   <i className="nav-icon fas fa-user" /> 
                   <p>
-                  &nbsp; User
-                 
+                  &nbsp; Member
+                  
                   </p>
                 </NavLink>
                 
               </li>
-              {redirect ? (
+              {/* {redirect ? (
                 <button
                   type="button"
                   className="btn-login"
@@ -119,15 +117,7 @@ export default function Menu() {
                   >
                 Logout
                 </button>
-              // <li className="nav-item has-treeview">
-              // <NavLink onClick={onLogout} className="nav-link p-3" activeClassName="active menu-open has-treeview ">
-              //     <i className="nav-icon fas fa-user" /> 
-              //     <p>
-              //     &nbsp; Logout
-                 
-              //     </p>
-              //   </NavLink>
-              // </li>
+             
               ) : (
               <li className="nav-item has-treeview">
               <NavLink to="/adminLogin" className="nav-link p-3" activeClassName="active menu-open has-treeview ">
@@ -139,7 +129,7 @@ export default function Menu() {
                 </NavLink>
                 
               </li>
-              )}
+              )} */}
             </ul>
           </nav>
           {/* /.sidebar-menu */}

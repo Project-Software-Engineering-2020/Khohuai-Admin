@@ -51,7 +51,7 @@ export function setauthenticate(role,photoURL,displayName){
 }
 
 export function setlogout() {
-  return store.dispatch({ type: "SET_LOGOUT" });
+  
   store.dispatch({ type: "SET_LOGOUT" })
   return function (dispatch) {
 

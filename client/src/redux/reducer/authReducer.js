@@ -28,7 +28,7 @@ function userAuth(state = initialState, action) {
         role: action.data.role,
         status: action.data.status,
       };
-      console.log(action.data)
+
       return state;
 
     case 'SET_AUTHENTICATED':

@@ -9,7 +9,7 @@ export function getAllInvoice(id) {
     return function (dispatch) {
         return Axios.get(api + "/invoice/" +id)
             .then(invoice => {
-                console.log(invoice.data);
+         
                 dispatch({type:"Fetched_invoice",data:invoice.data})
             });
     }
@@ -21,7 +21,7 @@ export function getInvoiceDetail(invoice_id) {
     return function (dispatch) {
         return Axios.get(api + "/invoice/detail/"+invoice_id)
             .then(invoice => {
-                console.log(invoice.data);
+    
                 dispatch({type:"Fetched_invoice_detail",data:invoice.data[0]})
             });
     }

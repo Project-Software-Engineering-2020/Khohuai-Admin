@@ -34,4 +34,19 @@ export function addNgud(data) {
     }
 }
 
+export function updateNgud(data) {
+
+    return function (dispatch) {
+        return Axios.put(api + "/ngud",data)
+            .then(ngud => {
+                dispatch(
+                    {type:"FETCHED_NGUD",
+                    data:ngud.data.all,
+                    widget:ngud.data.current,
+                    ready: ngud.data.ready
+                })
+            });
+    }
+}
+
 

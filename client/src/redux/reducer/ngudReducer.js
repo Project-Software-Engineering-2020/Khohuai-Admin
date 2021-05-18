@@ -18,7 +18,7 @@ const initialState = {
         };
   
       case "FETCHED_NGUD":
-        console.log(action);
+ 
         return {
           ...state,
           data: action.data,

@@ -8,20 +8,24 @@ import { getNgud } from "../redux/action/ngudAction";
 import { getAllLottery } from '../redux/action/lotteryAction'
 import { useDispatch, useSelector } from "react-redux";
 import Chart from "../components/Chart";
+import Income from '../components/income';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  let invoice = useSelector((state) => state.invoice);
-  let user = useSelector((state) => state.user);
-  const lottery = useSelector(state => state.lottery)
+  const invoice = useSelector((state) => state.invoice);
+  const user = useSelector((state) => state.user);
+  const lottery = useSelector(state => state.lottery);
+  const ngud = useSelector(state => state.ngud)
 
   useEffect(async () => {
     const _header = "แดชบอร์ด";
     await dispatch(setHeader(_header));
-    dispatch(getAllInvoice());
-    dispatch(getAllUser());
-    dispatch(getNgud());
-    dispatch(getAllLottery())
+     await dispatch(getNgud());
+    await dispatch(getAllUser());
+    await dispatch(getAllLottery())
+ 
+    await dispatch(getAllInvoice("lastest"));
+  
   }, []);
 
   return (
@@ -52,14 +56,14 @@ const Dashboard = () => {
               <div className="icon">
                 <i className="ion ion-stats-bars" />
               </div>
-              <a href="/lottery" className="small-box-footer">
+              <a href={"/lottery/" + ngud.widget.ngud }className="small-box-footer">
                 ดูเพิ่มเติม <i className="fas fa-arrow-circle-right" />
               </a>
             </div>
           </div>
 
-          <div className="col-lg-4 col-6">
-            <div className="small-box bg-warning card">
+          <div className="col-lg-4 col-12">
+            <div className="small-box bg-warning card text-white">
               <div className="inner">
                 <h3>{user.data.length}</h3>
                 <p>สมาชิกในระบบ</p>
@@ -80,7 +84,10 @@ const Dashboard = () => {
           <Chart />
         </div>
         <div className="col-lg-5 col-12 mt-2">
-          <LastOders data={invoice.data} />
+          <Income/>
+        </div>
+        <div className="col-12">
+           <LastOders data={invoice.data} />
         </div>
       </div>
 
